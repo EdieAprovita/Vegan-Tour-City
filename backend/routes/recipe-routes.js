@@ -14,12 +14,12 @@ router.post('/upload', uploadConfig.single('photo'), (req, res, next) => {
 
 //CRUD RECIPES
 
-router.get('/recipes', getAllRecipes)
-router.get('/recipes/:id', getRecipe)
-router.get('/recipes/top', getTopRecipes)
-router.post('/recipes/create', createRecipe)
-router.post('/recipes/:id/reviews', createRecipeReview)
-router.put('/recipes/edit/:id', updateRecipe)
-router.delete('/recipes/delete/:id', deleteRecipe)
+router.get('/', getAllRecipes)
+router.get('/:id', getRecipe)
+router.get('/top', getTopRecipes)
+router.post('/create', createRecipe)
+router.post('/:id/reviews', createRecipeReview)
+router.put('/edit/:id', updateRecipe)
+router.delete('/delete/:id', deleteRecipe)
 
 module.exports = router

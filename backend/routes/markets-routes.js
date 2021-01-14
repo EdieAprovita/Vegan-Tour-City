@@ -13,12 +13,12 @@ router.post('/upload', uploadConfig.single('photo'), (req, res, next) => {
 
 //CRUD MARKETS
 
-router.get('/markets', getAllMarkets)
-router.get('/markets/:id', getMarket)
-router.get('/markets/top', getTopMarkets)
-router.post('/markets/:id/reviews', createMarketReview)
-router.post('/markets/create', createMarket)
-router.put('/markets/edit/:id', updateMarket)
-router.delete('/markets/delete/:id', deleteMarket)
+router.get('/', getAllMarkets)
+router.get('/:id', getMarket)
+router.get('/top', getTopMarkets)
+router.post('/:id/reviews', createMarketReview)
+router.post('/create', createMarket)
+router.put('/edit/:id', updateMarket)
+router.delete('/delete/:id', deleteMarket)
 
 module.exports = router
