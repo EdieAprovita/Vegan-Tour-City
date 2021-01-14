@@ -3,7 +3,15 @@ const router = express.Router()
 const uploadConfig = require('../config/cloudinary')
 const { getTopMarkets } = require('../controllers/markets')
 
-const { getAllRecipes, getRecipe, createRecipe, updateRecipe, deleteRecipe, getTopRecipes, createRecipeReview } = require('../controllers/recipes')
+const { 
+	getAllRecipes, 
+	getRecipe, 
+	createRecipe, 
+	updateRecipe, 
+	deleteRecipe, 
+	getTopRecipes, 
+	createRecipeReview 
+} = require('../controllers/recipes')
 
 router.post('/upload', uploadConfig.single('photo'), (req, res, next) => {
 	if (!req.file) {
