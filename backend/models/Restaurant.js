@@ -52,6 +52,12 @@ const restaurantSchema = new Schema(
 			required: [true, 'Please add a photo'],
 		},
 
+		budget: {
+			type: String,
+			required: [true, 'Add the budget'],
+			enum: ['cheap', 'average', 'expensive'],
+		},
+
 		reviews: [reviewSchema],
 
 		rating: {

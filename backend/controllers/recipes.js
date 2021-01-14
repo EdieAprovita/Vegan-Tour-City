@@ -1,4 +1,3 @@
-const { json } = require('body-parser')
 const Recipe = require('../models/Recipe')
 
 exports.getAllRecipes = async (req, res) => {
@@ -25,21 +24,27 @@ exports.createRecipe = async (req, res) => {
 		const {
 			title,
 			description,
+			instructions,
 			ingredients,
 			typeDish,
 			imgUrl,
 			cookingTime,
 			difficulty,
+			budget,
+			numReviews,
 		} = req.body
 
 		const recipe = await Recipe.create({
 			title,
 			description,
+			instructions,
 			ingredients,
 			typeDish,
 			imgUrl,
 			cookingTime,
 			difficulty,
+			budget,
+			numReviews,
 		})
 
 		res.status(201).json({ recipe })
@@ -54,27 +59,23 @@ exports.updateRecipe = async (req, res) => {
 		const {
 			title,
 			description,
+			instructions,
 			ingredients,
 			typeDish,
 			imgUrl,
 			cookingTime,
 			difficulty,
-			reviews,
-			rating,
-			numReviews,
 		} = req.body
 
 		const recipe = await Recipe.findByIdAndUpdate(id, {
 			title,
 			description,
+			instructions,
 			ingredients,
 			typeDish,
 			imgUrl,
 			cookingTime,
 			difficulty,
-			reviews,
-			rating,
-			numReviews,
 		})
 
 		res.status(200).json({ recipe })

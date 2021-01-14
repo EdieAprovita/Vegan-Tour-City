@@ -21,15 +21,14 @@ exports.getPlace = async (req, res) => {
 
 exports.createPlace = async (req, res) => {
 	try {
-		const { name, typePlace, address, imgUrl, reviews, rating, numReviews } = req.body
+		const { name, typePlace, address, imgUrl, budget, numReviews } = req.body
 
 		const restaurant = await Restaurant.create({
 			name,
 			typePlace,
 			address,
 			imgUrl,
-			reviews,
-			rating,
+			budget,
 			numReviews,
 		})
 		res.status(201).json({ restaurant })
@@ -41,15 +40,13 @@ exports.createPlace = async (req, res) => {
 exports.updatePlace = async (req, res) => {
 	try {
 		const { id } = req.params
-		const { name, typePlace, address, imgUrl, reviews, rating, numReviews } = req.body
+		const { name, typePlace, address, imgUrl, budget } = req.body
 		const restaurant = await Restaurant.findByIdAndUpdate(id, {
 			name,
 			typePlace,
 			address,
 			imgUrl,
-			reviews,
-			rating,
-			numReviews,
+			budget,
 		})
 		res.status(200).json({ restaurant })
 	} catch (error) {

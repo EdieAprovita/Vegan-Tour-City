@@ -42,6 +42,11 @@ const recipeSchema = new Schema(
 			required: [true, 'Write a recipe description'],
 		},
 
+		instructions: {
+			type: String,
+			required: [true, 'Please add the instructions'],
+		},
+
 		ingredients: {
 			type: String,
 			required: [true, 'Write the ingredients for the recipe'],
@@ -81,6 +86,12 @@ const recipeSchema = new Schema(
 			type: Number,
 			required: [true, 'Please add the number reviews'],
 			default: 0,
+		},
+
+		budget: {
+			type: String,
+			required: [true, 'Add budget'],
+			enum: ['cheap', 'average', 'expensive'],
 		},
 	},
 	{
