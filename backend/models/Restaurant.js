@@ -25,7 +25,7 @@ const reviewSchema = new Schema(
 	},
 	{
 		timestamps: true,
-	},
+	}
 )
 
 const restaurantSchema = new Schema(
@@ -68,7 +68,7 @@ const restaurantSchema = new Schema(
 	},
 	{
 		timestamps: true,
-	},
+	}
 )
 
 const Restaurant = mongoose.model('Restaurant', restaurantSchema)

@@ -25,7 +25,7 @@ const reviewSchema = new Schema(
 	},
 	{
 		timestamps: true,
-	},
+	}
 )
 
 const marketSchema = new Schema(
@@ -69,7 +69,7 @@ const marketSchema = new Schema(
 
 	{
 		timestamps: true,
-	},
+	}
 )
 
 const Market = mongoose.model('Market', marketSchema)

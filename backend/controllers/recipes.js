@@ -22,7 +22,15 @@ exports.getRecipe = async (req, res) => {
 
 exports.createRecipe = async (req, res) => {
 	try {
-		const { title, description, ingredients, typeDish, imgUrl, cookingTime, difficulty } = req.body
+		const {
+			title,
+			description,
+			ingredients,
+			typeDish,
+			imgUrl,
+			cookingTime,
+			difficulty,
+		} = req.body
 
 		const recipe = await Recipe.create({
 			title,
@@ -43,7 +51,19 @@ exports.createRecipe = async (req, res) => {
 exports.updateRecipe = async (req, res) => {
 	try {
 		const { id } = req.params
-		const { title, description, ingredients, typeDish, imgUrl, cookingTime, difficulty, reviews, rating, numReviews } = req.body
+		const {
+			title,
+			description,
+			ingredients,
+			typeDish,
+			imgUrl,
+			cookingTime,
+			difficulty,
+			reviews,
+			rating,
+			numReviews,
+		} = req.body
+
 		const recipe = await Recipe.findByIdAndUpdate(id, {
 			title,
 			description,
@@ -80,7 +100,9 @@ exports.createRecipeReview = async (req, res) => {
 		const recipe = await Recipe.findById(req.params.id)
 
 		if (recipe) {
-			const alreadyReviewed = recipe.reviews.find(r => r.user.toString() === req.user._id.toString())
+			const alreadyReviewed = recipe.reviews.find(
+				r => r.user.toString() === req.user._id.toString()
+			)
 
 			if (alreadyReviewed) {
 				res.status(400)
@@ -96,7 +118,9 @@ exports.createRecipeReview = async (req, res) => {
 
 			recipe.reviews.push(review)
 			recipe.numReviews = recipe.reviews.length
-			recipe.rating = recipe.reviews.reduce((acc, item) => item.rating + acc, 0) / recipe.reviews.length
+			recipe.rating =
+				recipe.reviews.reduce((acc, item) => item.rating + acc, 0) /
+				recipe.reviews.length
 
 			await recipe.save()
 			res.status(201).json({ message: 'Review Added' })

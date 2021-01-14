@@ -73,7 +73,9 @@ exports.createRestaurantReview = async (req, res) => {
 		const restaurant = await Restaurant.findById(req.params.id)
 
 		if (restaurant) {
-			const alreadyReviewed = restaurant.reviews.find(r => r.user.toString() === req.user._id.toString())
+			const alreadyReviewed = restaurant.reviews.find(
+				r => r.user.toString() === req.user._id.toString()
+			)
 
 			if (alreadyReviewed) {
 				res.status(400)
@@ -89,7 +91,9 @@ exports.createRestaurantReview = async (req, res) => {
 
 			restaurant.reviews.push(review)
 			restaurant.numReviews = restaurant.reviews.length
-			restaurant.rating = restaurant.reviews.reduce((acc, item) => item.rating + acc, 0) / restaurant.reviews.length
+			restaurant.rating =
+				restaurant.reviews.reduce((acc, item) => item.rating + acc, 0) /
+				restaurant.reviews.length
 
 			await restaurant.save()
 			res.status(201).json({ message: 'Review Added' })
