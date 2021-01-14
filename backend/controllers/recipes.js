@@ -1,3 +1,4 @@
+const { json } = require('body-parser')
 const Recipe = require('../models/Recipe')
 
 exports.getAllRecipes = async (req, res) => {
@@ -21,7 +22,7 @@ exports.getRecipe = async (req, res) => {
 
 exports.createRecipe = async (req, res) => {
 	try {
-		const { title, description, ingredients, typeDish, imgUrl, cookingTime, difficulty, reviews, rating, numReviews } = req.body
+		const { title, description, ingredients, typeDish, imgUrl, cookingTime, difficulty } = req.body
 
 		const recipe = await Recipe.create({
 			title,
@@ -31,9 +32,6 @@ exports.createRecipe = async (req, res) => {
 			imgUrl,
 			cookingTime,
 			difficulty,
-			reviews,
-			rating,
-			numReviews,
 		})
 
 		res.status(201).json({ recipe })
@@ -70,6 +68,48 @@ exports.deleteRecipe = async (req, res) => {
 		const { id } = req.params
 		await Recipe.findByIdAndDelete(id)
 		res.status(200).json({ message: 'deleted recipe' })
+	} catch (error) {
+		res.status(400).json({ message: `${error}` })
+	}
+}
+
+exports.createRecipeReview = async (req, res) => {
+	try {
+		const { rating, comment } = req.body
+
+		const recipe = await Recipe.findById(req.params.id)
+
+		if (recipe) {
+			const alreadyReviewed = recipe.reviews.find(r => r.user.toString() === req.user._id.toString())
+
+			if (alreadyReviewed) {
+				res.status(400)
+				throw new Error('Recipe already reviewed')
+			}
+
+			const review = {
+				username: req.user.username,
+				rating: Number(rating),
+				comment,
+				user: req.user._id,
+			}
+
+			recipe.reviews.push(review)
+			recipe.numReviews = recipe.reviews.length
+			recipe.rating = recipe.reviews.reduce((acc, item) => item.rating + acc, 0) / recipe.reviews.length
+
+			await recipe.save()
+			res.status(201).json({ message: 'Review Added' })
+		}
+	} catch (error) {
+		res.status(400).json({ message: `${error}` })
+	}
+}
+
+exports.getTopRecipes = async (req, res) => {
+	try {
+		const recipes = await Recipe.find({}).sort({ rating: -1 }).limit(3)
+		res.status(200).json(recipes)
 	} catch (error) {
 		res.status(400).json({ message: `${error}` })
 	}

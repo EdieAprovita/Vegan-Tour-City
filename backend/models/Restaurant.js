@@ -3,7 +3,7 @@ const Schema = mongoose.Schema
 
 const reviewSchema = new Schema(
 	{
-		name: {
+		username: {
 			type: String,
 			required: [true, 'Please add a name'],
 		},

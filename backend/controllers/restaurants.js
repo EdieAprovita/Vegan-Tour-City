@@ -66,3 +66,44 @@ exports.deletePlace = async (req, res) => {
 		res.status(400).json({ message: `${error}` })
 	}
 }
+exports.createRestaurantReview = async (req, res) => {
+	try {
+		const { rating, comment } = req.body
+
+		const restaurant = await Restaurant.findById(req.params.id)
+
+		if (restaurant) {
+			const alreadyReviewed = restaurant.reviews.find(r => r.user.toString() === req.user._id.toString())
+
+			if (alreadyReviewed) {
+				res.status(400)
+				throw new Error('Restaurant already Reviewed')
+			}
+
+			const review = {
+				username: req.user.username,
+				rating: Number(rating),
+				comment,
+				user: req.user._id,
+			}
+
+			restaurant.reviews.push(review)
+			restaurant.numReviews = restaurant.reviews.length
+			restaurant.rating = restaurant.reviews.reduce((acc, item) => item.rating + acc, 0) / restaurant.reviews.length
+
+			await restaurant.save()
+			res.status(201).json({ message: 'Review Added' })
+		}
+	} catch (error) {
+		res.status(400).json({ message: `${error}` })
+	}
+}
+
+exports.getTopRestaurants = async (req, res) => {
+	try {
+		const restaurants = await Restaurant.find({}).sort({ rating: -1 }).limit(3)
+		res.status(200).json(restaurants)
+	} catch (error) {
+		res.status(400).json({ message: `${error}` })
+	}
+}
