@@ -1,8 +1,9 @@
 const User = require('../models/User')
 const bcrypt = require('bcryptjs')
+const asyncHandler = require("express-async-handler")
 const passport = require('passport')
 
-exports.signup = async (req, res) => {
+exports.signup = asyncHandler(async (req, res) => {
 	try {
 		const { email, password } = req.body
 
@@ -28,9 +29,9 @@ exports.signup = async (req, res) => {
 	} catch (error) {
 		res.status(400).json({ message: `${error}`.red })
 	}
-}
+})
 
-exports.login = async (req, res, next) => {
+exports.login = asyncHandler(async (req, res, next) => {
 	passport.authenticate('local', (err, user, failureDetails) => {
 		if (err) {
 			return res.status(500).json({ message: `${err}` })
@@ -47,7 +48,7 @@ exports.login = async (req, res, next) => {
 			res.status(200).json(user)
 		})
 	})(req, res, next)
-}
+})
 
 exports.currentUser = async (req, res) => {
 	res.json(req.user || null)
