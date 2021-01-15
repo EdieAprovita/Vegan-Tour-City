@@ -3,11 +3,11 @@ const router = express.Router()
 const uploadConfig = require('../config/cloudinary')
 
 const {
-	getAllPlaces,
-	getPlace,
-	createPlace,
-	updatePlace,
-	deletePlace,
+	getAllRestaurants,
+	getRestaurant,
+	createRestaurant,
+	updateRestaurant,
+	deleteRestaurant,
 	getTopRestaurants,
 	createRestaurantReview,
 } = require('../controllers/restaurants')
@@ -21,12 +21,12 @@ router.post('/upload', uploadConfig.single('photo'), (req, res, next) => {
 
 //CRUD RESTAURANTS
 
-router.get('/', getAllPlaces)
-router.get('/:id', getPlace)
+router.get('/', getAllRestaurants)
+router.get('/:id', getRestaurant)
 router.get('/top', getTopRestaurants)
 router.post('/:id/reviews', createRestaurantReview)
-router.post('/create', createPlace)
-router.put('/edit/:id', updatePlace)
-router.delete('/delete/:id', deletePlace)
+router.post('/create', createRestaurant)
+router.put('/edit/:id', updateRestaurant)
+router.delete('/delete/:id', deleteRestaurant)
 
 module.exports = router

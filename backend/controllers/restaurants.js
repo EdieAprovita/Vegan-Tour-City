@@ -1,25 +1,25 @@
 const Restaurant = require('../models/Restaurant')
 
-exports.getAllPlaces = async (req, res) => {
+exports.getAllRestaurants = async (req, res) => {
 	try {
-		const restaurant = await Restaurant.find().populate('owner')
+		const restaurant = await Restaurant.find().populate('User')
 		res.status(200).json({ restaurant })
 	} catch (error) {
 		res.status(400).json({ message: `${error}` })
 	}
 }
 
-exports.getPlace = async (req, res) => {
+exports.getRestaurant = async (req, res) => {
 	try {
 		const { id } = req.params
-		const restaurant = await Restaurant.findById(id).populate('owner')
+		const restaurant = await Restaurant.findById(id).populate('User')
 		res.status(200).json({ restaurant })
 	} catch (error) {
 		res.status(400).json({ message: `${error}` })
 	}
 }
 
-exports.createPlace = async (req, res) => {
+exports.createRestaurant = async (req, res) => {
 	try {
 		const { name, typePlace, address, imgUrl, budget, numReviews } = req.body
 
@@ -37,7 +37,7 @@ exports.createPlace = async (req, res) => {
 	}
 }
 
-exports.updatePlace = async (req, res) => {
+exports.updateRestaurant = async (req, res) => {
 	try {
 		const { id } = req.params
 		const { name, typePlace, address, imgUrl, budget } = req.body
@@ -54,7 +54,7 @@ exports.updatePlace = async (req, res) => {
 	}
 }
 
-exports.deletePlace = async (req, res) => {
+exports.deleteRestaurant = async (req, res) => {
 	try {
 		const { id } = req.params
 		await Restaurant.findByIdAndDelete(id)

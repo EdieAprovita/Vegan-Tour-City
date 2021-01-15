@@ -17,7 +17,12 @@ mongoose
 		useUnifiedTopology: true,
 		useCreateIndex: true,
 	})
-	.then(x => console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`.cyan.underline.bold))
+	.then(x =>
+		console.log(
+			`Connected to Mongo! Database name: "${x.connections[0].name}"`.cyan.underline
+				.bold
+		)
+	)
 	.catch(err => console.error('Error connecting to mongo', err.red))
 
 const app_name = require('./package.json').name
@@ -29,7 +34,7 @@ app.use(
 	cors({
 		credentials: true,
 		origin: [process.env.FRONTENDPOINT],
-	}),
+	})
 )
 
 app.use(
@@ -38,7 +43,7 @@ app.use(
 		saveUninitialized: true,
 		secret: process.env.SECRET,
 		cookie: { maxAge: 90000 * 10 },
-	}),
+	})
 )
 
 app.use(passport.initialize())
@@ -64,6 +69,9 @@ app.use('/auth', user)
 
 const market = require('./routes/markets-routes')
 app.use('/api/markets', market)
+
+const business = require('./routes/business-routes')
+app.use('/api/business', business)
 
 // Uncomment this line for production
 // app.get('/*', (req, res) => res.sendFile(__dirname + '/public/index.html'));

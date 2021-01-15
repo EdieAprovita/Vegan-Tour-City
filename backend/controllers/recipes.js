@@ -2,7 +2,7 @@ const Recipe = require('../models/Recipe')
 
 exports.getAllRecipes = async (req, res) => {
 	try {
-		const recipes = await Recipe.find().populate('owner')
+		const recipes = await Recipe.find().populate('User')
 		res.status(200).json({ recipes })
 	} catch (error) {
 		res.status(400).json({ message: `${error}` })
@@ -12,7 +12,7 @@ exports.getAllRecipes = async (req, res) => {
 exports.getRecipe = async (req, res) => {
 	try {
 		const { id } = req.params
-		const recipe = await Recipe.findById(id).populate('owner')
+		const recipe = await Recipe.findById(id).populate('User')
 		res.status(200).json({ recipe })
 	} catch (error) {
 		res.status(400).json({ message: `${error}` })

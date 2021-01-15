@@ -2,7 +2,7 @@ const Market = require('../models/Market')
 
 exports.getAllMarkets = async (req, res) => {
 	try {
-		const markets = await Market.find().populate('owner')
+		const markets = await Market.find().populate('User')
 		res.status(200).json({ markets })
 	} catch (error) {
 		res.status(400).json({ message: `${error}`.red })
@@ -12,7 +12,7 @@ exports.getAllMarkets = async (req, res) => {
 exports.getMarket = async (req, res) => {
 	try {
 		const { id } = req.params
-		const market = await Market.findById(id).populate('owner')
+		const market = await Market.findById(id).populate('User')
 		res.status(200).json({ market })
 	} catch (error) {
 		res.status(400).json({ message: `${error}`.red })
@@ -95,7 +95,7 @@ exports.createMarketReview = async (req, res) => {
 			res.status(201).json({ message: 'Review Added' })
 		}
 	} catch (error) {
-		res.status(400).json({ message: `${error}` })
+		res.status(400).json({ message: `${error}`.red })
 	}
 }
 
@@ -104,6 +104,6 @@ exports.getTopMarkets = async (req, res) => {
 		const markets = await Market.find({}).sort({ rating: -1 }).limit(3)
 		res.status(200).json(markets)
 	} catch (error) {
-		res.status(400).json({ message: `${error}` })
+		res.status(400).json({ message: `${error}`.red })
 	}
 }
