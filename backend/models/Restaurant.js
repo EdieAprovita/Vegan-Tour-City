@@ -36,6 +36,13 @@ const restaurantSchema = new Schema(
 			unique: [true, 'This place is already register'],
 		},
 
+		author: {
+			type: {
+				type: Schema.Types.ObjectId,
+				ref: 'User',
+			},
+		},
+
 		typePlace: {
 			type: String,
 			required: [true, 'Please specify the type place'],

@@ -36,6 +36,13 @@ const recipeSchema = new Schema(
 			unique: true,
 		},
 
+		author: {
+			type: {
+				type: Schema.Types.ObjectId,
+				ref: 'User',
+			},
+		},
+
 		description: {
 			type: String,
 			maxlength: [60, 'The description is to big'],

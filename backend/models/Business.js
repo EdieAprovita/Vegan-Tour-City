@@ -36,6 +36,13 @@ const businessSchema = new Schema(
 			unique: [true, 'This store already exists'],
 		},
 
+		author: {
+			type: {
+				type: Schema.Types.ObjectId,
+				ref: 'User',
+			},
+		},
+
 		address: {
 			type: String,
 			required: [true, 'Add the address'],

@@ -36,6 +36,13 @@ const marketSchema = new Schema(
 			unique: [true, 'That name is already register'],
 		},
 
+		author: {
+			type: {
+				type: Schema.Types.ObjectId,
+				ref: 'User',
+			},
+		},
+
 		address: {
 			type: String,
 			required: [true, 'Please add and address'],
