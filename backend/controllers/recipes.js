@@ -1,4 +1,5 @@
 const Recipe = require('../models/Recipe')
+const asyncHandler = require('express-async-handler')
 
 exports.getAllRecipes = async (req, res) => {
 	try {

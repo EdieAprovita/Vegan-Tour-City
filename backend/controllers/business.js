@@ -1,15 +1,16 @@
 const Business = require('../models/Business')
+const asyncHandler = require('express-async-handler')
 
-exports.getAllBusiness = async (req, res) => {
+exports.getAllBusiness = asyncHandler(async (req, res) => {
 	try {
 		const business = await Business.find().populate('User')
 		res.status(200).json({ business })
 	} catch (error) {
 		res.status(400).json({ message: `${error}`.red })
 	}
-}
+})
 
-exports.getBusiness = async (req, res) => {
+exports.getBusiness = asyncHandler(async (req, res) => {
 	try {
 		const { id } = req.params
 		const business = await (await Business.findById(id)).populated('User')
@@ -17,9 +18,9 @@ exports.getBusiness = async (req, res) => {
 	} catch (error) {
 		res.status(400).json({ message: `${error}`.red })
 	}
-}
+})
 
-exports.createBusiness = async (req, res) => {
+exports.createBusiness = asyncHandler(async (req, res) => {
 	try {
 		const { name, address, contact, budget, typeBusiness, numReviews } = req.body
 		const business = await Business.create({
@@ -34,9 +35,9 @@ exports.createBusiness = async (req, res) => {
 	} catch (error) {
 		res.status(400).json({ message: `${error}`.red })
 	}
-}
+})
 
-exports.updateBusiness = async (req, res) => {
+exports.updateBusiness = asyncHandler(async (req, res) => {
 	try {
 		const { id } = req.params
 		const { name, address, contact, budget, typeBusiness } = req.body
@@ -51,9 +52,9 @@ exports.updateBusiness = async (req, res) => {
 	} catch (error) {
 		res.status(400).json({ message: `${error}`.red })
 	}
-}
+})
 
-exports.deleteBusiness = async (req, res) => {
+exports.deleteBusiness = asyncHandler(async (req, res) => {
 	try {
 		const { id } = req.params
 		await Business.findByIdAndDelete(id)
@@ -61,9 +62,9 @@ exports.deleteBusiness = async (req, res) => {
 	} catch (error) {
 		res.status(400).json({ message: `${error}`.red })
 	}
-}
+})
 
-exports.createBusinessReview = async (req, res) => {
+exports.createBusinessReview = asyncHandler(async (req, res) => {
 	try {
 		const { rating, comment } = req.body
 
@@ -98,13 +99,13 @@ exports.createBusinessReview = async (req, res) => {
 	} catch (error) {
 		res.status(400).json({ message: `${error}`.red })
 	}
-}
+})
 
-exports.getTopBusiness = async (req, res) => {
+exports.getTopBusiness = asyncHandler(async (req, res) => {
 	try {
 		const business = await Business.find({}).sort({ rating: -1 }).limit(3)
 		res.status(200).json(business)
 	} catch (error) {
 		res.status(400).json({ message: `${error}`.red })
 	}
-}
+})
