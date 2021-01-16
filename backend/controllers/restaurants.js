@@ -1,15 +1,16 @@
 const Restaurant = require('../models/Restaurant')
+const asyncHandler = require('express-async-handler')
 
-exports.getAllRestaurants = async (req, res) => {
+exports.getAllRestaurants = asyncHandler(async (req, res) => {
 	try {
 		const restaurant = await Restaurant.find().populate('User')
 		res.status(200).json({ restaurant })
 	} catch (error) {
 		res.status(400).json({ message: `${error}` })
 	}
-}
+})
 
-exports.getRestaurant = async (req, res) => {
+exports.getRestaurant = asyncHandler(async (req, res) => {
 	try {
 		const { id } = req.params
 		const restaurant = await Restaurant.findById(id).populate('User')
@@ -17,9 +18,9 @@ exports.getRestaurant = async (req, res) => {
 	} catch (error) {
 		res.status(400).json({ message: `${error}` })
 	}
-}
+})
 
-exports.createRestaurant = async (req, res) => {
+exports.createRestaurant = asyncHandler(async (req, res) => {
 	try {
 		const { name, typePlace, address, imgUrl, budget, numReviews } = req.body
 
@@ -35,9 +36,9 @@ exports.createRestaurant = async (req, res) => {
 	} catch (error) {
 		res.status(400).json({ message: `${error}` })
 	}
-}
+})
 
-exports.updateRestaurant = async (req, res) => {
+exports.updateRestaurant = asyncHandler(async (req, res) => {
 	try {
 		const { id } = req.params
 		const { name, typePlace, address, imgUrl, budget } = req.body
@@ -52,9 +53,9 @@ exports.updateRestaurant = async (req, res) => {
 	} catch (error) {
 		res.status(400).json({ message: `${error}` })
 	}
-}
+})
 
-exports.deleteRestaurant = async (req, res) => {
+exports.deleteRestaurant = asyncHandler(async (req, res) => {
 	try {
 		const { id } = req.params
 		await Restaurant.findByIdAndDelete(id)
@@ -62,8 +63,9 @@ exports.deleteRestaurant = async (req, res) => {
 	} catch (error) {
 		res.status(400).json({ message: `${error}` })
 	}
-}
-exports.createRestaurantReview = async (req, res) => {
+})
+
+exports.createRestaurantReview = asyncHandler(async (req, res) => {
 	try {
 		const { rating, comment } = req.body
 
@@ -98,13 +100,13 @@ exports.createRestaurantReview = async (req, res) => {
 	} catch (error) {
 		res.status(400).json({ message: `${error}` })
 	}
-}
+})
 
-exports.getTopRestaurants = async (req, res) => {
+exports.getTopRestaurants = asyncHandler(async (req, res) => {
 	try {
 		const restaurants = await Restaurant.find({}).sort({ rating: -1 }).limit(3)
 		res.status(200).json(restaurants)
 	} catch (error) {
 		res.status(400).json({ message: `${error}` })
 	}
-}
+})

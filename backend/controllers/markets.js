@@ -1,15 +1,16 @@
 const Market = require('../models/Market')
+const asyncHandler = require('express-async-handler')
 
-exports.getAllMarkets = async (req, res) => {
+exports.getAllMarkets = asyncHandler(async (req, res) => {
 	try {
 		const markets = await Market.find().populate('User')
 		res.status(200).json({ markets })
 	} catch (error) {
 		res.status(400).json({ message: `${error}`.red })
 	}
-}
+})
 
-exports.getMarket = async (req, res) => {
+exports.getMarket = asyncHandler(async (req, res) => {
 	try {
 		const { id } = req.params
 		const market = await Market.findById(id).populate('User')
@@ -17,9 +18,9 @@ exports.getMarket = async (req, res) => {
 	} catch (error) {
 		res.status(400).json({ message: `${error}`.red })
 	}
-}
+})
 
-exports.createMarket = async (req, res) => {
+exports.createMarket = asyncHandler(async (req, res) => {
 	try {
 		const { name, address, typeMarket, imgUrl, numReviews } = req.body
 
@@ -34,9 +35,9 @@ exports.createMarket = async (req, res) => {
 	} catch (error) {
 		res.status(400).json({ message: `${error}`.red })
 	}
-}
+})
 
-exports.updateMarket = async (req, res) => {
+exports.updateMarket = asyncHandler(async (req, res) => {
 	try {
 		const { id } = req.params
 		const { name, address, typeMarket, imgUrl } = req.body
@@ -50,9 +51,9 @@ exports.updateMarket = async (req, res) => {
 	} catch (error) {
 		res.status(400).json({ message: `${error}`.red })
 	}
-}
+})
 
-exports.deleteMarket = async (req, res) => {
+exports.deleteMarket = asyncHandler(async (req, res) => {
 	try {
 		const { id } = req.params
 		await Market.findOneAndDelete(id)
@@ -60,9 +61,9 @@ exports.deleteMarket = async (req, res) => {
 	} catch (error) {
 		res.status(400).json({ message: `${error}`.red })
 	}
-}
+})
 
-exports.createMarketReview = async (req, res) => {
+exports.createMarketReview = asyncHandler(async (req, res) => {
 	try {
 		const { rating, comment } = req.body
 
@@ -97,13 +98,13 @@ exports.createMarketReview = async (req, res) => {
 	} catch (error) {
 		res.status(400).json({ message: `${error}`.red })
 	}
-}
+})
 
-exports.getTopMarkets = async (req, res) => {
+exports.getTopMarkets = asyncHandler(async (req, res) => {
 	try {
 		const markets = await Market.find({}).sort({ rating: -1 }).limit(3)
 		res.status(200).json(markets)
 	} catch (error) {
 		res.status(400).json({ message: `${error}`.red })
 	}
-}
+})
