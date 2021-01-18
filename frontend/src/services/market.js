@@ -3,13 +3,22 @@ const baseURL = 'http://localhost:5000/api/markets'
 
 const marketService = axios.create({ baseURL })
 
-export const newMarket = async ({ name, address, typeMarket, imgUrl }) => {
+export const newMarket = async ({
+	name,
+	author,
+	address,
+	typeMarket,
+	imgUrl,
+	numReviews,
+}) => {
 	try {
 		const { data: market } = await marketService.post('/', {
 			name,
+			author,
 			address,
 			typeMarket,
 			imgUrl,
+			numReviews,
 		})
 		return market
 	} catch (error) {
@@ -35,10 +44,18 @@ export const getMarket = async marketID => {
 	}
 }
 
-export const editMarket = async (marketID, name, address, typeMarket, imgUrl) => {
+export const editMarket = async (
+	marketID,
+	name,
+	author,
+	address,
+	typeMarket,
+	imgUrl,
+) => {
 	try {
 		const { data: market } = await marketService.put(`/${marketID}`, {
 			name,
+			author,
 			address,
 			typeMarket,
 			imgUrl,
