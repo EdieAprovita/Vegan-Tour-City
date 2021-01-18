@@ -53,8 +53,7 @@ export const editBusiness = async (
 	address,
 	contact,
 	budget,
-	typeBusiness,
-	numReviews
+	typeBusiness
 ) => {
 	try {
 		const { data: business } = await businessService.put(`/${businessID}`, {
@@ -64,7 +63,6 @@ export const editBusiness = async (
 			contact,
 			budget,
 			typeBusiness,
-			numReviews,
 		})
 		return business
 	} catch (error) {
