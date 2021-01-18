@@ -44,18 +44,10 @@ export const getMarket = async marketID => {
 	}
 }
 
-export const editMarket = async (
-	marketID,
-	name,
-	author,
-	address,
-	typeMarket,
-	imgUrl,
-) => {
+export const editMarket = async (marketID, name, address, typeMarket, imgUrl) => {
 	try {
 		const { data: market } = await marketService.put(`/${marketID}`, {
 			name,
-			author,
 			address,
 			typeMarket,
 			imgUrl,

@@ -3,13 +3,22 @@ const baseURL = 'http://localhost:5000/api/restaurants'
 
 const restaurantService = axios.create({ baseURL })
 
-export const newRestaurant = async ({ name, typePlace, address, imgUrl }) => {
+export const newRestaurant = async ({
+	name,
+	author,
+	typePlace,
+	address,
+	imgUrl,
+	numReviews,
+}) => {
 	try {
 		const { data: restaurant } = await restaurantService.post('/', {
 			name,
+			author,
 			typePlace,
 			address,
 			imgUrl,
+			numReviews,
 		})
 		return restaurant
 	} catch (error) {
@@ -50,12 +59,10 @@ export const editRestaurant = async (restaurantID, name, typePlace, address, img
 }
 
 export const deleteRestaurant = async restaurantID => {
-    try {
-        
-        const { data } = await restaurantService.delete(`/${restaurantID}`)
-        return data
-    } catch (error) {
-        	return { message: `${error}` }
-
-    }
+	try {
+		const { data } = await restaurantService.delete(`/${restaurantID}`)
+		return data
+	} catch (error) {
+		return { message: `${error}` }
+	}
 }
