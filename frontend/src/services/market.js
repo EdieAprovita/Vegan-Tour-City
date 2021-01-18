@@ -1,0 +1,76 @@
+import axios from 'axios'
+const baseURL = 'http://localhost:5000/api/markets'
+
+const marketService = axios.create({ baseURL })
+
+export const newMarket = async ({
+	name,
+	author,
+	address,
+	typeMarket,
+	imgUrl,
+	numReviews,
+}) => {
+	try {
+		const { data: market } = await marketService.post('/', {
+			name,
+			author,
+			address,
+			typeMarket,
+			imgUrl,
+			numReviews,
+		})
+		return market
+	} catch (error) {
+		return { message: `${error}` }
+	}
+}
+
+export const getMarkets = async () => {
+	try {
+		const { data: markets } = await marketService.get('/')
+		return markets
+	} catch (error) {
+		return { message: `${error}` }
+	}
+}
+
+export const getMarket = async marketID => {
+	try {
+		const { data: market } = await marketService.get(`/${marketID}`)
+		return market
+	} catch (error) {
+		return { message: `${error}` }
+	}
+}
+
+export const editMarket = async (
+	marketID,
+	name,
+	author,
+	address,
+	typeMarket,
+	imgUrl,
+) => {
+	try {
+		const { data: market } = await marketService.put(`/${marketID}`, {
+			name,
+			author,
+			address,
+			typeMarket,
+			imgUrl,
+		})
+		return market
+	} catch (error) {
+		return { message: `${error}` }
+	}
+}
+
+export const deleteMarket = async marketID => {
+	try {
+		const { data } = await marketService.delete(`/${marketID}`)
+		return data
+	} catch (error) {
+		return { message: `${error}` }
+	}
+}

@@ -1,15 +1,16 @@
 const Recipe = require('../models/Recipe')
+const asyncHandler = require('express-async-handler')
 
-exports.getAllRecipes = async (req, res) => {
+exports.getAllRecipes = asyncHandler(async (req, res) => {
 	try {
 		const recipes = await Recipe.find().populate('User')
 		res.status(200).json({ recipes })
 	} catch (error) {
 		res.status(400).json({ message: `${error}` })
 	}
-}
+})
 
-exports.getRecipe = async (req, res) => {
+exports.getRecipe = asyncHandler(async (req, res) => {
 	try {
 		const { id } = req.params
 		const recipe = await Recipe.findById(id).populate('User')
@@ -17,9 +18,9 @@ exports.getRecipe = async (req, res) => {
 	} catch (error) {
 		res.status(400).json({ message: `${error}` })
 	}
-}
+})
 
-exports.createRecipe = async (req, res) => {
+exports.createRecipe = asyncHandler(async (req, res) => {
 	try {
 		const {
 			title,
@@ -51,9 +52,9 @@ exports.createRecipe = async (req, res) => {
 	} catch (error) {
 		res.status(400).json({ message: `${error}` })
 	}
-}
+})
 
-exports.updateRecipe = async (req, res) => {
+exports.updateRecipe = asyncHandler(async (req, res) => {
 	try {
 		const { id } = req.params
 		const {
@@ -82,9 +83,9 @@ exports.updateRecipe = async (req, res) => {
 	} catch (error) {
 		res.status(400).json({ message: `${error}` })
 	}
-}
+})
 
-exports.deleteRecipe = async (req, res) => {
+exports.deleteRecipe = asyncHandler(async (req, res) => {
 	try {
 		const { id } = req.params
 		await Recipe.findByIdAndDelete(id)
@@ -92,9 +93,9 @@ exports.deleteRecipe = async (req, res) => {
 	} catch (error) {
 		res.status(400).json({ message: `${error}` })
 	}
-}
+})
 
-exports.createRecipeReview = async (req, res) => {
+exports.createRecipeReview = asyncHandler(async (req, res) => {
 	try {
 		const { rating, comment } = req.body
 
@@ -129,13 +130,13 @@ exports.createRecipeReview = async (req, res) => {
 	} catch (error) {
 		res.status(400).json({ message: `${error}` })
 	}
-}
+})
 
-exports.getTopRecipes = async (req, res) => {
+exports.getTopRecipes = asyncHandler(async (req, res) => {
 	try {
 		const recipes = await Recipe.find({}).sort({ rating: -1 }).limit(3)
 		res.status(200).json(recipes)
 	} catch (error) {
 		res.status(400).json({ message: `${error}` })
 	}
-}
+})
