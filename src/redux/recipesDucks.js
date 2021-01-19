@@ -1,11 +1,6 @@
 import axios from 'axios'
 
-import {
-	baseURLBusiness,
-	baseURLMarkets,
-	baseURLRecipes,
-	baseURLRestaurants,
-} from '../services/apiServices'
+import { baseURLRecipes } from '../services/apiServices'
 
 //Constants
 const initialData = {

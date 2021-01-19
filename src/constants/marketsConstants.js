@@ -1,0 +1,5 @@
+export const GET_ALL_MARKETS = 'GET_ALL_MARKETS'
+export const GET_MARKET = 'GET_MARKET'
+export const CREATE_MARKET = 'CREATE_MARKET'
+export const EDIT_MARKET = 'EDIT_MARKET'
+export const DELETE_MARKET = 'DELETE_MARKET'
