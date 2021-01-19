@@ -1,94 +1,22 @@
 import axios from 'axios'
-const baseURL = 'http://localhost:5000/api/recipes'
 
-const recipeService = axios.create({ baseURL })
+let baseURL
 
-export const newRecipe = async ({
-	title,
-	author,
-	description,
-	instructions,
-	ingredientes,
-	typeDish,
-	imgUrl,
-	cookingTime,
-	difficulty,
-	numReviews,
-	budget,
-}) => {
-	try {
-		const { data: recipe } = await recipeService.post('/', {
-			title,
-			author,
-			description,
-			instructions,
-			ingredientes,
-			typeDish,
-			imgUrl,
-			cookingTime,
-			difficulty,
-			numReviews,
-			budget,
-		})
-		return recipe
-	} catch (error) {
-		return { message: `${error}` }
-	}
-}
+process.env.NODE_ENV === 'production'
+	? (baseURL = process.env.production)
+	: (baseURL = process.env.developer)
 
-export const getRecipes = async () => {
-	try {
-		const { data: recipes } = await recipeService.get('/')
-		return recipes
-	} catch (error) {
-		return { message: `${error}` }
-	}
-}
+const recipeService = axios.create({
+	baseURL,
+	withCredentials: true,
+})
 
-export const getRecipe = async recipeID => {
-	try {
-		const { data: recipe } = await recipeService.get(`/${recipeID}`)
-		return recipe
-	} catch (error) {
-		return { message: `${error}` }
-	}
-}
+export const getAllRecipes = () => recipeService.get('/recipes')
 
-export const editRecipe = async (
-	recipeID,
-	title,
-	description,
-	instructions,
-	ingredientes,
-	typeDish,
-	imgUrl,
-	cookingTime,
-	difficulty,
-	budget
-) => {
-	try {
-		const { data: recipe } = await recipeService.put(`/${recipeID}`, {
-			title,
-			description,
-			ingredientes,
-			instructions,
-			typeDish,
-			imgUrl,
-			cookingTime,
-			difficulty,
-			budget,
-		})
-		return recipe
-	} catch (error) {
-		return { message: `${error}` }
-	}
-}
+export const getRecipe = id => recipeService.get(`/recipes/${id}`)
 
-export const deleteRecipe = async recipeID => {
-	try {
-		const { data } = await recipeService.delete(`/${recipeID}`)
-		return data
-	} catch (error) {
-		return { message: `${error}` }
-	}
-}
+export const createRecipe = recipe => recipeService.post('/recipes', recipe)
+
+export const updateRecipe = (id, recipe) => recipeService.put(`/recipes/${id}`, recipe)
+
+export const deleteRecipe = id => recipeService.delete(`/recipes/${id}`)

@@ -1,68 +1,23 @@
 import axios from 'axios'
-const baseURL = 'http://localhost:5000/api/markets'
 
-const marketService = axios.create({ baseURL })
+let baseURL
 
-export const newMarket = async ({
-	name,
-	author,
-	address,
-	typeMarket,
-	imgUrl,
-	numReviews,
-}) => {
-	try {
-		const { data: market } = await marketService.post('/', {
-			name,
-			author,
-			address,
-			typeMarket,
-			imgUrl,
-			numReviews,
-		})
-		return market
-	} catch (error) {
-		return { message: `${error}` }
-	}
-}
+process.env.NODE_ENV === 'production'
+	? (baseURL = process.env.production)
+	: (baseURL = process.env.developer)
 
-export const getMarkets = async () => {
-	try {
-		const { data: markets } = await marketService.get('/')
-		return markets
-	} catch (error) {
-		return { message: `${error}` }
-	}
-}
+const marketService = axios.create({
+	baseURL,
+	withCredentials: true,
+})
 
-export const getMarket = async marketID => {
-	try {
-		const { data: market } = await marketService.get(`/${marketID}`)
-		return market
-	} catch (error) {
-		return { message: `${error}` }
-	}
-}
+export const getAllMarkets = () => marketService.get('/markets')
 
-export const editMarket = async (marketID, name, address, typeMarket, imgUrl) => {
-	try {
-		const { data: market } = await marketService.put(`/${marketID}`, {
-			name,
-			address,
-			typeMarket,
-			imgUrl,
-		})
-		return market
-	} catch (error) {
-		return { message: `${error}` }
-	}
-}
+export const getMarket = id => marketService.get(`/markets/${id}`)
 
-export const deleteMarket = async marketID => {
-	try {
-		const { data } = await marketService.delete(`/${marketID}`)
-		return data
-	} catch (error) {
-		return { message: `${error}` }
-	}
-}
+export const createMarket = market => marketService.post('/markets/create', market)
+
+export const updateMarket = (id, market) =>
+	marketService.put(`/markets/edit/${id}`, market)
+
+export const deleteMarket = id => marketService.delete(`/markets/delete/${id}`)

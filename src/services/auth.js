@@ -1,26 +1,20 @@
 import axios from 'axios'
 
-const baseURL = 'http://localhost:5000/auth'
+let baseURL
+
+process.env.NODE_ENV === 'production'
+	? (baseURL = process.env.production)
+	: (baseURL = process.env.developer)
+
 const authService = axios.create({
 	baseURL,
 	withCredentials: true,
 })
 
-export const signup = async user => {
-	await authService.post('/signup', user)
-	return true
-}
+export const signUp = userInfo => authService.post('/auth/signup', userInfo)
 
-export const login = async userData => {
-	const { data: user } = await authService.post('/login', userData)
-	return user
-}
+export const login = userInfo => authService.post('/auth/login', userInfo)
 
-export const getCurrentUser = async () => {
-	const { data: user } = await authService.get('/current-user')
-	return user
-}
+export const currentUser = () => authService.get('/auth/current-user')
 
-export const logOut = async () => {
-	await authService.get('/logout')
-}
+export const logout = () => authService.get('/auth/logout')
