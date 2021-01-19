@@ -1,13 +1,18 @@
 import './App.css'
-
 import Navbar from './components/Navbar'
+import Recipes from "./components/Recipes"
+
+import { Provider } from 'react-redux'
+import generateStore from "./redux/store"
 
 function App() {
+
+	const store = generateStore()
 	return (
-		<div className='App'>
+		<Provider store={store}>
 			<Navbar />
-			<h1>Hola mundo</h1>
-		</div>
+			<Recipes />
+		</Provider>
 	)
 }
 
