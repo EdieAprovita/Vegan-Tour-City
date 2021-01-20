@@ -51,6 +51,21 @@ export default function recipeReducer(state = initialData, action) {
 		case CREATE_RECIPE:
 			return { ...state, status: 'success', recipeArr: action.payload }
 
+		case CREATE_RECIPE_ERROR:
+			return { ...state, status: 'error', error: action.error }
+
+		case UPDATE_RECIPE:
+			return { ...state, status: 'error', recipeArr: action.payload }
+
+		case UPDATE_RECIPE_ERROR:
+			return { ...state, status: 'error', error: action.error }
+
+		case DELETE_RECIPE:
+			return { ...state, status: 'error', recipeArr: action.payload }
+
+		case DELETE_RECIPE_ERROR:
+			return { ...state, status: 'error', error: action.error }
+
 		default:
 			return state
 	}
@@ -74,6 +89,11 @@ export const getAllRecipes = () => async (dispatch, getState) => {
 	}
 }
 
+export const getAllRecipesError = (error) => ({
+	type: GET_ALL_RECIPES_ERROR,
+	error,
+})
+
 export const getRecipe = id => async (dispatch, getState) => {
 	try {
 		const res = await axios.get(`${baseURLRecipes}/${id}`)
@@ -87,9 +107,14 @@ export const getRecipe = id => async (dispatch, getState) => {
 	}
 }
 
-export const createRecipe = id => async (dispatch, getState) => {
+export const getRecipeError = (error) => ({
+	type: GET_RECIPE_ERROR,
+	error,
+})
+
+export const createRecipe = () => async (dispatch, getState) => {
 	try {
-		const res = await axios.post(`${baseURLRecipes}/create/${id}`)
+		const res = await axios.post(`${baseURLRecipes}/create`)
 
 		dispatch({
 			type: CREATE_RECIPE,
@@ -99,3 +124,9 @@ export const createRecipe = id => async (dispatch, getState) => {
 		console.log(error)
 	}
 }
+
+export const createRecipeError = (error) => ({
+	type: CREATE_RECIPE_ERROR,
+	error,
+})
+
