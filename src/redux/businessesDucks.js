@@ -6,6 +6,8 @@ import { baseURLBusiness } from '../services/apiServices'
 
 const initialData = {
 	businessArr: [],
+	status: '',
+	error:undefined,
 }
 
 //Types
