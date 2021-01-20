@@ -59,6 +59,18 @@ export default function businessReducer(state = initialData, action) {
 		case CREATE_BUSINESS_ERROR:
 			return { ...state, status: 'error', error: action.error }
 
+		case UPDATE_BUSINESS:
+			return { ...state, status: 'success', businessArr: action.payload }
+
+		case UPDATE_BUSINESS_ERROR:
+			return { ...state, status: 'error', error: action.error }
+
+		case DELETE_BUSINESS:
+			return { ...state, status: 'success', businessArr: action.payload }
+
+		case DELETE_BUSINESS_ERROR:
+			return { ...state, status: 'error', error: action.error }
+
 		default:
 			return state
 	}
