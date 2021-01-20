@@ -16,7 +16,7 @@ const LOADING = 'LOADING'
 const GET_ALL_BUSINESSES = 'GET_ALL_BUSINESSES'
 const GET_ALL_BUSINESSES_ERROR = 'GET_ALL_BUSINESSES_ERROR'
 
-const GET_ALL_BUSINESS = 'GET_ALL_BUSINESS'
+const GET_BUSINESS = 'GET_ALL_BUSINESS'
 const GET_BUSINESS_ERROR = 'GET_BUSINESS_ERROR'
 
 const CREATE_BUSINESS = 'CREATE_BUSINESS'
@@ -43,6 +43,21 @@ export default function businessReducer(state = initialData, action) {
 
 		case GET_ALL_BUSINESSES:
 			return { ...state, status: 'success', businessArr: action.payload }
+
+		case GET_ALL_BUSINESSES_ERROR:
+			return { ...state, status: 'error', error: action.error }
+
+		case GET_BUSINESS:
+			return { ...state, status: 'success', businessArr: action.payload }
+
+		case GET_BUSINESS_ERROR:
+			return { ...state, status: 'error', error: action.error }
+
+		case CREATE_BUSINESS:
+			return { ...state, status: 'success', businessArr: action.payload }
+
+		case CREATE_BUSINESS_ERROR:
+			return { ...state, status: 'error', error: action.error }
 
 		default:
 			return state
