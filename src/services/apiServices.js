@@ -6,4 +6,3 @@ export const baseURLMarkets = 'https://city-guide-api.herokuapp.com/api/markets/
 
 export const baseURLBusiness = 'https://city-guide-api.herokuapp.com/api/business/'
 
-export const baseURLAuth = 'https://city-guide-api.herokuapp.com/api/auth/'

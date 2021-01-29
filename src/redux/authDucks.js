@@ -5,11 +5,13 @@ import { baseURLAuth } from '../services/apiServices'
 //Constants
 
 const initialData = {
-	authArr: [],
+	loading: false,
+	status: false,
 }
 
 //Types
-const SIGUP = 'SIGUP'
+const LOADING = 'LOADING'
+const SIGNUP = 'SIGUP'
 const LOGIN = 'LOGIN'
 const CURRENTUSER = 'CURRENTUSER'
 const LOGOUT = 'LOGOUT'
@@ -18,6 +20,12 @@ const LOGOUT = 'LOGOUT'
 
 export default function authReducer(state = initialData, action) {
 	switch (action.type) {
+		case LOADING:
+			return { ...state, loading: true }
+		case SIGNUP:
+			return { ...state }
+		default:
+			return state
 	}
 }
 

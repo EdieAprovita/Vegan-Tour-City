@@ -95,15 +95,11 @@ export const loadingBusinesses = () => ({
 })
 
 export const getAllBusinesses = () => async (dispatch, getState) => {
-	try {
-		const res = await axios.get(`${baseURLBusiness}`)
-		dispatch({
-			type: GET_ALL_BUSINESSES,
-			payload: res.data.businesses,
-		})
-	} catch (error) {
-		console.log(error)
-	}
+	const res = await axios.get(`${baseURLBusiness}`)
+	dispatch({
+		type: GET_ALL_BUSINESSES,
+		payload: res.data.businesses,
+	})
 }
 
 export const getAllBusinessesError = error => ({
@@ -112,16 +108,12 @@ export const getAllBusinessesError = error => ({
 })
 
 export const getBusiness = id => async (dispatch, getState) => {
-	try {
-		const res = await axios.get(`${baseURLBusiness}/${id}`)
+	const res = await axios.get(`${baseURLBusiness}/${id}`)
 
-		dispatch({
-			type: GET_BUSINESS,
-			payload: res.data.businesses,
-		})
-	} catch (error) {
-		console.log(error)
-	}
+	dispatch({
+		type: GET_BUSINESS,
+		payload: res.data.businesses,
+	})
 }
 
 export const getBusinessError = error => ({
@@ -130,16 +122,12 @@ export const getBusinessError = error => ({
 })
 
 export const createBusiness = () => async (dispatch, getState) => {
-	try {
-		const res = await axios.post(`${baseURLBusiness}/create`)
+	const res = await axios.post(`${baseURLBusiness}/create`)
 
-		dispatch({
-			type: CREATE_BUSINESS,
-			payload: res.data.businesses,
-		})
-	} catch (error) {
-		console.log(error)
-	}
+	dispatch({
+		type: CREATE_BUSINESS,
+		payload: res.data.businesses,
+	})
 }
 
 export const createBusinessError = error => ({
@@ -148,16 +136,12 @@ export const createBusinessError = error => ({
 })
 
 export const updateBusiness = id => async (dispatch, getState) => {
-	try {
-		const res = await axios.put(`${baseURLBusiness}/edit/${id}`)
+	const res = await axios.put(`${baseURLBusiness}/edit/${id}`)
 
-		dispatch({
-			type: UPDATE_BUSINESS,
-			payload: res.data.businesses,
-		})
-	} catch (error) {
-		console.log(error)
-	}
+	dispatch({
+		type: UPDATE_BUSINESS,
+		payload: res.data.businesses,
+	})
 }
 
 export const updateBusinessError = error => ({
@@ -166,16 +150,12 @@ export const updateBusinessError = error => ({
 })
 
 export const deleteBusiness = id => async (dispatch, getState) => {
-	try {
-		const res = await axios.delete(`${baseURLBusiness}/delete/${id}`)
+	const res = await axios.delete(`${baseURLBusiness}/delete/${id}`)
 
-		dispatch({
-			type: DELETE_BUSINESS,
-			payload: res.data.businesses,
-		})
-	} catch (error) {
-		console.log(error)
-	}
+	dispatch({
+		type: DELETE_BUSINESS,
+		payload: res.data.businesses,
+	})
 }
 
 export const deleteBusinessError = error => ({

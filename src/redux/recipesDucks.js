@@ -96,15 +96,11 @@ export const loadingRecipes = () => ({
 })
 
 export const getAllRecipes = () => async (dispatch, getState) => {
-	try {
-		const res = await axios.get(`${baseURLRecipes}`)
-		dispatch({
-			type: GET_ALL_RECIPES,
-			payload: res.data.recipes,
-		})
-	} catch (error) {
-		console.log(error)
-	}
+	const res = await axios.get(`${baseURLRecipes}`)
+	dispatch({
+		type: GET_ALL_RECIPES,
+		payload: res.data.recipes,
+	})
 }
 
 export const getAllRecipesError = error => ({
@@ -113,16 +109,12 @@ export const getAllRecipesError = error => ({
 })
 
 export const getRecipe = id => async (dispatch, getState) => {
-	try {
-		const res = await axios.get(`${baseURLRecipes}/${id}`)
+	const res = await axios.get(`${baseURLRecipes}/${id}`)
 
-		dispatch({
-			type: GET_RECIPE,
-			payload: res.data.recipes,
-		})
-	} catch (error) {
-		console.log(error)
-	}
+	dispatch({
+		type: GET_RECIPE,
+		payload: res.data.recipes,
+	})
 }
 
 export const getRecipeError = error => ({
@@ -131,16 +123,12 @@ export const getRecipeError = error => ({
 })
 
 export const createRecipe = () => async (dispatch, getState) => {
-	try {
-		const res = await axios.post(`${baseURLRecipes}/create`)
+	const res = await axios.post(`${baseURLRecipes}/create`)
 
-		dispatch({
-			type: CREATE_RECIPE,
-			payload: res.data.recipes,
-		})
-	} catch (error) {
-		console.log(error)
-	}
+	dispatch({
+		type: CREATE_RECIPE,
+		payload: res.data.recipes,
+	})
 }
 
 export const createRecipeError = error => ({
@@ -149,16 +137,12 @@ export const createRecipeError = error => ({
 })
 
 export const updateRecipe = id => async (dispatch, getState) => {
-	try {
-		const res = await axios.put(`${baseURLRecipes}/edit/${id}`)
+	const res = await axios.put(`${baseURLRecipes}/edit/${id}`)
 
-		dispatch({
-			type: UPDATE_RECIPE,
-			payload: res.data.recipes,
-		})
-	} catch (error) {
-		console.log(error)
-	}
+	dispatch({
+		type: UPDATE_RECIPE,
+		payload: res.data.recipes,
+	})
 }
 
 export const updateRecipeError = error => ({
@@ -167,16 +151,12 @@ export const updateRecipeError = error => ({
 })
 
 export const deleteRecipe = id => async (dispatch, getState) => {
-	try {
-		const res = await axios.delete(`${baseURLRecipes}/delete/${id}`)
+	const res = await axios.delete(`${baseURLRecipes}/delete/${id}`)
 
-		dispatch({
-			type: DELETE_RECIPE,
-			payload: res.data.recipes,
-		})
-	} catch (error) {
-		console.log(error)
-	}
+	dispatch({
+		type: DELETE_RECIPE,
+		payload: res.data.recipes,
+	})
 }
 
 export const deleteRecipeError = error => ({

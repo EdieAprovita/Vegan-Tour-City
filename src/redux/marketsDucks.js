@@ -96,15 +96,11 @@ export const loadingMarkets = () => ({
 })
 
 export const getAllMarkets = () => async (dispatch, getState) => {
-	try {
-		const res = await axios.get(`${baseURLMarkets}`)
-		dispatch({
-			type: GET_ALL_MARKETS,
-			payload: res.data.markets,
-		})
-	} catch (error) {
-		console.log(error)
-	}
+	const res = await axios.get(`${baseURLMarkets}`)
+	dispatch({
+		type: GET_ALL_MARKETS,
+		payload: res.data.markets,
+	})
 }
 
 export const getAllMarketsError = error => ({
@@ -113,16 +109,12 @@ export const getAllMarketsError = error => ({
 })
 
 export const getMarket = id => async (dispatch, getState) => {
-	try {
-		const res = await axios.get(`${baseURLMarkets}/${id}`)
+	const res = await axios.get(`${baseURLMarkets}/${id}`)
 
-		dispatch({
-			type: GET_MARKET,
-			payload: res.data.markets,
-		})
-	} catch (error) {
-		console.log(error)
-	}
+	dispatch({
+		type: GET_MARKET,
+		payload: res.data.markets,
+	})
 }
 
 export const getMarketError = error => ({
@@ -131,16 +123,12 @@ export const getMarketError = error => ({
 })
 
 export const createMarket = () => async (dispatch, getState) => {
-	try {
-		const res = await axios.post(`${baseURLMarkets}/create`)
+	const res = await axios.post(`${baseURLMarkets}/create`)
 
-		dispatch({
-			type: CREATE_MARKET,
-			payload: res.data.markets,
-		})
-	} catch (error) {
-		console.log(error)
-	}
+	dispatch({
+		type: CREATE_MARKET,
+		payload: res.data.markets,
+	})
 }
 
 export const createMArketError = error => ({
@@ -149,16 +137,12 @@ export const createMArketError = error => ({
 })
 
 export const updateMarket = id => async (dispatch, getState) => {
-	try {
-		const res = await axios.put(`${baseURLMarkets}/edit/${id}`)
+	const res = await axios.put(`${baseURLMarkets}/edit/${id}`)
 
-		dispatch({
-			type: UPDATE_MARKET,
-			payload: res.data.markets,
-		})
-	} catch (error) {
-		console.log(error)
-	}
+	dispatch({
+		type: UPDATE_MARKET,
+		payload: res.data.markets,
+	})
 }
 
 export const updateMarketError = error => ({
@@ -167,16 +151,12 @@ export const updateMarketError = error => ({
 })
 
 export const deleteMarket = id => async (dispatch, getState) => {
-	try {
-		const res = await axios.delete(`${baseURLMarkets}/delete/${id}`)
+	const res = await axios.delete(`${baseURLMarkets}/delete/${id}`)
 
-		dispatch({
-			type: DELETE_MARKET,
-			payload: res.data.markets,
-		})
-	} catch (error) {
-		console.log(error)
-	}
+	dispatch({
+		type: DELETE_MARKET,
+		payload: res.data.markets,
+	})
 }
 
 export const deleteMarketError = error => ({
