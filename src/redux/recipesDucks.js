@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { baseURLRecipes } from '../services/apiServices'
+import backend from '../services/apiServices'
 
 //Constants
 
@@ -96,7 +96,7 @@ export const loadingRecipes = () => ({
 })
 
 export const getAllRecipes = () => async (dispatch, getState) => {
-	const res = await axios.get(`${baseURLRecipes}`)
+	const res = await axios.get(`${backend}/recipes`)
 	dispatch({
 		type: GET_ALL_RECIPES,
 		payload: res.data.recipes,
@@ -109,7 +109,7 @@ export const getAllRecipesError = error => ({
 })
 
 export const getRecipe = id => async (dispatch, getState) => {
-	const res = await axios.get(`${baseURLRecipes}/${id}`)
+	const res = await axios.get(`${backend}/recipes/${id}`)
 
 	dispatch({
 		type: GET_RECIPE,
@@ -123,7 +123,7 @@ export const getRecipeError = error => ({
 })
 
 export const createRecipe = () => async (dispatch, getState) => {
-	const res = await axios.post(`${baseURLRecipes}/create`)
+	const res = await axios.post(`${backend}/recipes/create`)
 
 	dispatch({
 		type: CREATE_RECIPE,
@@ -137,7 +137,7 @@ export const createRecipeError = error => ({
 })
 
 export const updateRecipe = id => async (dispatch, getState) => {
-	const res = await axios.put(`${baseURLRecipes}/edit/${id}`)
+	const res = await axios.put(`${backend}/recipes/edit/${id}`)
 
 	dispatch({
 		type: UPDATE_RECIPE,
@@ -151,7 +151,7 @@ export const updateRecipeError = error => ({
 })
 
 export const deleteRecipe = id => async (dispatch, getState) => {
-	const res = await axios.delete(`${baseURLRecipes}/delete/${id}`)
+	const res = await axios.delete(`${backend}/recipes/delete/${id}`)
 
 	dispatch({
 		type: DELETE_RECIPE,

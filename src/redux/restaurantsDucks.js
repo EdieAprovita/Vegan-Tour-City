@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { baseURLRestaurants } from '../services/apiServices'
+import backend from '../services/apiServices'
 
 //Constants
 
@@ -36,7 +36,7 @@ const CREATERESTAURANTREVIEW_ERROR = 'CREATERESTAURANTREVIEW_ERROR'
 
 //Reducer
 
-export default function businessReducer(state = initialData, action) {
+export default function restaurantsReducer(state = initialData, action) {
 	switch (action.type) {
 		case LOADING:
 			return { ...state, status: 'pending' }
@@ -90,39 +90,39 @@ export default function businessReducer(state = initialData, action) {
 
 //Actions
 
-export const loadingBusinesses = () => ({
+export const loadingRestaurants = () => ({
 	type: LOADING,
 })
 
-export const getAllBusinesses = () => async (dispatch, getState) => {
-	const res = await axios.get(`${baseURLRestaurants}`)
+export const getAllRestaurants = () => async (dispatch, getState) => {
+	const res = await axios.get(`${backend}/restaurants`)
 	dispatch({
 		type: GET_ALL_RESTAURANTS,
 		payload: res.data.businesses,
 	})
 }
 
-export const getAllBusinessesError = error => ({
+export const getAllRestaurantsError = error => ({
 	type: GET_ALL_RESTAURANTS_ERROR,
 	error,
 })
 
-export const getBusiness = id => async (dispatch, getState) => {
-	const res = await axios.get(`${baseURLRestaurants}/${id}`)
+export const getRestaurant = id => async (dispatch, getState) => {
+	const res = await axios.get(`${backend}/restaurants/${id}`)
 
 	dispatch({
 		type: GET_RESTAURANT,
-		payload: res.data.businesses,
+		payload: res.data.restaurants,
 	})
 }
 
-export const getBusinessError = error => ({
+export const getRestaurantError = error => ({
 	type: GET_RESTAURANT_ERROR,
 	error,
 })
 
-export const createBusiness = () => async (dispatch, getState) => {
-	const res = await axios.post(`${baseURLRestaurants}/create`)
+export const createRestaurant = () => async (dispatch, getState) => {
+	const res = await axios.post(`${backend}/restaurants/create`)
 
 	dispatch({
 		type: CREATE_RESTAURANT,
@@ -130,35 +130,35 @@ export const createBusiness = () => async (dispatch, getState) => {
 	})
 }
 
-export const createBusinessError = error => ({
+export const createRestaurantError = error => ({
 	type: CREATE_RESTAURANT_ERROR,
 	error,
 })
 
-export const updateBusiness = id => async (dispatch, getState) => {
-	const res = await axios.put(`${baseURLRestaurants}/edit/${id}`)
+export const updateRestaurant = id => async (dispatch, getState) => {
+	const res = await axios.put(`${backend}/restaurants/edit/${id}`)
 
 	dispatch({
 		type: UPDATE_RESTAURANT,
-		payload: res.data.businesses,
+		payload: res.data.restaurants,
 	})
 }
 
-export const updateBusinessError = error => ({
+export const updateRestaurantError = error => ({
 	type: UPDATE_RESTAURANT_ERROR,
 	error,
 })
 
-export const deleteBusiness = id => async (dispatch, getState) => {
-	const res = await axios.delete(`${baseURLRestaurants}/delete/${id}`)
+export const deleteRestaurant = id => async (dispatch, getState) => {
+	const res = await axios.delete(`${backend}/restaurants/delete/${id}`)
 
 	dispatch({
 		type: DELETE_RESTAURANT,
-		payload: res.data.businesses,
+		payload: res.data.restaurants,
 	})
 }
 
-export const deleteBusinessError = error => ({
+export const deleteRestaurantError = error => ({
 	type: DELETE_RESTAURANT_ERROR,
 	error,
 })

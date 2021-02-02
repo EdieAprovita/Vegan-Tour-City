@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { baseURLMarkets } from '../services/apiServices'
+import backend from '../services/apiServices'
 
 //Constants
 
@@ -96,7 +96,7 @@ export const loadingMarkets = () => ({
 })
 
 export const getAllMarkets = () => async (dispatch, getState) => {
-	const res = await axios.get(`${baseURLMarkets}`)
+	const res = await axios.get(`${backend}/markets`)
 	dispatch({
 		type: GET_ALL_MARKETS,
 		payload: res.data.markets,
@@ -109,7 +109,7 @@ export const getAllMarketsError = error => ({
 })
 
 export const getMarket = id => async (dispatch, getState) => {
-	const res = await axios.get(`${baseURLMarkets}/${id}`)
+	const res = await axios.get(`${backend}/markets/${id}`)
 
 	dispatch({
 		type: GET_MARKET,
@@ -123,7 +123,7 @@ export const getMarketError = error => ({
 })
 
 export const createMarket = () => async (dispatch, getState) => {
-	const res = await axios.post(`${baseURLMarkets}/create`)
+	const res = await axios.post(`${backend}/markets/create`)
 
 	dispatch({
 		type: CREATE_MARKET,
@@ -137,7 +137,7 @@ export const createMArketError = error => ({
 })
 
 export const updateMarket = id => async (dispatch, getState) => {
-	const res = await axios.put(`${baseURLMarkets}/edit/${id}`)
+	const res = await axios.put(`${backend}/markets/edit/${id}`)
 
 	dispatch({
 		type: UPDATE_MARKET,
@@ -151,7 +151,7 @@ export const updateMarketError = error => ({
 })
 
 export const deleteMarket = id => async (dispatch, getState) => {
-	const res = await axios.delete(`${baseURLMarkets}/delete/${id}`)
+	const res = await axios.delete(`${backend}/markets/delete/${id}`)
 
 	dispatch({
 		type: DELETE_MARKET,

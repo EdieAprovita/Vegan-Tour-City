@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { baseURLBusiness } from '../services/apiServices'
+import backend from '../services/apiServices'
 
 //Constants
 
@@ -95,7 +95,7 @@ export const loadingBusinesses = () => ({
 })
 
 export const getAllBusinesses = () => async (dispatch, getState) => {
-	const res = await axios.get(`${baseURLBusiness}`)
+	const res = await axios.get(`${backend}/businesses`)
 	dispatch({
 		type: GET_ALL_BUSINESSES,
 		payload: res.data.businesses,
@@ -108,7 +108,7 @@ export const getAllBusinessesError = error => ({
 })
 
 export const getBusiness = id => async (dispatch, getState) => {
-	const res = await axios.get(`${baseURLBusiness}/${id}`)
+	const res = await axios.get(`${backend}/businesses/${id}`)
 
 	dispatch({
 		type: GET_BUSINESS,
@@ -122,7 +122,7 @@ export const getBusinessError = error => ({
 })
 
 export const createBusiness = () => async (dispatch, getState) => {
-	const res = await axios.post(`${baseURLBusiness}/create`)
+	const res = await axios.post(`${backend}/businesses/create`)
 
 	dispatch({
 		type: CREATE_BUSINESS,
@@ -136,7 +136,7 @@ export const createBusinessError = error => ({
 })
 
 export const updateBusiness = id => async (dispatch, getState) => {
-	const res = await axios.put(`${baseURLBusiness}/edit/${id}`)
+	const res = await axios.put(`${backend}/businesses/edit/${id}`)
 
 	dispatch({
 		type: UPDATE_BUSINESS,
@@ -150,7 +150,7 @@ export const updateBusinessError = error => ({
 })
 
 export const deleteBusiness = id => async (dispatch, getState) => {
-	const res = await axios.delete(`${baseURLBusiness}/delete/${id}`)
+	const res = await axios.delete(`${backend}/businesses/delete/${id}`)
 
 	dispatch({
 		type: DELETE_BUSINESS,
