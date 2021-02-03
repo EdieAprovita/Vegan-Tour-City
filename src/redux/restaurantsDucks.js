@@ -1,6 +1,5 @@
-import axios from 'axios'
-
 import backend from '../services/apiServices'
+
 import { logout } from './authDucks'
 
 //Types
@@ -29,9 +28,9 @@ const GETTOPRESTAURANT_REQUEST = 'GETTOPRESTAURANT_REQUEST'
 const GETTOPRESTAURANT = 'GETTOPRESTAURANT'
 const GETTOPRESTAURANT_ERROR = 'GETTOPRESTAURANT_ERROR'
 
-const CREATERESTAURANTREVIEW_REQUEST = 'CREATERESTAURANTREVIEW_REQUEST'
-const CREATERESTAURANTREVIEW = 'CREATERESTAURANTREVIEW'
-const CREATERESTAURANTREVIEW_ERROR = 'CREATERESTAURANTREVIEW_ERROR'
+const CREATE_RESTAURANT_REVIEW_REQUEST = 'CREATERESTAURANTREVIEW_REQUEST'
+const CREATE_RESTAURANT_REVIEW = 'CREATERESTAURANTREVIEW'
+const CREATE_RESTAURANT_REVIEW_ERROR = 'CREATERESTAURANTREVIEW_ERROR'
 
 //Reducer
 
@@ -95,75 +94,209 @@ export const restaurantUpdateReducer = (state = { restaurant: {} }, action) => {
 	}
 }
 
+export const restaurantDeleteReducer = (state = {}, action) => {
+	switch (action.type) {
+		case DELETE_RESTAURANT_REQUEST:
+			return { loading: true }
+		case DELETE_RESTAURANT:
+			return { loading: false, success: true }
+		case DELETE_RESTAURANT_ERROR:
+			return { loading: false, error: action.payload }
+		default:
+			return state
+	}
+}
+
+export const restaurantTopReviewReducer = (state = { restaurants: [] }, action) => {
+	switch (action.type) {
+		case GETTOPRESTAURANT_REQUEST:
+			return { loading: true, restaurants: [] }
+		case GETTOPRESTAURANT:
+			return { loading: false, restaurants: action.payload }
+		case GETTOPRESTAURANT_ERROR:
+			return { loading: false, error: action.payload }
+
+		default:
+			return state
+	}
+}
+
+export const restaurantReviewCreateReducer = (state = {}, action) => {
+	switch (action.type) {
+		case CREATE_RESTAURANT_REVIEW_REQUEST:
+			return { loading: true }
+		case CREATE_RESTAURANT_REVIEW:
+			return { loading: false, success: true }
+		case CREATE_RESTAURANT_REVIEW_ERROR:
+			return { loading: false, error: action.payload }
+		default:
+			return state
+	}
+}
 //Actions
 
-export const loadingRestaurants = () => ({})
+export const listRestaurants = (keyword = '', pageNumber = '') => async dispatch => {
+	try {
+		dispatch({ type: GET_ALL_RESTAURANTS_REQUEST })
 
-export const getAllRestaurants = () => async (dispatch, getState) => {
-	const res = await axios.get(`${backend}/restaurants`)
-	dispatch({
-		type: GET_ALL_RESTAURANTS,
-		payload: res.data.businesses,
-	})
+		const { data } = await backend.get(
+			`/api/restaurants?keyword=${keyword}&pageNumber=${pageNumber}`
+		)
+
+		dispatch({
+			type: GET_ALL_RESTAURANTS,
+			payload: data,
+		})
+	} catch (error) {
+		dispatch({
+			type: GET_ALL_RESTAURANTS_ERROR,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		})
+	}
 }
 
-export const getAllRestaurantsError = error => ({
-	type: GET_ALL_RESTAURANTS_ERROR,
-	error,
-})
+export const listRestaurantsDetails = id => async dispatch => {
+	try {
+		dispatch({
+			type: GET_RESTAURANT_REQUEST,
+		})
 
-export const getRestaurant = id => async (dispatch, getState) => {
-	const res = await axios.get(`${backend}/restaurants/${id}`)
+		const { data } = await backend.get(`/api/restaurants/${id}`)
 
-	dispatch({
-		type: GET_RESTAURANT,
-		payload: res.data.restaurants,
-	})
+		dispatch({
+			type: GET_RESTAURANT,
+			payload: data,
+		})
+	} catch (error) {
+		dispatch({
+			type: GET_ALL_RESTAURANTS_ERROR,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		})
+	}
 }
-
-export const getRestaurantError = error => ({
-	type: GET_RESTAURANT_ERROR,
-	error,
-})
 
 export const createRestaurant = () => async (dispatch, getState) => {
-	const res = await axios.post(`${backend}/restaurants/create`)
+	try {
+		dispatch({
+			type: CREATE_RESTAURANT_REQUEST,
+		})
 
-	dispatch({
-		type: CREATE_RESTAURANT,
-		payload: res.data.businesses,
-	})
+		const {
+			userLogin: { userInfo },
+		} = getState()
+
+		const config = {
+			headers: {
+				Authorization: `Bearer ${userInfo.token}`,
+			},
+		}
+
+		const { data } = await backend.post(`/api/restaurants`, {}, config)
+
+		dispatch({
+			type: CREATE_RESTAURANT,
+			payload: data,
+		})
+	} catch (error) {
+		const message =
+			error.response && error.response.data.message
+				? error.response.data.message
+				: error.message
+		if (message === 'Not authorized, token failed') {
+			dispatch(logout())
+		}
+		dispatch({
+			type: CREATE_RESTAURANT_ERROR,
+			payload: message,
+		})
+	}
 }
 
-export const createRestaurantError = error => ({
-	type: CREATE_RESTAURANT_ERROR,
-	error,
-})
+export const updateRestaurant = restaurant => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: UPDATE_RESTAURANT_REQUEST,
+		})
 
-export const updateRestaurant = id => async (dispatch, getState) => {
-	const res = await axios.put(`${backend}/restaurants/edit/${id}`)
+		const {
+			userLogin: { userInfo },
+		} = getState()
 
-	dispatch({
-		type: UPDATE_RESTAURANT,
-		payload: res.data.restaurants,
-	})
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${userInfo.token}`,
+			},
+		}
+
+		const { data } = await backend.put(
+			`/api/restaurants/${restaurant._id}`,
+			restaurant,
+			config
+		)
+
+		dispatch({
+			type: UPDATE_RESTAURANT,
+			payload: data,
+		})
+
+		dispatch({
+			type: GET_RESTAURANT,
+			payload: data,
+		})
+	} catch (error) {
+		const message =
+			error.response && error.response.data.message
+				? error.response.data.message
+				: error.message
+		if (message === 'Not authorized, token failed') {
+			dispatch(logout())
+		}
+		dispatch({
+			type: UPDATE_RESTAURANT_ERROR,
+			payload: message,
+		})
+	}
 }
-
-export const updateRestaurantError = error => ({
-	type: UPDATE_RESTAURANT_ERROR,
-	error,
-})
 
 export const deleteRestaurant = id => async (dispatch, getState) => {
-	const res = await axios.delete(`${backend}/restaurants/delete/${id}`)
+	try {
+		dispatch({
+			type: DELETE_RESTAURANT_REQUEST,
+		})
 
-	dispatch({
-		type: DELETE_RESTAURANT,
-		payload: res.data.restaurants,
-	})
+		const {
+			userLogin: { userInfo },
+		} = getState()
+
+		const config = {
+			headers: {
+				Authorization: `Bearer ${userInfo.token}`,
+			},
+		}
+		await backend.delete(`/api/restaurants/${id}`, config)
+
+		dispatch({
+			type: DELETE_RESTAURANT,
+		})
+	} catch (error) {
+		const message =
+			error.response && error.response.data.message
+				? error.response.data.message
+				: error.message
+		if (message === 'Not authorized, token failed') {
+			dispatch(logout())
+		}
+		dispatch({
+			type: DELETE_RESTAURANT_ERROR,
+			payload: message,
+		})
+	}
 }
 
-export const deleteRestaurantError = error => ({
-	type: DELETE_RESTAURANT_ERROR,
-	error,
-})
