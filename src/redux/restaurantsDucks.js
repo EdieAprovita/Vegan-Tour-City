@@ -39,7 +39,7 @@ const CREATERESTAURANTREVIEW_ERROR = 'CREATERESTAURANTREVIEW_ERROR'
 export default function restaurantsReducer(state = initialData, action) {
 	switch (action.type) {
 		case LOADING:
-			return { ...state, status: 'pending' }
+			return { ...state, status: 'pending', loading: true }
 
 		case GET_ALL_RESTAURANTS:
 			return { ...state, status: 'success', restaurantsArr: action.payload }
