@@ -204,7 +204,7 @@ export const createMarket = () => async (dispatch, getState) => {
 			error.response && error.response.data.message
 				? error.response.data.message
 				: error.message
-		if (message === 'Not authorized, token failed') {
+		if (message === 'You cannot PASS!!') {
 			dispatch(logout())
 		}
 		dispatch({
@@ -247,7 +247,7 @@ export const updateMarket = market => async (dispatch, getState) => {
 			error.response && error.response.data.message
 				? error.response.data.message
 				: error.message
-		if (message === 'Not authorized, token failed') {
+		if (message === 'You cannot PASS!!') {
 			dispatch(logout())
 		}
 		dispatch({
@@ -282,7 +282,7 @@ export const deleteMarket = id => async (dispatch, getState) => {
 			error.response && error.response.data.message
 				? error.response.data.message
 				: error.message
-		if (message === 'Not authorized, token failed') {
+		if (message === 'You cannot PASS!!') {
 			dispatch(logout())
 		}
 		dispatch({
@@ -319,7 +319,7 @@ export const createMarketReview = (marketId, review) => async (dispatch, getStat
 			error.response && error.response.data.message
 				? error.response.data.message
 				: error.message
-		if (message === 'Not authorized, token failed') {
+		if (message === 'You cannot PASS!!') {
 			dispatch(logout())
 		}
 		dispatch({

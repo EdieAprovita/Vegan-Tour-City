@@ -208,7 +208,7 @@ export const createRestaurant = () => async (dispatch, getState) => {
 			error.response && error.response.data.message
 				? error.response.data.message
 				: error.message
-		if (message === 'Not authorized, token failed') {
+		if (message === 'You cannot PASS!!') {
 			dispatch(logout())
 		}
 		dispatch({
@@ -255,7 +255,7 @@ export const updateRestaurant = restaurant => async (dispatch, getState) => {
 			error.response && error.response.data.message
 				? error.response.data.message
 				: error.message
-		if (message === 'Not authorized, token failed') {
+		if (message === 'You cannot PASS!!') {
 			dispatch(logout())
 		}
 		dispatch({
@@ -290,7 +290,7 @@ export const deleteRestaurant = id => async (dispatch, getState) => {
 			error.response && error.response.data.message
 				? error.response.data.message
 				: error.message
-		if (message === 'Not authorized, token failed') {
+		if (message === 'You cannot PASS!!') {
 			dispatch(logout())
 		}
 		dispatch({
@@ -330,7 +330,7 @@ export const createRestaurantReview = (restaurantId, review) => async (
 			error.response && error.response.data.message
 				? error.response.data.message
 				: error.message
-		if (message === 'Not authorized, token failed') {
+		if (message === 'You cannot PASS!!') {
 			dispatch(logout())
 		}
 		dispatch({

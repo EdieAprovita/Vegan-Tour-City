@@ -207,7 +207,7 @@ export const createBusiness = () => async (dispatch, getState) => {
 			error.response && error.response.data.message
 				? error.response.data.message
 				: error.message
-		if (message === 'Not authorized, token failed') {
+		if (message === 'You cannot PASS!!') {
 			dispatch(logout())
 		}
 		dispatch({
@@ -254,7 +254,7 @@ export const updateBusiness = business => async (dispatch, getState) => {
 			error.response && error.response.data.message
 				? error.response.data.message
 				: error.message
-		if (message === 'Not authorized, token failed') {
+		if (message === 'You cannot PASS!!') {
 			dispatch(logout())
 		}
 		dispatch({
@@ -289,7 +289,7 @@ export const deleteBusiness = id => async (dispatch, getState) => {
 			error.response && error.response.data.message
 				? error.response.data.message
 				: error.message
-		if (message === 'Not authorized, token failed') {
+		if (message === 'You cannot PASS!!') {
 			dispatch(logout())
 		}
 		dispatch({
@@ -329,7 +329,7 @@ export const createBusinessReview = (businessId, review) => async (
 			error.response && error.response.data.message
 				? error.response.data.message
 				: error.message
-		if (message === 'Not authorized, token failed') {
+		if (message === 'You cannot PASS!!') {
 			dispatch(logout())
 		}
 		dispatch({
