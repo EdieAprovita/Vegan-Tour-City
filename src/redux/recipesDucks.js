@@ -131,7 +131,7 @@ export const recipeReviewCreateReducer = (state = {}, action) => {
 }
 //Actions
 
-export const listrecipes = (keyword = '', pageNumber = '') => async dispatch => {
+export const listRecipes = (keyword = '', pageNumber = '') => async dispatch => {
 	try {
 		dispatch({ type: GET_ALL_RECIPES_REQUEST })
 
@@ -154,7 +154,7 @@ export const listrecipes = (keyword = '', pageNumber = '') => async dispatch => 
 	}
 }
 
-export const listrecipesDetails = id => async dispatch => {
+export const listRecipesDetails = id => async dispatch => {
 	try {
 		dispatch({
 			type: GET_ALL_RECIPES,
@@ -177,7 +177,7 @@ export const listrecipesDetails = id => async dispatch => {
 	}
 }
 
-export const createrecipe = () => async (dispatch, getState) => {
+export const createRecipe = () => async (dispatch, getState) => {
 	try {
 		dispatch({
 			type: CREATE_RECIPE_REQUEST,
@@ -214,7 +214,7 @@ export const createrecipe = () => async (dispatch, getState) => {
 	}
 }
 
-export const updaterecipe = recipe => async (dispatch, getState) => {
+export const updateRecipe = recipe => async (dispatch, getState) => {
 	try {
 		dispatch({
 			type: UPDATE_RECIPE_REQUEST,
@@ -257,7 +257,7 @@ export const updaterecipe = recipe => async (dispatch, getState) => {
 	}
 }
 
-export const deleterecipe = id => async (dispatch, getState) => {
+export const deleteRecipe = id => async (dispatch, getState) => {
 	try {
 		dispatch({
 			type: DELETE_RECIPE_REQUEST,
@@ -292,7 +292,7 @@ export const deleterecipe = id => async (dispatch, getState) => {
 	}
 }
 
-export const createrecipeReview = (recipeId, review) => async (dispatch, getState) => {
+export const createRecipeReview = (recipeId, review) => async (dispatch, getState) => {
 	try {
 		dispatch({
 			type: CREATE_RECIPE_REQUEST,
@@ -329,7 +329,7 @@ export const createrecipeReview = (recipeId, review) => async (dispatch, getStat
 	}
 }
 
-export const listToprecipes = () => async dispatch => {
+export const listTopRecipes = () => async dispatch => {
 	try {
 		dispatch({
 			type: GET_TOP_RECIPES_REQUEST,

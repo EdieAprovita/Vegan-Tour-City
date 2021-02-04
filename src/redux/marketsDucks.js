@@ -131,7 +131,7 @@ export const marketReviewCreateReducer = (state = {}, action) => {
 }
 //Actions
 
-export const listmarkets = (keyword = '', pageNumber = '') => async dispatch => {
+export const listMarkets = (keyword = '', pageNumber = '') => async dispatch => {
 	try {
 		dispatch({ type: GET_ALL_MARKETS_REQUEST })
 
@@ -154,7 +154,7 @@ export const listmarkets = (keyword = '', pageNumber = '') => async dispatch => 
 	}
 }
 
-export const listmarketsDetails = id => async dispatch => {
+export const listMarketsDetails = id => async dispatch => {
 	try {
 		dispatch({
 			type: GET_ALL_MARKETS,
@@ -177,7 +177,7 @@ export const listmarketsDetails = id => async dispatch => {
 	}
 }
 
-export const createmarket = () => async (dispatch, getState) => {
+export const createMarket = () => async (dispatch, getState) => {
 	try {
 		dispatch({
 			type: CREATE_MARKET_REQUEST,
@@ -214,7 +214,7 @@ export const createmarket = () => async (dispatch, getState) => {
 	}
 }
 
-export const updatemarket = market => async (dispatch, getState) => {
+export const updateMarket = market => async (dispatch, getState) => {
 	try {
 		dispatch({
 			type: UPDATE_MARKET_REQUEST,
@@ -257,7 +257,7 @@ export const updatemarket = market => async (dispatch, getState) => {
 	}
 }
 
-export const deletemarket = id => async (dispatch, getState) => {
+export const deleteMarket = id => async (dispatch, getState) => {
 	try {
 		dispatch({
 			type: DELETE_MARKET_REQUEST,
@@ -292,7 +292,7 @@ export const deletemarket = id => async (dispatch, getState) => {
 	}
 }
 
-export const createmarketReview = (marketId, review) => async (dispatch, getState) => {
+export const createMarketReview = (marketId, review) => async (dispatch, getState) => {
 	try {
 		dispatch({
 			type: CREATE_MARKET_REQUEST,
@@ -329,7 +329,7 @@ export const createmarketReview = (marketId, review) => async (dispatch, getStat
 	}
 }
 
-export const listTopmarkets = () => async dispatch => {
+export const listTopMarkets = () => async dispatch => {
 	try {
 		dispatch({
 			type: GET_TOP_MARKET_REQUEST,

@@ -134,7 +134,7 @@ export const businessReviewCreateReducer = (state = {}, action) => {
 }
 //Actions
 
-export const listbusinesses = (keyword = '', pageNumber = '') => async dispatch => {
+export const listBusinesses = (keyword = '', pageNumber = '') => async dispatch => {
 	try {
 		dispatch({ type: GET_ALL_BUSINESSES_REQUEST })
 
@@ -157,7 +157,7 @@ export const listbusinesses = (keyword = '', pageNumber = '') => async dispatch 
 	}
 }
 
-export const listbusinessesDetails = id => async dispatch => {
+export const listBusinessesDetails = id => async dispatch => {
 	try {
 		dispatch({
 			type: GET_ALL_BUSINESSES,
@@ -180,7 +180,7 @@ export const listbusinessesDetails = id => async dispatch => {
 	}
 }
 
-export const createbusiness = () => async (dispatch, getState) => {
+export const createBusiness = () => async (dispatch, getState) => {
 	try {
 		dispatch({
 			type: CREATE_BUSINESS_REQUEST,
@@ -217,7 +217,7 @@ export const createbusiness = () => async (dispatch, getState) => {
 	}
 }
 
-export const updatebusiness = business => async (dispatch, getState) => {
+export const updateBusiness = business => async (dispatch, getState) => {
 	try {
 		dispatch({
 			type: UPDATE_BUSINESS_REQUEST,
@@ -264,7 +264,7 @@ export const updatebusiness = business => async (dispatch, getState) => {
 	}
 }
 
-export const deletebusiness = id => async (dispatch, getState) => {
+export const deleteBusiness = id => async (dispatch, getState) => {
 	try {
 		dispatch({
 			type: DELETE_BUSINESS_REQUEST,
@@ -299,7 +299,7 @@ export const deletebusiness = id => async (dispatch, getState) => {
 	}
 }
 
-export const createbusinessReview = (businessId, review) => async (
+export const createBusinessReview = (businessId, review) => async (
 	dispatch,
 	getState
 ) => {
@@ -339,7 +339,7 @@ export const createbusinessReview = (businessId, review) => async (
 	}
 }
 
-export const listTopbusinesses = () => async dispatch => {
+export const listTopBusinesses = () => async dispatch => {
 	try {
 		dispatch({
 			type: GET_TOP_BUSINESS_REQUEST,
