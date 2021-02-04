@@ -1,19 +1,11 @@
 import './App.css'
-import Navbar from './components/Navbar'
-import Recipes from "./components/Recipes"
 
 import { Provider } from 'react-redux'
-import generateStore from "./redux/store"
+import generateStore from './redux/store'
 
 function App() {
-
 	const store = generateStore()
-	return (
-		<Provider store={store}>
-			<Navbar />
-			<Recipes />
-		</Provider>
-	)
+	return <Provider store={store}></Provider>
 }
 
 export default App

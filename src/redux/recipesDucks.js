@@ -1,165 +1,353 @@
-import axios from 'axios'
-
 import backend from '../services/apiServices'
-
-//Constants
-
-const initialData = {
-	recipeArr: [],
-	status: '',
-	error: undefined,
-}
+import { logout } from './authDucks'
 
 //Types
 
-const LOADING = 'LOADING'
-
+const GET_ALL_RECIPES_REQUEST = 'GET_ALL_RECIPES_REQUEST'
 const GET_ALL_RECIPES = 'GET_ALL_RECIPES'
 const GET_ALL_RECIPES_ERROR = 'GET_ALL_RECIPES_ERROR'
 
+const GET_RECIPE_REQUEST = 'GET_RECIPE_REQUEST'
 const GET_RECIPE = 'GET_RECIPE'
 const GET_RECIPE_ERROR = 'GET_RECIPE_ERROR'
 
+const CREATE_RECIPE_REQUEST = 'CREATE_RECIPE_REQUEST'
 const CREATE_RECIPE = 'CREATE_RECIPE'
 const CREATE_RECIPE_ERROR = 'CREATE_RECIPE_ERROR'
 
+const UPDATE_RECIPE_REQUEST = 'UPDATE_RECIPE_REQUEST'
 const UPDATE_RECIPE = 'UPDATE_RECIPE'
 const UPDATE_RECIPE_ERROR = 'UPDATE_RECIPE_ERROR'
 
+const DELETE_RECIPE_REQUEST = 'DELETE_RECIPE_REQUEST'
 const DELETE_RECIPE = 'DELETE_RECIPE'
 const DELETE_RECIPE_ERROR = 'DELETE_RECIPE_ERROR'
 
-const GETTOPRECIPES = 'GETTOPRECIPES'
-const GETTOPRECIPES_ERROR = 'GETTOPRECIPES_ERROR'
+const GET_TOP_RECIPES_REQUEST = 'GET_TOP_RECIPES_REQUEST'
+const GET_TOP_RECIPES = 'GET_TOP_RECIPES'
+const GET_TOP_RECIPES_ERROR = 'GET_TOP_RECIPES_ERROR'
 
-const CREATERECIPEREVIEW = 'CREATERECIPEREVIEW'
-const CREATERECIPEREVIEW_ERROR = 'CREATERECIPEREVIEW_ERROR'
+const CREATE_RECIPE_REVIEW_REQUEST = 'CREATE_RECIPE_REVIEW_REQUEST'
+const CREATE_RECIPE_REVIEW = 'CREATE_RECIPE_REVIEW'
+const CREATE_RECIPE_REVIEW_ERROR = 'CREATE_RECIPE_REVIEW_ERROR'
 
-//Reducers
+//Reducer
 
-export default function recipeReducer(state = initialData, action) {
+export const recipesListReducer = (state = { recipes: [] }, action) => {
 	switch (action.type) {
-		case LOADING:
-			return { ...state, status: 'pending' }
-
+		case GET_ALL_RECIPES_REQUEST:
+			return { loading: true, recipes: [] }
 		case GET_ALL_RECIPES:
-			return { ...state, status: 'success', recipeArr: action.payload }
-
+			return {
+				loading: false,
+				recipes: action.payload.recipes,
+				pages: action.payload.pages,
+				page: action.payload.page,
+			}
 		case GET_ALL_RECIPES_ERROR:
-			return { ...state, status: 'error', error: action.error }
+			return { loading: false, error: action.payload }
+		default:
+			return state
+	}
+}
 
+export const recipesDetailsReducer = (state = { recipe: { reviews: [] } }, action) => {
+	switch (action.type) {
+		case GET_RECIPE_REQUEST:
+			return { ...state, loading: true }
 		case GET_RECIPE:
-			return { ...state, recipeArr: action.payload }
-
+			return { loading: false, recipe: action.payload }
 		case GET_RECIPE_ERROR:
-			return { ...state, status: 'error', error: action.error }
+			return { loading: false, error: action.payload }
+		default:
+			return state
+	}
+}
 
+export const recipeCreateReducer = (state = {}, action) => {
+	switch (action.type) {
+		case CREATE_RECIPE_REQUEST:
+			return { loading: true }
 		case CREATE_RECIPE:
-			return { ...state, status: 'success', recipeArr: action.payload }
-
+			return { loading: false, success: true, recipe: action.payload }
 		case CREATE_RECIPE_ERROR:
-			return { ...state, status: 'error', error: action.error }
+			return { loading: false, error: action.payload }
+		default:
+			return state
+	}
+}
 
+export const recipeUpdateReducer = (state = { recipe: {} }, action) => {
+	switch (action.type) {
+		case UPDATE_RECIPE_REQUEST:
+			return { loading: true }
 		case UPDATE_RECIPE:
-			return { ...state, status: 'error', recipeArr: action.payload }
-
+			return { loading: true, success: true, recipe: action.payload }
 		case UPDATE_RECIPE_ERROR:
-			return { ...state, status: 'error', error: action.error }
+			return { loading: false, error: action.payload }
+		default:
+			return state
+	}
+}
 
+export const recipeDeleteReducer = (state = {}, action) => {
+	switch (action.type) {
+		case DELETE_RECIPE_REQUEST:
+			return { loading: true }
 		case DELETE_RECIPE:
-			return { ...state, status: 'error', recipeArr: action.payload }
-
+			return { loading: false, success: true }
 		case DELETE_RECIPE_ERROR:
-			return { ...state, status: 'error', error: action.error }
+			return { loading: false, error: action.payload }
+		default:
+			return state
+	}
+}
 
-		case GETTOPRECIPES:
-			return { ...state, status: 'success', recipeArr: action.payload }
-
-		case GETTOPRECIPES_ERROR:
-			return { ...state, status: 'error', error: action.error }
-
-		case CREATERECIPEREVIEW:
-			return { ...state, status: 'success', recipeArr: action.payload }
-
-		case CREATERECIPEREVIEW_ERROR:
-			return { ...state, status: 'error', error: action.error }
+export const recipeTopReviewReducer = (state = { recipes: [] }, action) => {
+	switch (action.type) {
+		case GET_TOP_RECIPES_REQUEST:
+			return { loading: true, recipes: [] }
+		case GET_TOP_RECIPES:
+			return { loading: false, recipes: action.payload }
+		case GET_TOP_RECIPES_ERROR:
+			return { loading: false, error: action.payload }
 
 		default:
 			return state
 	}
 }
 
+export const recipeReviewCreateReducer = (state = {}, action) => {
+	switch (action.type) {
+		case CREATE_RECIPE_REVIEW_REQUEST:
+			return { loading: true }
+		case CREATE_RECIPE_REVIEW:
+			return { loading: false, success: true }
+		case CREATE_RECIPE_REVIEW_ERROR:
+			return { loading: false, error: action.payload }
+		default:
+			return state
+	}
+}
 //Actions
 
-export const loadingRecipes = () => ({
-	type: LOADING,
-})
+export const listrecipes = (keyword = '', pageNumber = '') => async dispatch => {
+	try {
+		dispatch({ type: GET_ALL_RECIPES_REQUEST })
 
-export const getAllRecipes = () => async (dispatch, getState) => {
-	const res = await axios.get(`${backend}/recipes`)
-	dispatch({
-		type: GET_ALL_RECIPES,
-		payload: res.data.recipes,
-	})
+		const { data } = await backend.get(
+			`/api/recipes?keyword=${keyword}&pageNumber=${pageNumber}`
+		)
+
+		dispatch({
+			type: GET_ALL_RECIPES,
+			payload: data,
+		})
+	} catch (error) {
+		dispatch({
+			type: GET_ALL_RECIPES_ERROR,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		})
+	}
 }
 
-export const getAllRecipesError = error => ({
-	type: GET_ALL_RECIPES_ERROR,
-	error,
-})
+export const listrecipesDetails = id => async dispatch => {
+	try {
+		dispatch({
+			type: GET_ALL_RECIPES,
+		})
 
-export const getRecipe = id => async (dispatch, getState) => {
-	const res = await axios.get(`${backend}/recipes/${id}`)
+		const { data } = await backend.get(`/api/recipes/${id}`)
 
-	dispatch({
-		type: GET_RECIPE,
-		payload: res.data.recipes,
-	})
+		dispatch({
+			type: GET_RECIPE,
+			payload: data,
+		})
+	} catch (error) {
+		dispatch({
+			type: GET_ALL_RECIPES_ERROR,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		})
+	}
 }
 
-export const getRecipeError = error => ({
-	type: GET_RECIPE_ERROR,
-	error,
-})
+export const createrecipe = () => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: CREATE_RECIPE_REQUEST,
+		})
 
-export const createRecipe = () => async (dispatch, getState) => {
-	const res = await axios.post(`${backend}/recipes/create`)
+		const {
+			userLogin: { userInfo },
+		} = getState()
 
-	dispatch({
-		type: CREATE_RECIPE,
-		payload: res.data.recipes,
-	})
+		const config = {
+			headers: {
+				Authorization: `Bearer ${userInfo.token}`,
+			},
+		}
+
+		const { data } = await backend.post(`/api/recipes`, {}, config)
+
+		dispatch({
+			type: CREATE_RECIPE,
+			payload: data,
+		})
+	} catch (error) {
+		const message =
+			error.response && error.response.data.message
+				? error.response.data.message
+				: error.message
+		if (message === 'Not authorized, token failed') {
+			dispatch(logout())
+		}
+		dispatch({
+			type: CREATE_RECIPE_ERROR,
+			payload: message,
+		})
+	}
 }
 
-export const createRecipeError = error => ({
-	type: CREATE_RECIPE_ERROR,
-	error,
-})
+export const updaterecipe = recipe => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: UPDATE_RECIPE_REQUEST,
+		})
 
-export const updateRecipe = id => async (dispatch, getState) => {
-	const res = await axios.put(`${backend}/recipes/edit/${id}`)
+		const {
+			userLogin: { userInfo },
+		} = getState()
 
-	dispatch({
-		type: UPDATE_RECIPE,
-		payload: res.data.recipes,
-	})
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${userInfo.token}`,
+			},
+		}
+
+		const { data } = await backend.put(`/api/recipes/${recipe._id}`, recipe, config)
+
+		dispatch({
+			type: UPDATE_RECIPE,
+			payload: data,
+		})
+
+		dispatch({
+			type: GET_RECIPE,
+			payload: data,
+		})
+	} catch (error) {
+		const message =
+			error.response && error.response.data.message
+				? error.response.data.message
+				: error.message
+		if (message === 'Not authorized, token failed') {
+			dispatch(logout())
+		}
+		dispatch({
+			type: UPDATE_RECIPE_ERROR,
+			payload: message,
+		})
+	}
 }
 
-export const updateRecipeError = error => ({
-	type: UPDATE_RECIPE_ERROR,
-	error,
-})
+export const deleterecipe = id => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: DELETE_RECIPE_REQUEST,
+		})
 
-export const deleteRecipe = id => async (dispatch, getState) => {
-	const res = await axios.delete(`${backend}/recipes/delete/${id}`)
+		const {
+			userLogin: { userInfo },
+		} = getState()
 
-	dispatch({
-		type: DELETE_RECIPE,
-		payload: res.data.recipes,
-	})
+		const config = {
+			headers: {
+				Authorization: `Bearer ${userInfo.token}`,
+			},
+		}
+		await backend.delete(`/api/recipes/${id}`, config)
+
+		dispatch({
+			type: DELETE_RECIPE,
+		})
+	} catch (error) {
+		const message =
+			error.response && error.response.data.message
+				? error.response.data.message
+				: error.message
+		if (message === 'Not authorized, token failed') {
+			dispatch(logout())
+		}
+		dispatch({
+			type: DELETE_RECIPE_ERROR,
+			payload: message,
+		})
+	}
 }
 
-export const deleteRecipeError = error => ({
-	type: DELETE_RECIPE_ERROR,
-	error,
-})
+export const createrecipeReview = (recipeId, review) => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: CREATE_RECIPE_REQUEST,
+		})
+
+		const {
+			userLogin: { userInfo },
+		} = getState()
+
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${userInfo.token}`,
+			},
+		}
+
+		await backend.post(`/api/recipes/${recipeId}/reviews`, review, config)
+
+		dispatch({
+			type: CREATE_RECIPE,
+		})
+	} catch (error) {
+		const message =
+			error.response && error.response.data.message
+				? error.response.data.message
+				: error.message
+		if (message === 'Not authorized, token failed') {
+			dispatch(logout())
+		}
+		dispatch({
+			type: CREATE_RECIPE_ERROR,
+			payload: message,
+		})
+	}
+}
+
+export const listToprecipes = () => async dispatch => {
+	try {
+		dispatch({
+			type: GET_TOP_RECIPES_REQUEST,
+		})
+
+		const { data } = await backend.get('/api/recipes/top')
+
+		dispatch({
+			type: GET_TOP_RECIPES,
+			payload: data,
+		})
+	} catch (error) {
+		dispatch({
+			type: GET_TOP_RECIPES_ERROR,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		})
+	}
+}

@@ -24,9 +24,9 @@ const DELETE_RESTAURANT_REQUEST = 'DELETE_RESTAURANT_REQUEST'
 const DELETE_RESTAURANT = 'DELETE_RESTAURANT'
 const DELETE_RESTAURANT_ERROR = 'DELETE_RESTAURANT_ERROR'
 
-const GETTOPRESTAURANT_REQUEST = 'GETTOPRESTAURANT_REQUEST'
-const GETTOPRESTAURANT = 'GETTOPRESTAURANT'
-const GETTOPRESTAURANT_ERROR = 'GETTOPRESTAURANT_ERROR'
+const GET_TOP_RESTAURANT_REQUEST = 'GETTOPRESTAURANT_REQUEST'
+const GET_TOP_RESTAURANT = 'GET_TOP_RESTAURANT'
+const GET_TOP_RESTAURANT_ERROR = 'GET_TOP_RESTAURANT_ERROR'
 
 const CREATE_RESTAURANT_REVIEW_REQUEST = 'CREATERESTAURANTREVIEW_REQUEST'
 const CREATE_RESTAURANT_REVIEW = 'CREATERESTAURANTREVIEW'
@@ -109,11 +109,11 @@ export const restaurantDeleteReducer = (state = {}, action) => {
 
 export const restaurantTopReviewReducer = (state = { restaurants: [] }, action) => {
 	switch (action.type) {
-		case GETTOPRESTAURANT_REQUEST:
+		case GET_TOP_RESTAURANT_REQUEST:
 			return { loading: true, restaurants: [] }
-		case GETTOPRESTAURANT:
+		case GET_TOP_RESTAURANT:
 			return { loading: false, restaurants: action.payload }
-		case GETTOPRESTAURANT_ERROR:
+		case GET_TOP_RESTAURANT_ERROR:
 			return { loading: false, error: action.payload }
 
 		default:
@@ -300,3 +300,65 @@ export const deleteRestaurant = id => async (dispatch, getState) => {
 	}
 }
 
+export const createRestaurantReview = (restaurantId, review) => async (
+	dispatch,
+	getState
+) => {
+	try {
+		dispatch({
+			type: CREATE_RESTAURANT_REVIEW_REQUEST,
+		})
+
+		const {
+			userLogin: { userInfo },
+		} = getState()
+
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${userInfo.token}`,
+			},
+		}
+
+		await backend.post(`/api/restaurants/${restaurantId}/reviews`, review, config)
+
+		dispatch({
+			type: CREATE_RESTAURANT_REVIEW,
+		})
+	} catch (error) {
+		const message =
+			error.response && error.response.data.message
+				? error.response.data.message
+				: error.message
+		if (message === 'Not authorized, token failed') {
+			dispatch(logout())
+		}
+		dispatch({
+			type: CREATE_RESTAURANT_REVIEW_ERROR,
+			payload: message,
+		})
+	}
+}
+
+export const listTopRestaurants = () => async dispatch => {
+	try {
+		dispatch({
+			type: GET_TOP_RESTAURANT_REQUEST,
+		})
+
+		const { data } = await backend.get('/api/restaurants/top')
+
+		dispatch({
+			type: GET_TOP_RESTAURANT,
+			payload: data,
+		})
+	} catch (error) {
+		dispatch({
+			type: GET_TOP_RESTAURANT_ERROR,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		})
+	}
+}

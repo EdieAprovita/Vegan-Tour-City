@@ -1,7 +1,16 @@
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 
-import recipesReducer from './recipesDucks'
+import {
+	recipesListReducer,
+	recipesDetailsReducer,
+	recipeCreateReducer,
+	recipeUpdateReducer,
+	recipeDeleteReducer,
+	recipeTopReviewReducer,
+	recipeReviewCreateReducer,
+} from './recipesDucks'
+
 import {
 	userLoginReducer,
 	userRegisterReducer,
@@ -11,9 +20,36 @@ import {
 	userDeleteReducer,
 	userUpdateReducer,
 } from './authDucks'
-import marketsReducer from './marketsDucks'
-import businessesReducer from './businessesDucks'
-import restaurantsReducer from './restaurantsDucks'
+
+import {
+	marketsListReducer,
+	marketsDetailsReducer,
+	marketCreateReducer,
+	marketUpdateReducer,
+	marketDeleteReducer,
+	marketTopReviewReducer,
+	marketReviewCreateReducer,
+} from './marketsDucks'
+
+import {
+	businessesListReducer,
+	businessesDetailsReducer,
+	businessCreateReducer,
+	businessUpdateReducer,
+	businessDeleteReducer,
+	businessTopReviewReducer,
+	businessReviewCreateReducer,
+} from './businessesDucks'
+
+import {
+	restaurantsListReducer,
+	restaurantsDetailsReducer,
+	restaurantCreateReducer,
+	restaurantUpdateReducer,
+	restaurantDeleteReducer,
+	restaurantTopReviewReducer,
+	restaurantReviewCreateReducer,
+} from './restaurantsDucks'
 
 const rootReducer = combineReducers({
 	userLogin: userLoginReducer,
@@ -23,10 +59,38 @@ const rootReducer = combineReducers({
 	userList: userListReducer,
 	userDelete: userDeleteReducer,
 	userUpdate: userUpdateReducer,
-	recipes: recipesReducer,
-	markets: marketsReducer,
-	businesses: businessesReducer,
-	restaurants: restaurantsReducer,
+
+	recipesList: recipesListReducer,
+	recipesDetails: recipesDetailsReducer,
+	recipeCreate: recipeCreateReducer,
+	recipeUpdate: recipeUpdateReducer,
+	recipeDelete: recipeDeleteReducer,
+	recipeTop: recipeTopReviewReducer,
+	recipeCreateReview: recipeReviewCreateReducer,
+
+	marketsList: marketsListReducer,
+	marketsDetails: marketsDetailsReducer,
+	marketsCreate: marketCreateReducer,
+	marketsUpdate: marketUpdateReducer,
+	marketsDelete: marketDeleteReducer,
+	marketsTop: marketTopReviewReducer,
+	marketsCreateReview: marketReviewCreateReducer,
+
+	businessesList: businessesListReducer,
+	businessesDetails: businessesDetailsReducer,
+	businessCreate: businessCreateReducer,
+	businessUpdate: businessUpdateReducer,
+	businessDelete: businessDeleteReducer,
+	businessTop: businessTopReviewReducer,
+	businessCreateReview: businessReviewCreateReducer,
+
+	restaurantsList: restaurantsListReducer,
+	restaurantDetail: restaurantsDetailsReducer,
+	restaurantCreate: restaurantCreateReducer,
+	restaurantUpdate: restaurantUpdateReducer,
+	restaurantDelete: restaurantDeleteReducer,
+	restaurantTop: restaurantTopReviewReducer,
+	restaurantReview: restaurantReviewCreateReducer,
 })
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
