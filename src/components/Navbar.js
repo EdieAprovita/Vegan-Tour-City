@@ -1,29 +1,22 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { Navbar, Nav, Container } from 'react-bootstrap'
 
-const Navbar = () => {
+const Header = () => {
 	return (
-		<div>
-			<nav className='uk-navbar-container uk-margin' uk-navbar>
-				<div className='uk-navbar-left'>
-					<Link className='uk-navbar-item uk-logo' to='/'>
-						Vegan Vita
-					</Link>
-
-					<ul className='uk-navbar-nav'>
-						<li>
-							<Link href=''>
-								<span
-									className='uk-icon uk-margin-small-right'
-									uk-icon='icon: star'></span>
-								Features
-							</Link>
-						</li>
-					</ul>
-				</div>
-			</nav>
-		</div>
+		<Container>
+			<Navbar bg='light' expand='lg'>
+				<Navbar.Brand href='#home'>Guia Vegana CDMX</Navbar.Brand>
+				<Navbar.Toggle aria-controls='basic-navbar-nav' />
+				<Navbar.Collapse id='basic-navbar-nav'>
+					<Nav className='ml-auto'>
+						<Nav.Link href='#home'>Home</Nav.Link>
+						<Nav.Link href='#link'>Link</Nav.Link>
+					</Nav>
+				</Navbar.Collapse>
+			</Navbar>
+		</Container>
 	)
 }
 
-export default Navbar
+export default Header
