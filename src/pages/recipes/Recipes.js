@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { listRecipes } from '../redux/recipesDucks'
+import { listRecipes } from '../../redux/recipesDucks'
 
 const Recipes = () => {
 	const dispatch = useDispatch()
