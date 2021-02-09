@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Switch } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 import { Container } from 'react-bootstrap'
 
 import Navbar from './components/Navbar'
@@ -17,12 +17,10 @@ function App() {
 		<Provider store={store}>
 			<Navbar />
 			<Container>
-				<Switch>
-					<Route path='/recipes' component={Recipes} />
-					<Route path='/restaurants' component={Restaurants} />
-					<Route path='/markets' component={Markets} />
-					<Route path='/businesses' component={Businesses} />
-				</Switch>
+				<Route path='/recetas' component={Recipes} />
+				<Route path='/restaurantes' component={Restaurants} />
+				<Route path='/mercados' component={Markets} />
+				<Route path='/negocios' component={Businesses} />
 			</Container>
 		</Provider>
 	)
