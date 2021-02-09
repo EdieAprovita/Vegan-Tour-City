@@ -1,22 +1,23 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const Navbar = () => {
 	return (
 		<div>
 			<nav className='uk-navbar-container uk-margin' uk-navbar>
 				<div className='uk-navbar-left'>
-					<a className='uk-navbar-item uk-logo' href=''>
-						Logo
-					</a>
+					<Link className='uk-navbar-item uk-logo' to='/'>
+						Vegan Vita
+					</Link>
 
 					<ul className='uk-navbar-nav'>
 						<li>
-							<a href=''>
+							<Link href=''>
 								<span
 									className='uk-icon uk-margin-small-right'
 									uk-icon='icon: star'></span>
 								Features
-							</a>
+							</Link>
 						</li>
 					</ul>
 
@@ -34,7 +35,7 @@ const Navbar = () => {
 								placeholder='Input'
 							/>
 							<button className='uk-button uk-button-default'>
-								Button
+								Search
 							</button>
 						</form>
 					</div>
