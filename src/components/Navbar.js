@@ -20,25 +20,6 @@ const Navbar = () => {
 							</Link>
 						</li>
 					</ul>
-
-					<div className='uk-navbar-item'>
-						<div>
-							Some <a href=''>Link</a>
-						</div>
-					</div>
-
-					<div className='uk-navbar-item'>
-						<form>
-							<input
-								className='uk-input uk-form-width-small'
-								type='text'
-								placeholder='Input'
-							/>
-							<button className='uk-button uk-button-default'>
-								Search
-							</button>
-						</form>
-					</div>
 				</div>
 			</nav>
 		</div>
