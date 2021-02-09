@@ -7,6 +7,7 @@ import Recipes from './pages/recipes/Recipes'
 import Markets from './pages/markets/Markets'
 import Restaurants from './pages/restaurant/Restaurants'
 import Businesses from './pages/businesses/Businesses'
+import Footer from './components/Footer'
 
 import { Provider } from 'react-redux'
 import generateStore from './redux/store'
@@ -16,12 +17,15 @@ function App() {
 	return (
 		<Provider store={store}>
 			<Navbar />
-			<Container>
-				<Route path='/recetas' component={Recipes} />
-				<Route path='/restaurantes' component={Restaurants} />
-				<Route path='/mercados' component={Markets} />
-				<Route path='/negocios' component={Businesses} />
-			</Container>
+			<main className='py-3'>
+				<Container>
+					<Route path='/recetas' component={Recipes} />
+					<Route path='/restaurantes' component={Restaurants} />
+					<Route path='/mercados' component={Markets} />
+					<Route path='/negocios' component={Businesses} />
+				</Container>
+			</main>
+			<Footer />
 		</Provider>
 	)
 }
