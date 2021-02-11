@@ -3,7 +3,6 @@ import { Route } from 'react-router-dom'
 import { Container } from 'react-bootstrap'
 
 import Navbar from './components/Navbar'
-import SearchBox from './components/SearchBox'
 import Recipes from './pages/recipes/Recipes'
 import Markets from './pages/markets/Markets'
 import Restaurants from './pages/restaurant/Restaurants'
@@ -18,7 +17,6 @@ function App() {
 	return (
 		<Provider store={store}>
 			<Navbar />
-			<SearchBox />
 			<main className='py-3'>
 				<Container>
 					<Route path='/recetas' component={Recipes} />
