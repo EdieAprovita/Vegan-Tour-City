@@ -4,33 +4,34 @@ import { logout } from './authDucks'
 
 //Types
 
-const GET_ALL_RESTAURANTS_REQUEST = 'GET_ALL_RESTAURANTS_REQUEST'
-const GET_ALL_RESTAURANTS = 'GET_ALL_RESTAURANTS'
-const GET_ALL_RESTAURANTS_ERROR = 'GET_ALL_RESTAURANTS_ERROR'
+export const GET_ALL_RESTAURANTS_REQUEST = 'GET_ALL_RESTAURANTS_REQUEST'
+export const GET_ALL_RESTAURANTS_SUCCESS = 'GET_ALL_RESTAURANTS'
+export const GET_ALL_RESTAURANTS_ERROR = 'GET_ALL_RESTAURANTS_ERROR'
 
-const GET_RESTAURANT_REQUEST = 'GET_RESTAURANT_REQUEST'
-const GET_RESTAURANT = 'GET_ALL_RESTAURANT'
-const GET_RESTAURANT_ERROR = 'GET_RESTAURANT_ERROR'
+export const GET_RESTAURANT_REQUEST = 'GET_RESTAURANT_REQUEST'
+export const GET_RESTAURANT_SUCCESS = 'GET_ALL_RESTAURANT'
+export const GET_RESTAURANT_ERROR = 'GET_RESTAURANT_ERROR'
 
-const CREATE_RESTAURANT_REQUEST = 'CREATE_RESTAURANT_REQUEST'
-const CREATE_RESTAURANT = 'CREATE_RESTAURANT'
-const CREATE_RESTAURANT_ERROR = 'CREATE_RESTAURANT_ERROR'
+export const CREATE_RESTAURANT_REQUEST = 'CREATE_RESTAURANT_REQUEST'
+export const CREATE_RESTAURANT_SUCCESS = 'CREATE_RESTAURANT'
+export const CREATE_RESTAURANT_ERROR = 'CREATE_RESTAURANT_ERROR'
 
-const UPDATE_RESTAURANT_REQUEST = 'UPDATE_RESTAURANT_REQUEST'
-const UPDATE_RESTAURANT = 'UPDATE_RESTAURANT'
-const UPDATE_RESTAURANT_ERROR = 'UPDATE_RESTAURANT_ERROR'
+export const UPDATE_RESTAURANT_REQUEST = 'UPDATE_RESTAURANT_REQUEST'
+export const UPDATE_RESTAURANT_SUCCESS = 'UPDATE_RESTAURANT'
+export const UPDATE_RESTAURANT_ERROR = 'UPDATE_RESTAURANT_ERROR'
 
-const DELETE_RESTAURANT_REQUEST = 'DELETE_RESTAURANT_REQUEST'
-const DELETE_RESTAURANT = 'DELETE_RESTAURANT'
-const DELETE_RESTAURANT_ERROR = 'DELETE_RESTAURANT_ERROR'
+export const DELETE_RESTAURANT_REQUEST = 'DELETE_RESTAURANT_REQUEST'
+export const DELETE_RESTAURANT_SUCCESS = 'DELETE_RESTAURANT'
+export const DELETE_RESTAURANT_ERROR = 'DELETE_RESTAURANT_ERROR'
 
-const GET_TOP_RESTAURANT_REQUEST = 'GETTOPRESTAURANT_REQUEST'
-const GET_TOP_RESTAURANT = 'GET_TOP_RESTAURANT'
-const GET_TOP_RESTAURANT_ERROR = 'GET_TOP_RESTAURANT_ERROR'
+export const GET_TOP_RESTAURANT_REQUEST = 'GETTOPRESTAURANT_REQUEST'
+export const GET_TOP_RESTAURANT_SUCCESS = 'GET_TOP_RESTAURANT'
+export const GET_TOP_RESTAURANT_ERROR = 'GET_TOP_RESTAURANT_ERROR'
 
-const CREATE_RESTAURANT_REVIEW_REQUEST = 'CREATERESTAURANTREVIEW_REQUEST'
-const CREATE_RESTAURANT_REVIEW = 'CREATERESTAURANTREVIEW'
-const CREATE_RESTAURANT_REVIEW_ERROR = 'CREATERESTAURANTREVIEW_ERROR'
+export const CREATE_RESTAURANT_REVIEW_REQUEST = 'CREATERESTAURANTREVIEW_REQUEST'
+export const CREATE_RESTAURANT_REVIEW_SUCCESS = 'CREATERESTAURANTREVIEW'
+export const CREATE_RESTAURANT_REVIEW_ERROR = 'CREATERESTAURANTREVIEW_ERROR'
+export const CREATE_RESTAURANT_REVIEW_RESET = 'CREATERESTAURANTREVIEW_RESET'
 
 //Reducer
 
@@ -38,7 +39,7 @@ export const restaurantsListReducer = (state = { restaurants: [] }, action) => {
 	switch (action.type) {
 		case GET_ALL_RESTAURANTS_REQUEST:
 			return { loading: true, restaurants: [] }
-		case GET_ALL_RESTAURANTS:
+		case GET_ALL_RESTAURANTS_SUCCESS:
 			return {
 				loading: false,
 				restaurants: action.payload.restaurants,
@@ -59,7 +60,7 @@ export const restaurantsDetailsReducer = (
 	switch (action.type) {
 		case GET_RESTAURANT_REQUEST:
 			return { ...state, loading: true }
-		case GET_RESTAURANT:
+		case GET_RESTAURANT_SUCCESS:
 			return { loading: false, restaurant: action.payload }
 		case GET_RESTAURANT_ERROR:
 			return { loading: false, error: action.payload }
@@ -72,7 +73,7 @@ export const restaurantCreateReducer = (state = {}, action) => {
 	switch (action.type) {
 		case CREATE_RESTAURANT_REQUEST:
 			return { loading: true }
-		case CREATE_RESTAURANT:
+		case CREATE_RESTAURANT_SUCCESS:
 			return { loading: false, success: true, restaurant: action.payload }
 		case CREATE_RESTAURANT_ERROR:
 			return { loading: false, error: action.payload }
@@ -85,7 +86,7 @@ export const restaurantUpdateReducer = (state = { restaurant: {} }, action) => {
 	switch (action.type) {
 		case UPDATE_RESTAURANT_REQUEST:
 			return { loading: true }
-		case UPDATE_RESTAURANT:
+		case UPDATE_RESTAURANT_SUCCESS:
 			return { loading: true, success: true, restaurant: action.payload }
 		case UPDATE_RESTAURANT_ERROR:
 			return { loading: false, error: action.payload }
@@ -98,7 +99,7 @@ export const restaurantDeleteReducer = (state = {}, action) => {
 	switch (action.type) {
 		case DELETE_RESTAURANT_REQUEST:
 			return { loading: true }
-		case DELETE_RESTAURANT:
+		case DELETE_RESTAURANT_SUCCESS:
 			return { loading: false, success: true }
 		case DELETE_RESTAURANT_ERROR:
 			return { loading: false, error: action.payload }
@@ -111,7 +112,7 @@ export const restaurantTopReviewReducer = (state = { restaurants: [] }, action) 
 	switch (action.type) {
 		case GET_TOP_RESTAURANT_REQUEST:
 			return { loading: true, restaurants: [] }
-		case GET_TOP_RESTAURANT:
+		case GET_TOP_RESTAURANT_SUCCESS:
 			return { loading: false, restaurants: action.payload }
 		case GET_TOP_RESTAURANT_ERROR:
 			return { loading: false, error: action.payload }
@@ -125,17 +126,22 @@ export const restaurantReviewCreateReducer = (state = {}, action) => {
 	switch (action.type) {
 		case CREATE_RESTAURANT_REVIEW_REQUEST:
 			return { loading: true }
-		case CREATE_RESTAURANT_REVIEW:
+		case CREATE_RESTAURANT_REVIEW_SUCCESS:
 			return { loading: false, success: true }
 		case CREATE_RESTAURANT_REVIEW_ERROR:
 			return { loading: false, error: action.payload }
+		case CREATE_RESTAURANT_REVIEW_RESET:
+			return {}
 		default:
 			return state
 	}
 }
 //Actions
 
-export const listRestaurants = (keyword = '', pageNumber = '') => async dispatch => {
+export const listRestaurantsAction = (
+	keyword = '',
+	pageNumber = ''
+) => async dispatch => {
 	try {
 		dispatch({ type: GET_ALL_RESTAURANTS_REQUEST })
 
@@ -144,7 +150,7 @@ export const listRestaurants = (keyword = '', pageNumber = '') => async dispatch
 		)
 
 		dispatch({
-			type: GET_ALL_RESTAURANTS,
+			type: GET_ALL_RESTAURANTS_SUCCESS,
 			payload: data,
 		})
 	} catch (error) {
@@ -158,7 +164,7 @@ export const listRestaurants = (keyword = '', pageNumber = '') => async dispatch
 	}
 }
 
-export const listRestaurantsDetails = id => async dispatch => {
+export const listRestaurantsDetailsAction = id => async dispatch => {
 	try {
 		dispatch({
 			type: GET_RESTAURANT_REQUEST,
@@ -167,7 +173,7 @@ export const listRestaurantsDetails = id => async dispatch => {
 		const { data } = await backend.get(`/api/restaurants/${id}`)
 
 		dispatch({
-			type: GET_RESTAURANT,
+			type: GET_RESTAURANT_SUCCESS,
 			payload: data,
 		})
 	} catch (error) {
@@ -181,7 +187,7 @@ export const listRestaurantsDetails = id => async dispatch => {
 	}
 }
 
-export const createRestaurant = () => async (dispatch, getState) => {
+export const createRestaurantAction = () => async (dispatch, getState) => {
 	try {
 		dispatch({
 			type: CREATE_RESTAURANT_REQUEST,
@@ -200,7 +206,7 @@ export const createRestaurant = () => async (dispatch, getState) => {
 		const { data } = await backend.post(`/api/restaurants`, {}, config)
 
 		dispatch({
-			type: CREATE_RESTAURANT,
+			type: CREATE_RESTAURANT_SUCCESS,
 			payload: data,
 		})
 	} catch (error) {
@@ -218,7 +224,7 @@ export const createRestaurant = () => async (dispatch, getState) => {
 	}
 }
 
-export const updateRestaurant = restaurant => async (dispatch, getState) => {
+export const updateRestaurantAction = restaurant => async (dispatch, getState) => {
 	try {
 		dispatch({
 			type: UPDATE_RESTAURANT_REQUEST,
@@ -242,12 +248,12 @@ export const updateRestaurant = restaurant => async (dispatch, getState) => {
 		)
 
 		dispatch({
-			type: UPDATE_RESTAURANT,
+			type: UPDATE_RESTAURANT_SUCCESS,
 			payload: data,
 		})
 
 		dispatch({
-			type: GET_RESTAURANT,
+			type: GET_RESTAURANT_SUCCESS,
 			payload: data,
 		})
 	} catch (error) {
@@ -265,7 +271,7 @@ export const updateRestaurant = restaurant => async (dispatch, getState) => {
 	}
 }
 
-export const deleteRestaurant = id => async (dispatch, getState) => {
+export const deleteRestaurantAction = id => async (dispatch, getState) => {
 	try {
 		dispatch({
 			type: DELETE_RESTAURANT_REQUEST,
@@ -283,7 +289,7 @@ export const deleteRestaurant = id => async (dispatch, getState) => {
 		await backend.delete(`/api/restaurants/${id}`, config)
 
 		dispatch({
-			type: DELETE_RESTAURANT,
+			type: DELETE_RESTAURANT_SUCCESS,
 		})
 	} catch (error) {
 		const message =
@@ -300,7 +306,7 @@ export const deleteRestaurant = id => async (dispatch, getState) => {
 	}
 }
 
-export const createRestaurantReview = (restaurantId, review) => async (
+export const createRestaurantReviewAction = (restaurantId, review) => async (
 	dispatch,
 	getState
 ) => {
@@ -323,7 +329,7 @@ export const createRestaurantReview = (restaurantId, review) => async (
 		await backend.post(`/api/restaurants/${restaurantId}/reviews`, review, config)
 
 		dispatch({
-			type: CREATE_RESTAURANT_REVIEW,
+			type: CREATE_RESTAURANT_REVIEW_SUCCESS,
 		})
 	} catch (error) {
 		const message =
@@ -340,7 +346,7 @@ export const createRestaurantReview = (restaurantId, review) => async (
 	}
 }
 
-export const listTopRestaurants = () => async dispatch => {
+export const listTopRestaurantsAction = () => async dispatch => {
 	try {
 		dispatch({
 			type: GET_TOP_RESTAURANT_REQUEST,
@@ -349,7 +355,7 @@ export const listTopRestaurants = () => async dispatch => {
 		const { data } = await backend.get('/api/restaurants/top')
 
 		dispatch({
-			type: GET_TOP_RESTAURANT,
+			type: GET_TOP_RESTAURANT_SUCCESS,
 			payload: data,
 		})
 	} catch (error) {

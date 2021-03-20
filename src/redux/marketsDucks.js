@@ -3,33 +3,34 @@ import { logout } from './authDucks'
 
 //Types
 
-const GET_ALL_MARKETS_REQUEST = 'GET_ALL_MARKETS_REQUEST'
-const GET_ALL_MARKETS = 'GET_ALL_MARKETS'
-const GET_ALL_MARKETS_ERROR = 'GET_ALL_MARKETS_ERROR'
+export const GET_ALL_MARKETS_REQUEST = 'GET_ALL_MARKETS_REQUEST'
+export const GET_ALL_MARKETS_SUCCESS = 'GET_ALL_MARKETS_SUCCESS'
+export const GET_ALL_MARKETS_ERROR = 'GET_ALL_MARKETS_ERROR'
 
-const GET_MARKET_REQUEST = 'GET_MARKET_REQUEST'
-const GET_MARKET = 'GET_MARKET'
-const GET_MARKET_ERROR = 'GET_MARKET_ERROR'
+export const GET_MARKET_REQUEST = 'GET_MARKET_REQUEST'
+export const GET_MARKET_SUCCESS = 'GET_MARKET_SUCCESS'
+export const GET_MARKET_ERROR = 'GET_MARKET_ERROR'
 
-const CREATE_MARKET_REQUEST = 'CREATE_MARKET_REQUEST'
-const CREATE_MARKET = 'CREATE_MARKET'
-const CREATE_MARKET_ERROR = 'CREATE_MARKET_ERROR'
+export const CREATE_MARKET_REQUEST = 'CREATE_MARKET_REQUEST'
+export const CREATE_MARKET_SUCCESS = 'CREATE_MARKET_SUCCESS'
+export const CREATE_MARKET_ERROR = 'CREATE_MARKET_ERROR'
 
-const UPDATE_MARKET_REQUEST = 'UPDATE_MARKET_REQUEST'
-const UPDATE_MARKET = 'UPDATE_MARKET'
-const UPDATE_MARKET_ERROR = 'UPDATE_MARKET_ERROR'
+export const UPDATE_MARKET_REQUEST = 'UPDATE_MARKET_REQUEST'
+export const UPDATE_MARKET_SUCCESS = 'UPDATE_MARKET_SUCCESS'
+export const UPDATE_MARKET_ERROR = 'UPDATE_MARKET_ERROR'
 
-const DELETE_MARKET_REQUEST = 'DELETE_MARKET_REQUEST'
-const DELETE_MARKET = 'DELETE_MARKET'
-const DELETE_MARKET_ERROR = 'DELETE_MARKET_ERROR'
+export const DELETE_MARKET_REQUEST = 'DELETE_MARKET_REQUEST'
+export const DELETE_MARKET_SUCCESS = 'DELETE_MARKET_SUCCESS'
+export const DELETE_MARKET_ERROR = 'DELETE_MARKET_ERROR'
 
-const GET_TOP_MARKET_REQUEST = 'GET_TOP_MARKET_REQUEST'
-const GET_TOP_MARKET = 'GET_TOP_MARKET'
-const GET_TOP_MARKET_ERROR = 'GET_TOP_MARKET_ERROR'
+export const GET_TOP_MARKET_REQUEST = 'GET_TOP_MARKET_REQUEST'
+export const GET_TOP_MARKET_SUCCESS = 'GET_TOP_MARKET'
+export const GET_TOP_MARKET_ERROR = 'GET_TOP_MARKET_ERROR'
 
-const CREATE_REVIEW_MARKET_REQUEST = 'CREATE_REVIEW_MARKET_REQUEST'
-const CREATE_REVIEW_MARKET = 'CREATE_REVIEW_MARKET'
-const CREATE_REVIEW_MARKET_ERROR = 'CREATEREVIEWMARKET_ERROR'
+export const CREATE_REVIEW_MARKET_REQUEST = 'CREATE_REVIEW_MARKET_REQUEST'
+export const CREATE_REVIEW_MARKET_SUCCESS = 'CREATE_REVIEW_MARKET'
+export const CREATE_REVIEW_MARKET_ERROR = 'CREATEREVIEWMARKET_ERROR'
+export const CREATE_REVIEW_MARKET_RESET = 'CREATEREVIEWMARKET_RESET'
 
 //Reducer
 
@@ -37,7 +38,7 @@ export const marketsListReducer = (state = { markets: [] }, action) => {
 	switch (action.type) {
 		case GET_ALL_MARKETS_REQUEST:
 			return { loading: true, markets: [] }
-		case GET_ALL_MARKETS:
+		case GET_ALL_MARKETS_SUCCESS:
 			return {
 				loading: false,
 				markets: action.payload.markets,
@@ -55,7 +56,7 @@ export const marketsDetailsReducer = (state = { market: { reviews: [] } }, actio
 	switch (action.type) {
 		case GET_MARKET_REQUEST:
 			return { ...state, loading: true }
-		case GET_MARKET:
+		case GET_MARKET_SUCCESS:
 			return { loading: false, market: action.payload }
 		case GET_MARKET_ERROR:
 			return { loading: false, error: action.payload }
@@ -68,7 +69,7 @@ export const marketCreateReducer = (state = {}, action) => {
 	switch (action.type) {
 		case CREATE_MARKET_REQUEST:
 			return { loading: true }
-		case CREATE_MARKET:
+		case CREATE_MARKET_SUCCESS:
 			return { loading: false, success: true, market: action.payload }
 		case CREATE_MARKET_ERROR:
 			return { loading: false, error: action.payload }
@@ -81,7 +82,7 @@ export const marketUpdateReducer = (state = { market: {} }, action) => {
 	switch (action.type) {
 		case UPDATE_MARKET_REQUEST:
 			return { loading: true }
-		case UPDATE_MARKET:
+		case UPDATE_MARKET_SUCCESS:
 			return { loading: true, success: true, market: action.payload }
 		case UPDATE_MARKET_ERROR:
 			return { loading: false, error: action.payload }
@@ -94,7 +95,7 @@ export const marketDeleteReducer = (state = {}, action) => {
 	switch (action.type) {
 		case DELETE_MARKET_REQUEST:
 			return { loading: true }
-		case DELETE_MARKET:
+		case DELETE_MARKET_SUCCESS:
 			return { loading: false, success: true }
 		case DELETE_MARKET_ERROR:
 			return { loading: false, error: action.payload }
@@ -107,7 +108,7 @@ export const marketTopReviewReducer = (state = { markets: [] }, action) => {
 	switch (action.type) {
 		case GET_TOP_MARKET_REQUEST:
 			return { loading: true, markets: [] }
-		case GET_TOP_MARKET:
+		case GET_TOP_MARKET_SUCCESS:
 			return { loading: false, markets: action.payload }
 		case GET_TOP_MARKET_ERROR:
 			return { loading: false, error: action.payload }
@@ -121,17 +122,19 @@ export const marketReviewCreateReducer = (state = {}, action) => {
 	switch (action.type) {
 		case CREATE_REVIEW_MARKET_REQUEST:
 			return { loading: true }
-		case CREATE_REVIEW_MARKET:
+		case CREATE_REVIEW_MARKET_SUCCESS:
 			return { loading: false, success: true }
 		case CREATE_REVIEW_MARKET_ERROR:
 			return { loading: false, error: action.payload }
+		case CREATE_REVIEW_MARKET_RESET:
+			return {}
 		default:
 			return state
 	}
 }
 //Actions
 
-export const listMarkets = (keyword = '', pageNumber = '') => async dispatch => {
+export const listMarketsAction = (keyword = '', pageNumber = '') => async dispatch => {
 	try {
 		dispatch({ type: GET_ALL_MARKETS_REQUEST })
 
@@ -140,7 +143,7 @@ export const listMarkets = (keyword = '', pageNumber = '') => async dispatch => 
 		)
 
 		dispatch({
-			type: GET_ALL_MARKETS,
+			type: GET_ALL_MARKETS_SUCCESS,
 			payload: data,
 		})
 	} catch (error) {
@@ -154,16 +157,16 @@ export const listMarkets = (keyword = '', pageNumber = '') => async dispatch => 
 	}
 }
 
-export const listMarketsDetails = id => async dispatch => {
+export const listMarketsDetailsAction = id => async dispatch => {
 	try {
 		dispatch({
-			type: GET_ALL_MARKETS,
+			type: GET_ALL_MARKETS_SUCCESS,
 		})
 
 		const { data } = await backend.get(`/api/markets/${id}`)
 
 		dispatch({
-			type: GET_MARKET,
+			type: GET_MARKET_SUCCESS,
 			payload: data,
 		})
 	} catch (error) {
@@ -177,7 +180,7 @@ export const listMarketsDetails = id => async dispatch => {
 	}
 }
 
-export const createMarket = () => async (dispatch, getState) => {
+export const createMarketAction = () => async (dispatch, getState) => {
 	try {
 		dispatch({
 			type: CREATE_MARKET_REQUEST,
@@ -196,7 +199,7 @@ export const createMarket = () => async (dispatch, getState) => {
 		const { data } = await backend.post(`/api/markets`, {}, config)
 
 		dispatch({
-			type: CREATE_MARKET,
+			type: CREATE_MARKET_SUCCESS,
 			payload: data,
 		})
 	} catch (error) {
@@ -214,7 +217,7 @@ export const createMarket = () => async (dispatch, getState) => {
 	}
 }
 
-export const updateMarket = market => async (dispatch, getState) => {
+export const updateMarketAction = market => async (dispatch, getState) => {
 	try {
 		dispatch({
 			type: UPDATE_MARKET_REQUEST,
@@ -234,12 +237,12 @@ export const updateMarket = market => async (dispatch, getState) => {
 		const { data } = await backend.put(`/api/markets/${market._id}`, market, config)
 
 		dispatch({
-			type: UPDATE_MARKET,
+			type: UPDATE_MARKET_SUCCESS,
 			payload: data,
 		})
 
 		dispatch({
-			type: GET_MARKET,
+			type: GET_MARKET_SUCCESS,
 			payload: data,
 		})
 	} catch (error) {
@@ -257,7 +260,7 @@ export const updateMarket = market => async (dispatch, getState) => {
 	}
 }
 
-export const deleteMarket = id => async (dispatch, getState) => {
+export const deleteMarketAction = id => async (dispatch, getState) => {
 	try {
 		dispatch({
 			type: DELETE_MARKET_REQUEST,
@@ -275,7 +278,7 @@ export const deleteMarket = id => async (dispatch, getState) => {
 		await backend.delete(`/api/markets/${id}`, config)
 
 		dispatch({
-			type: DELETE_MARKET,
+			type: DELETE_MARKET_SUCCESS,
 		})
 	} catch (error) {
 		const message =
@@ -292,7 +295,10 @@ export const deleteMarket = id => async (dispatch, getState) => {
 	}
 }
 
-export const createMarketReview = (marketId, review) => async (dispatch, getState) => {
+export const createMarketReviewAction = (marketId, review) => async (
+	dispatch,
+	getState
+) => {
 	try {
 		dispatch({
 			type: CREATE_MARKET_REQUEST,
@@ -312,7 +318,7 @@ export const createMarketReview = (marketId, review) => async (dispatch, getStat
 		await backend.post(`/api/markets/${marketId}/reviews`, review, config)
 
 		dispatch({
-			type: CREATE_REVIEW_MARKET,
+			type: CREATE_REVIEW_MARKET_SUCCESS,
 		})
 	} catch (error) {
 		const message =
@@ -329,7 +335,7 @@ export const createMarketReview = (marketId, review) => async (dispatch, getStat
 	}
 }
 
-export const listTopMarkets = () => async dispatch => {
+export const listTopMarketsAction = () => async dispatch => {
 	try {
 		dispatch({
 			type: GET_TOP_MARKET_REQUEST,
@@ -338,7 +344,7 @@ export const listTopMarkets = () => async dispatch => {
 		const { data } = await backend.get('/api/markets/top')
 
 		dispatch({
-			type: GET_TOP_MARKET,
+			type: GET_TOP_MARKET_SUCCESS,
 			payload: data,
 		})
 	} catch (error) {

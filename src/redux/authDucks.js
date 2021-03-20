@@ -19,12 +19,7 @@ export const USER_DETAILS_RESET = 'USER_DETAILS_RESET'
 export const USER_UPDATE_PROFILE_REQUEST = 'USER_UPDATE_PROFILE_REQUEST'
 export const USER_UPDATE_PROFILE_SUCCESS = 'USER_UPDATE_PROFILE_SUCCESS'
 export const USER_UPDATE_PROFILE_FAIL = 'USER_UPDATE_PROFILE_FAIL'
-export const USER_UPDATE_PROFILE_RESET = 'USER_UPDATE_PROFILE_RESET'
-
-export const USER_LIST_REQUEST = 'USER_LIST_REQUEST'
-export const USER_LIST_SUCCESS = 'USER_LIST_SUCCESS'
-export const USER_LIST_FAIL = 'USER_LIST_FAIL'
-export const USER_LIST_RESET = 'USER_LIST_RESET'
+export const USER_UPDATE_PROFILE_RESET = 'USER_UPDATE_RESET'
 
 export const USER_DELETE_REQUEST = 'USER_DELETE_REQUEST'
 export const USER_DELETE_SUCCESS = 'USER_DELETE_SUCCESS'
@@ -90,23 +85,6 @@ export const userUpdateProfileReducer = (state = {}, action) => {
 			return { loading: false, success: true, userInfo: action.payload }
 		case USER_UPDATE_PROFILE_FAIL:
 			return { loading: false, error: action.payload }
-		case USER_UPDATE_PROFILE_RESET:
-			return {}
-		default:
-			return state
-	}
-}
-
-export const userListReducer = (state = { users: [] }, action) => {
-	switch (action.type) {
-		case USER_LIST_REQUEST:
-			return { loading: true }
-		case USER_LIST_SUCCESS:
-			return { loading: false, users: action.payload }
-		case USER_LIST_FAIL:
-			return { loading: false, error: action.payload }
-		case USER_LIST_RESET:
-			return { users: [] }
 		default:
 			return state
 	}
@@ -144,7 +122,7 @@ export const userUpdateReducer = (state = { user: {} }, action) => {
 
 //ACTIONS
 
-export const login = (email, password) => async dispatch => {
+export const loginAction = (email, password) => async dispatch => {
 	try {
 		dispatch({
 			type: USER_LOGIN_REQUEST,
@@ -175,18 +153,17 @@ export const login = (email, password) => async dispatch => {
 	}
 }
 
-export const logout = () => dispatch => {
+export const logoutAction = () => dispatch => {
 	localStorage.removeItem('userInfo')
 	localStorage.removeItem('cartItems')
 	localStorage.removeItem('shippingAddress')
 	localStorage.removeItem('paymentMethod')
 	dispatch({ type: USER_LOGOUT })
 	dispatch({ type: USER_DETAILS_RESET })
-	dispatch({ type: USER_LIST_RESET })
 	document.location.href = '/login'
 }
 
-export const register = (name, email, password) => async dispatch => {
+export const registerAction = (name, email, password) => async dispatch => {
 	try {
 		dispatch({
 			type: USER_REGISTER_REQUEST,
@@ -222,7 +199,7 @@ export const register = (name, email, password) => async dispatch => {
 	}
 }
 
-export const getUserDetails = id => async (dispatch, getState) => {
+export const getUserDetailsAction = id => async (dispatch, getState) => {
 	try {
 		dispatch({
 			type: USER_DETAILS_REQUEST,
@@ -250,7 +227,7 @@ export const getUserDetails = id => async (dispatch, getState) => {
 				? error.response.data.message
 				: error.message
 		if (message === 'You cannot PASS!!') {
-			dispatch(logout())
+			dispatch(logoutAction())
 		}
 		dispatch({
 			type: USER_DETAILS_FAIL,
@@ -259,7 +236,7 @@ export const getUserDetails = id => async (dispatch, getState) => {
 	}
 }
 
-export const updateUserProfile = user => async (dispatch, getState) => {
+export const updateUserProfileAction = user => async (dispatch, getState) => {
 	try {
 		dispatch({
 			type: USER_UPDATE_PROFILE_REQUEST,
@@ -293,7 +270,7 @@ export const updateUserProfile = user => async (dispatch, getState) => {
 				? error.response.data.message
 				: error.message
 		if (message === 'You cannot PASS!!') {
-			dispatch(logout())
+			dispatch(logoutAction())
 		}
 		dispatch({
 			type: USER_UPDATE_PROFILE_FAIL,
@@ -302,44 +279,7 @@ export const updateUserProfile = user => async (dispatch, getState) => {
 	}
 }
 
-export const listUsers = () => async (dispatch, getState) => {
-	try {
-		dispatch({
-			type: USER_LIST_REQUEST,
-		})
-
-		const {
-			userLogin: { userInfo },
-		} = getState()
-
-		const config = {
-			headers: {
-				Authorization: `Bearer ${userInfo.token}`,
-			},
-		}
-
-		const { data } = await axios.get(`/api/users`, config)
-
-		dispatch({
-			type: USER_LIST_SUCCESS,
-			payload: data,
-		})
-	} catch (error) {
-		const message =
-			error.response && error.response.data.message
-				? error.response.data.message
-				: error.message
-		if (message === 'You cannot PASS!!') {
-			dispatch(logout())
-		}
-		dispatch({
-			type: USER_LIST_FAIL,
-			payload: message,
-		})
-	}
-}
-
-export const deleteUser = id => async (dispatch, getState) => {
+export const deleteUserAction = id => async (dispatch, getState) => {
 	try {
 		dispatch({
 			type: USER_DELETE_REQUEST,
@@ -364,7 +304,7 @@ export const deleteUser = id => async (dispatch, getState) => {
 				? error.response.data.message
 				: error.message
 		if (message === 'You cannot PASS!!') {
-			dispatch(logout())
+			dispatch(logoutAction())
 		}
 		dispatch({
 			type: USER_DELETE_FAIL,
@@ -373,7 +313,7 @@ export const deleteUser = id => async (dispatch, getState) => {
 	}
 }
 
-export const updateUser = user => async (dispatch, getState) => {
+export const updateUserAction = user => async (dispatch, getState) => {
 	try {
 		dispatch({
 			type: USER_UPDATE_REQUEST,
@@ -403,7 +343,7 @@ export const updateUser = user => async (dispatch, getState) => {
 				? error.response.data.message
 				: error.message
 		if (message === 'You cannot PASS!!') {
-			dispatch(logout())
+			dispatch(logoutAction())
 		}
 		dispatch({
 			type: USER_UPDATE_FAIL,

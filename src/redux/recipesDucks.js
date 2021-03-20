@@ -1,35 +1,36 @@
 import backend from '../services/apiServices'
-import { logout } from './authDucks'
+import { logoutAction } from './authDucks'
 
 //Types
 
-const GET_ALL_RECIPES_REQUEST = 'GET_ALL_RECIPES_REQUEST'
-const GET_ALL_RECIPES = 'GET_ALL_RECIPES'
-const GET_ALL_RECIPES_ERROR = 'GET_ALL_RECIPES_ERROR'
+export const GET_ALL_RECIPES_REQUEST = 'GET_ALL_RECIPES_REQUEST'
+export const GET_ALL_RECIPES_SUCCESS = 'GET_ALL_RECIPES_SUCCESS'
+export const GET_ALL_RECIPES_ERROR = 'GET_ALL_RECIPES_ERROR'
 
-const GET_RECIPE_REQUEST = 'GET_RECIPE_REQUEST'
-const GET_RECIPE = 'GET_RECIPE'
-const GET_RECIPE_ERROR = 'GET_RECIPE_ERROR'
+export const GET_RECIPE_REQUEST = 'GET_RECIPE_REQUEST'
+export const GET_RECIPE_SUCCESS = 'GET_RECIPE_SUCCESS'
+export const GET_RECIPE_ERROR = 'GET_RECIPE_ERROR'
 
-const CREATE_RECIPE_REQUEST = 'CREATE_RECIPE_REQUEST'
-const CREATE_RECIPE = 'CREATE_RECIPE'
-const CREATE_RECIPE_ERROR = 'CREATE_RECIPE_ERROR'
+export const CREATE_RECIPE_REQUEST = 'CREATE_RECIPE_REQUEST'
+export const CREATE_RECIPE_SUCCESS = 'CREATE_RECIPE_SUCCESS'
+export const CREATE_RECIPE_ERROR = 'CREATE_RECIPE_ERROR'
 
-const UPDATE_RECIPE_REQUEST = 'UPDATE_RECIPE_REQUEST'
-const UPDATE_RECIPE = 'UPDATE_RECIPE'
-const UPDATE_RECIPE_ERROR = 'UPDATE_RECIPE_ERROR'
+export const UPDATE_RECIPE_REQUEST = 'UPDATE_RECIPE_REQUEST'
+export const UPDATE_RECIPE_SUCCESS = 'UPDATE_RECIPE_SUCCESS'
+export const UPDATE_RECIPE_ERROR = 'UPDATE_RECIPE_ERROR'
 
-const DELETE_RECIPE_REQUEST = 'DELETE_RECIPE_REQUEST'
-const DELETE_RECIPE = 'DELETE_RECIPE'
-const DELETE_RECIPE_ERROR = 'DELETE_RECIPE_ERROR'
+export const DELETE_RECIPE_REQUEST = 'DELETE_RECIPE_REQUEST'
+export const DELETE_RECIPE_SUCCESS = 'DELETE_RECIPE_SUCCESS'
+export const DELETE_RECIPE_ERROR = 'DELETE_RECIPE_ERROR'
 
-const GET_TOP_RECIPES_REQUEST = 'GET_TOP_RECIPES_REQUEST'
-const GET_TOP_RECIPES = 'GET_TOP_RECIPES'
-const GET_TOP_RECIPES_ERROR = 'GET_TOP_RECIPES_ERROR'
+export const GET_TOP_RECIPES_REQUEST = 'GET_TOP_RECIPES_REQUEST'
+export const GET_TOP_RECIPES_SUCCESS = 'GET_TOP_RECIPES_SUCCESS'
+export const GET_TOP_RECIPES_ERROR = 'GET_TOP_RECIPES_ERROR'
 
-const CREATE_RECIPE_REVIEW_REQUEST = 'CREATE_RECIPE_REVIEW_REQUEST'
-const CREATE_RECIPE_REVIEW = 'CREATE_RECIPE_REVIEW'
-const CREATE_RECIPE_REVIEW_ERROR = 'CREATE_RECIPE_REVIEW_ERROR'
+export const CREATE_RECIPE_REVIEW_REQUEST = 'CREATE_RECIPE_REVIEW_REQUEST'
+export const CREATE_RECIPE_REVIEW_SUCCESS = 'CREATE_RECIPE_REVIEW_SUCCESS'
+export const CREATE_RECIPE_REVIEW_ERROR = 'CREATE_RECIPE_REVIEW_ERROR'
+export const CREATE_RECIPE_REVIEW_RESET = 'CREATE_RECIPE_REVIEW_RESET'
 
 //Reducer
 
@@ -37,12 +38,12 @@ export const recipesListReducer = (state = { recipes: [] }, action) => {
 	switch (action.type) {
 		case GET_ALL_RECIPES_REQUEST:
 			return { loading: true, recipes: [] }
-		case GET_ALL_RECIPES:
+		case GET_ALL_RECIPES_SUCCESS:
 			return {
 				loading: false,
-				recipes: action.payload.recipes,
-				pages: action.payload.pages,
-				page: action.payload.page,
+				recipes: action.payload,
+				pages: action.payload,
+				page: action.payload,
 			}
 		case GET_ALL_RECIPES_ERROR:
 			return { loading: false, error: action.payload }
@@ -55,7 +56,7 @@ export const recipesDetailsReducer = (state = { recipe: { reviews: [] } }, actio
 	switch (action.type) {
 		case GET_RECIPE_REQUEST:
 			return { ...state, loading: true }
-		case GET_RECIPE:
+		case GET_RECIPE_SUCCESS:
 			return { loading: false, recipe: action.payload }
 		case GET_RECIPE_ERROR:
 			return { loading: false, error: action.payload }
@@ -68,7 +69,7 @@ export const recipeCreateReducer = (state = {}, action) => {
 	switch (action.type) {
 		case CREATE_RECIPE_REQUEST:
 			return { loading: true }
-		case CREATE_RECIPE:
+		case CREATE_RECIPE_SUCCESS:
 			return { loading: false, success: true, recipe: action.payload }
 		case CREATE_RECIPE_ERROR:
 			return { loading: false, error: action.payload }
@@ -81,7 +82,7 @@ export const recipeUpdateReducer = (state = { recipe: {} }, action) => {
 	switch (action.type) {
 		case UPDATE_RECIPE_REQUEST:
 			return { loading: true }
-		case UPDATE_RECIPE:
+		case UPDATE_RECIPE_SUCCESS:
 			return { loading: true, success: true, recipe: action.payload }
 		case UPDATE_RECIPE_ERROR:
 			return { loading: false, error: action.payload }
@@ -94,7 +95,7 @@ export const recipeDeleteReducer = (state = {}, action) => {
 	switch (action.type) {
 		case DELETE_RECIPE_REQUEST:
 			return { loading: true }
-		case DELETE_RECIPE:
+		case DELETE_RECIPE_SUCCESS:
 			return { loading: false, success: true }
 		case DELETE_RECIPE_ERROR:
 			return { loading: false, error: action.payload }
@@ -107,7 +108,7 @@ export const recipeTopReviewReducer = (state = { recipes: [] }, action) => {
 	switch (action.type) {
 		case GET_TOP_RECIPES_REQUEST:
 			return { loading: true, recipes: [] }
-		case GET_TOP_RECIPES:
+		case GET_TOP_RECIPES_SUCCESS:
 			return { loading: false, recipes: action.payload }
 		case GET_TOP_RECIPES_ERROR:
 			return { loading: false, error: action.payload }
@@ -121,17 +122,19 @@ export const recipeReviewCreateReducer = (state = {}, action) => {
 	switch (action.type) {
 		case CREATE_RECIPE_REVIEW_REQUEST:
 			return { loading: true }
-		case CREATE_RECIPE_REVIEW:
+		case CREATE_RECIPE_REVIEW_SUCCESS:
 			return { loading: false, success: true }
 		case CREATE_RECIPE_REVIEW_ERROR:
 			return { loading: false, error: action.payload }
+		case CREATE_RECIPE_REVIEW_RESET:
+			return {}
 		default:
 			return state
 	}
 }
 //Actions
 
-export const listRecipes = (keyword = '', pageNumber = '') => async dispatch => {
+export const listRecipesAction = (keyword = '', pageNumber = '') => async dispatch => {
 	try {
 		dispatch({ type: GET_ALL_RECIPES_REQUEST })
 
@@ -140,7 +143,7 @@ export const listRecipes = (keyword = '', pageNumber = '') => async dispatch => 
 		)
 
 		dispatch({
-			type: GET_ALL_RECIPES,
+			type: GET_ALL_RECIPES_SUCCESS,
 			payload: data,
 		})
 	} catch (error) {
@@ -154,16 +157,16 @@ export const listRecipes = (keyword = '', pageNumber = '') => async dispatch => 
 	}
 }
 
-export const listRecipesDetails = id => async dispatch => {
+export const listRecipesDetailsAction = id => async dispatch => {
 	try {
 		dispatch({
-			type: GET_ALL_RECIPES,
+			type: GET_ALL_RECIPES_SUCCESS,
 		})
 
 		const { data } = await backend.get(`/api/recipes/${id}`)
 
 		dispatch({
-			type: GET_RECIPE,
+			type: GET_RECIPE_SUCCESS,
 			payload: data,
 		})
 	} catch (error) {
@@ -177,7 +180,7 @@ export const listRecipesDetails = id => async dispatch => {
 	}
 }
 
-export const createRecipe = () => async (dispatch, getState) => {
+export const createRecipeAction = () => async (dispatch, getState) => {
 	try {
 		dispatch({
 			type: CREATE_RECIPE_REQUEST,
@@ -196,7 +199,7 @@ export const createRecipe = () => async (dispatch, getState) => {
 		const { data } = await backend.post(`/api/recipes`, {}, config)
 
 		dispatch({
-			type: CREATE_RECIPE,
+			type: CREATE_RECIPE_SUCCESS,
 			payload: data,
 		})
 	} catch (error) {
@@ -205,7 +208,7 @@ export const createRecipe = () => async (dispatch, getState) => {
 				? error.response.data.message
 				: error.message
 		if (message === 'You cannot PASS!!') {
-			dispatch(logout())
+			dispatch(logoutAction())
 		}
 		dispatch({
 			type: CREATE_RECIPE_ERROR,
@@ -214,7 +217,7 @@ export const createRecipe = () => async (dispatch, getState) => {
 	}
 }
 
-export const updateRecipe = recipe => async (dispatch, getState) => {
+export const updateRecipeAction = recipe => async (dispatch, getState) => {
 	try {
 		dispatch({
 			type: UPDATE_RECIPE_REQUEST,
@@ -234,12 +237,12 @@ export const updateRecipe = recipe => async (dispatch, getState) => {
 		const { data } = await backend.put(`/api/recipes/${recipe._id}`, recipe, config)
 
 		dispatch({
-			type: UPDATE_RECIPE,
+			type: UPDATE_RECIPE_SUCCESS,
 			payload: data,
 		})
 
 		dispatch({
-			type: GET_RECIPE,
+			type: GET_RECIPE_SUCCESS,
 			payload: data,
 		})
 	} catch (error) {
@@ -248,7 +251,7 @@ export const updateRecipe = recipe => async (dispatch, getState) => {
 				? error.response.data.message
 				: error.message
 		if (message === 'You cannot PASS!!') {
-			dispatch(logout())
+			dispatch(logoutAction())
 		}
 		dispatch({
 			type: UPDATE_RECIPE_ERROR,
@@ -257,7 +260,7 @@ export const updateRecipe = recipe => async (dispatch, getState) => {
 	}
 }
 
-export const deleteRecipe = id => async (dispatch, getState) => {
+export const deleteRecipeAction = id => async (dispatch, getState) => {
 	try {
 		dispatch({
 			type: DELETE_RECIPE_REQUEST,
@@ -275,7 +278,7 @@ export const deleteRecipe = id => async (dispatch, getState) => {
 		await backend.delete(`/api/recipes/${id}`, config)
 
 		dispatch({
-			type: DELETE_RECIPE,
+			type: DELETE_RECIPE_SUCCESS,
 		})
 	} catch (error) {
 		const message =
@@ -283,7 +286,7 @@ export const deleteRecipe = id => async (dispatch, getState) => {
 				? error.response.data.message
 				: error.message
 		if (message === 'You cannot PASS!!') {
-			dispatch(logout())
+			dispatch(logoutAction())
 		}
 		dispatch({
 			type: DELETE_RECIPE_ERROR,
@@ -292,7 +295,10 @@ export const deleteRecipe = id => async (dispatch, getState) => {
 	}
 }
 
-export const createRecipeReview = (recipeId, review) => async (dispatch, getState) => {
+export const createRecipeReviewAction = (recipeId, review) => async (
+	dispatch,
+	getState
+) => {
 	try {
 		dispatch({
 			type: CREATE_RECIPE_REQUEST,
@@ -312,7 +318,7 @@ export const createRecipeReview = (recipeId, review) => async (dispatch, getStat
 		await backend.post(`/api/recipes/${recipeId}/reviews`, review, config)
 
 		dispatch({
-			type: CREATE_RECIPE,
+			type: CREATE_RECIPE_SUCCESS,
 		})
 	} catch (error) {
 		const message =
@@ -320,7 +326,7 @@ export const createRecipeReview = (recipeId, review) => async (dispatch, getStat
 				? error.response.data.message
 				: error.message
 		if (message === 'You cannot PASS!!') {
-			dispatch(logout())
+			dispatch(logoutAction())
 		}
 		dispatch({
 			type: CREATE_RECIPE_ERROR,
@@ -329,7 +335,7 @@ export const createRecipeReview = (recipeId, review) => async (dispatch, getStat
 	}
 }
 
-export const listTopRecipes = () => async dispatch => {
+export const listTopRecipesAction = () => async dispatch => {
 	try {
 		dispatch({
 			type: GET_TOP_RECIPES_REQUEST,
@@ -338,7 +344,7 @@ export const listTopRecipes = () => async dispatch => {
 		const { data } = await backend.get('/api/recipes/top')
 
 		dispatch({
-			type: GET_TOP_RECIPES,
+			type: GET_TOP_RECIPES_SUCCESS,
 			payload: data,
 		})
 	} catch (error) {

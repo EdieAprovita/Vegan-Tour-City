@@ -1,35 +1,37 @@
 import backend from '../services/apiServices'
-import { logout } from './authDucks'
+import { logoutAction } from './authDucks'
+import { CREATE_REVIEW_MARKET_RESET } from './marketsDucks'
 
 //Types
 
-const GET_ALL_BUSINESSES_REQUEST = 'GET_ALL_BUSINESSES_REQUEST'
-const GET_ALL_BUSINESSES = 'GET_ALL_BUSINESSES'
-const GET_ALL_BUSINESSES_ERROR = 'GET_ALL_BUSINESSES_ERROR'
+export const GET_ALL_BUSINESSES_REQUEST = 'GET_ALL_BUSINESSES_REQUEST'
+export const GET_ALL_BUSINESSES = 'GET_ALL_BUSINESSES'
+export const GET_ALL_BUSINESSES_ERROR = 'GET_ALL_BUSINESSES_ERROR'
 
-const GET_BUSINESS_REQUEST = 'GET_ALL_BUSINESS_REQUEST'
-const GET_BUSINESS = 'GET_ALL_BUSINESS'
-const GET_BUSINESS_ERROR = 'GET_BUSINESS_ERROR'
+export const GET_BUSINESS_REQUEST = 'GET_ALL_BUSINESS_REQUEST'
+export const GET_BUSINESS = 'GET_ALL_BUSINESS'
+export const GET_BUSINESS_ERROR = 'GET_BUSINESS_ERROR'
 
-const CREATE_BUSINESS_REQUEST = 'CREATE_BUSINESS_REQUEST'
-const CREATE_BUSINESS = 'CREATE_BUSINESS'
-const CREATE_BUSINESS_ERROR = 'CREATE_BUSINESS_ERROR'
+export const CREATE_BUSINESS_REQUEST = 'CREATE_BUSINESS_REQUEST'
+export const CREATE_BUSINESS = 'CREATE_BUSINESS'
+export const CREATE_BUSINESS_ERROR = 'CREATE_BUSINESS_ERROR'
 
-const UPDATE_BUSINESS_REQUEST = 'UPDATE_BUSINESS_REQUEST'
-const UPDATE_BUSINESS = 'UPDATE_BUSINESS'
-const UPDATE_BUSINESS_ERROR = 'UPDATE_BUSINESS_ERROR'
+export const UPDATE_BUSINESS_REQUEST = 'UPDATE_BUSINESS_REQUEST'
+export const UPDATE_BUSINESS = 'UPDATE_BUSINESS'
+export const UPDATE_BUSINESS_ERROR = 'UPDATE_BUSINESS_ERROR'
 
-const DELETE_BUSINESS_REQUEST = 'DELETE_BUSINESS_REQUEST'
-const DELETE_BUSINESS = 'DELETE_BUSINESS'
-const DELETE_BUSINESS_ERROR = 'DELETE_BUSINESS_ERROR'
+export const DELETE_BUSINESS_REQUEST = 'DELETE_BUSINESS_REQUEST'
+export const DELETE_BUSINESS = 'DELETE_BUSINESS'
+export const DELETE_BUSINESS_ERROR = 'DELETE_BUSINESS_ERROR'
 
-const GET_TOP_BUSINESS_REQUEST = 'GET_TOP_BUSINESS_REQUEST'
-const GET_TOP_BUSINESS = 'GET_TOP_BUSINESS'
-const GET_TOP_BUSINESS_ERROR = 'GET_TOP_BUSINESS_ERROR'
+export const GET_TOP_BUSINESS_REQUEST = 'GET_TOP_BUSINESS_REQUEST'
+export const GET_TOP_BUSINESS = 'GET_TOP_BUSINESS'
+export const GET_TOP_BUSINESS_ERROR = 'GET_TOP_BUSINESS_ERROR'
 
-const CREATE_BUSINESS_REVIEW_REQUEST = 'CREATEBUSINESSREVIEW_REQUEST'
-const CREATE_BUSINESS_REVIEW = 'CREATEBUSINESSREVIEW'
-const CREATE_BUSINESS_REVIEW_ERROR = 'CREATEBUSINESSREVIEW_ERROR'
+export const CREATE_BUSINESS_REVIEW_REQUEST = 'CREATEBUSINESSREVIEW_REQUEST'
+export const CREATE_BUSINESS_REVIEW = 'CREATEBUSINESSREVIEW'
+export const CREATE_BUSINESS_REVIEW_ERROR = 'CREATEBUSINESSREVIEW_ERROR'
+export const CREATE_BUSINESS_REVIEW_RESET = 'CREATEBUSINESSREVIEW_RESET'
 
 //Reducer
 
@@ -128,13 +130,15 @@ export const businessReviewCreateReducer = (state = {}, action) => {
 			return { loading: false, success: true }
 		case CREATE_BUSINESS_REVIEW_ERROR:
 			return { loading: false, error: action.payload }
+		case CREATE_REVIEW_MARKET_RESET:
+			return {}
 		default:
 			return state
 	}
 }
 //Actions
 
-export const listBusinesses = (keyword = '', pageNumber = '') => async dispatch => {
+export const listBusinessesAction = (keyword = '', pageNumber = '') => async dispatch => {
 	try {
 		dispatch({ type: GET_ALL_BUSINESSES_REQUEST })
 
@@ -157,7 +161,7 @@ export const listBusinesses = (keyword = '', pageNumber = '') => async dispatch 
 	}
 }
 
-export const listBusinessesDetails = id => async dispatch => {
+export const listBusinessesDetailsAction = id => async dispatch => {
 	try {
 		dispatch({
 			type: GET_ALL_BUSINESSES,
@@ -180,7 +184,7 @@ export const listBusinessesDetails = id => async dispatch => {
 	}
 }
 
-export const createBusiness = () => async (dispatch, getState) => {
+export const createBusinessAction = () => async (dispatch, getState) => {
 	try {
 		dispatch({
 			type: CREATE_BUSINESS_REQUEST,
@@ -208,7 +212,7 @@ export const createBusiness = () => async (dispatch, getState) => {
 				? error.response.data.message
 				: error.message
 		if (message === 'You cannot PASS!!') {
-			dispatch(logout())
+			dispatch(logoutAction())
 		}
 		dispatch({
 			type: CREATE_BUSINESS_ERROR,
@@ -217,7 +221,7 @@ export const createBusiness = () => async (dispatch, getState) => {
 	}
 }
 
-export const updateBusiness = business => async (dispatch, getState) => {
+export const updateBusinessAction = business => async (dispatch, getState) => {
 	try {
 		dispatch({
 			type: UPDATE_BUSINESS_REQUEST,
@@ -255,7 +259,7 @@ export const updateBusiness = business => async (dispatch, getState) => {
 				? error.response.data.message
 				: error.message
 		if (message === 'You cannot PASS!!') {
-			dispatch(logout())
+			dispatch(logoutAction())
 		}
 		dispatch({
 			type: UPDATE_BUSINESS_ERROR,
@@ -264,7 +268,7 @@ export const updateBusiness = business => async (dispatch, getState) => {
 	}
 }
 
-export const deleteBusiness = id => async (dispatch, getState) => {
+export const deleteBusinessAction = id => async (dispatch, getState) => {
 	try {
 		dispatch({
 			type: DELETE_BUSINESS_REQUEST,
@@ -290,7 +294,7 @@ export const deleteBusiness = id => async (dispatch, getState) => {
 				? error.response.data.message
 				: error.message
 		if (message === 'You cannot PASS!!') {
-			dispatch(logout())
+			dispatch(logoutAction())
 		}
 		dispatch({
 			type: DELETE_BUSINESS_ERROR,
@@ -299,7 +303,7 @@ export const deleteBusiness = id => async (dispatch, getState) => {
 	}
 }
 
-export const createBusinessReview = (businessId, review) => async (
+export const createBusinessReviewAction = (businessId, review) => async (
 	dispatch,
 	getState
 ) => {
@@ -330,7 +334,7 @@ export const createBusinessReview = (businessId, review) => async (
 				? error.response.data.message
 				: error.message
 		if (message === 'You cannot PASS!!') {
-			dispatch(logout())
+			dispatch(logoutAction())
 		}
 		dispatch({
 			type: CREATE_BUSINESS_REVIEW_ERROR,
@@ -339,7 +343,7 @@ export const createBusinessReview = (businessId, review) => async (
 	}
 }
 
-export const listTopBusinesses = () => async dispatch => {
+export const listTopBusinessesAction = () => async dispatch => {
 	try {
 		dispatch({
 			type: GET_TOP_BUSINESS_REQUEST,
