@@ -251,7 +251,7 @@ export const updateMarketAction = market => async (dispatch, getState) => {
 				? error.response.data.message
 				: error.message
 		if (message === 'You cannot PASS!!') {
-			dispatch(logout())
+			dispatch(logoutAction())
 		}
 		dispatch({
 			type: UPDATE_MARKET_ERROR,
@@ -286,7 +286,7 @@ export const deleteMarketAction = id => async (dispatch, getState) => {
 				? error.response.data.message
 				: error.message
 		if (message === 'You cannot PASS!!') {
-			dispatch(logout())
+			dispatch(logoutAction())
 		}
 		dispatch({
 			type: DELETE_MARKET_ERROR,
@@ -326,7 +326,7 @@ export const createMarketReviewAction = (marketId, review) => async (
 				? error.response.data.message
 				: error.message
 		if (message === 'You cannot PASS!!') {
-			dispatch(logout())
+			dispatch(logoutAction())
 		}
 		dispatch({
 			type: CREATE_REVIEW_MARKET_ERROR,
