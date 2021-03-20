@@ -1,5 +1,5 @@
 import backend from '../services/apiServices'
-import { logout } from './authDucks'
+import { logoutAction } from './authDucks'
 
 //Types
 
@@ -208,7 +208,7 @@ export const createMarketAction = () => async (dispatch, getState) => {
 				? error.response.data.message
 				: error.message
 		if (message === 'You cannot PASS!!') {
-			dispatch(logout())
+			dispatch(logoutAction())
 		}
 		dispatch({
 			type: CREATE_MARKET_ERROR,

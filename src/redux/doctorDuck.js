@@ -1,6 +1,6 @@
 import backend from '../services/apiServices'
 
-import { logout, logoutAction } from './authDucks'
+import { logoutAction } from './authDucks'
 
 //Types
 

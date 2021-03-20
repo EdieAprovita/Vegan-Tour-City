@@ -1,6 +1,6 @@
 import backend from '../services/apiServices'
 
-import { logout } from './authDucks'
+import { logoutAction } from './authDucks'
 
 //Types
 
@@ -215,7 +215,7 @@ export const createRestaurantAction = () => async (dispatch, getState) => {
 				? error.response.data.message
 				: error.message
 		if (message === 'You cannot PASS!!') {
-			dispatch(logout())
+			dispatch(logoutAction())
 		}
 		dispatch({
 			type: CREATE_RESTAURANT_ERROR,
@@ -262,7 +262,7 @@ export const updateRestaurantAction = restaurant => async (dispatch, getState) =
 				? error.response.data.message
 				: error.message
 		if (message === 'You cannot PASS!!') {
-			dispatch(logout())
+			dispatch(logoutAction())
 		}
 		dispatch({
 			type: UPDATE_RESTAURANT_ERROR,
@@ -297,7 +297,7 @@ export const deleteRestaurantAction = id => async (dispatch, getState) => {
 				? error.response.data.message
 				: error.message
 		if (message === 'You cannot PASS!!') {
-			dispatch(logout())
+			dispatch(logoutAction())
 		}
 		dispatch({
 			type: DELETE_RESTAURANT_ERROR,
@@ -337,7 +337,7 @@ export const createRestaurantReviewAction = (restaurantId, review) => async (
 				? error.response.data.message
 				: error.message
 		if (message === 'You cannot PASS!!') {
-			dispatch(logout())
+			dispatch(logoutAction())
 		}
 		dispatch({
 			type: CREATE_RESTAURANT_REVIEW_ERROR,

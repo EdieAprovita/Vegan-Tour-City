@@ -16,7 +16,6 @@ import {
 	userRegisterReducer,
 	userDetailsReducer,
 	userUpdateProfileReducer,
-	userListReducer,
 	userDeleteReducer,
 	userUpdateReducer,
 } from './authDucks'
@@ -51,12 +50,21 @@ import {
 	restaurantReviewCreateReducer,
 } from './restaurantsDucks'
 
+import {
+	doctorListReducer,
+	doctorsDetailsReducer,
+	doctorCreateReducer,
+	doctorUpdateReducer,
+	doctorDeleteReducer,
+	doctorTopReviewReducer,
+	doctorReviewCreateReducer,
+} from './doctorDuck'
+
 const rootReducer = combineReducers({
 	userLogin: userLoginReducer,
 	userRegister: userRegisterReducer,
 	userDetails: userDetailsReducer,
 	userUpdateProfile: userUpdateProfileReducer,
-	userList: userListReducer,
 	userDelete: userDeleteReducer,
 	userUpdate: userUpdateReducer,
 
@@ -91,6 +99,14 @@ const rootReducer = combineReducers({
 	restaurantDelete: restaurantDeleteReducer,
 	restaurantTop: restaurantTopReviewReducer,
 	restaurantReview: restaurantReviewCreateReducer,
+
+	doctorsList: doctorListReducer,
+	doctorDetail: doctorsDetailsReducer,
+	doctorCreate: doctorCreateReducer,
+	doctorUpdate: doctorUpdateReducer,
+	doctorDelete: doctorDeleteReducer,
+	doctorTop: doctorTopReviewReducer,
+	doctorCreateReview: doctorReviewCreateReducer,
 })
 
 const userInfoFromStorage = localStorage.getItem('userInfo')
