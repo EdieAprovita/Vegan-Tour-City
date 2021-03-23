@@ -16,22 +16,27 @@ const Header = () => {
 						</LinkContainer>
 						<LinkContainer to='/restaurantes'>
 							<Nav.Link>
-								<i className='fas fa-utensils'></i>Restaurantes
+								<i className='fas fa-utensils px-2'></i>Restaurantes
 							</Nav.Link>
 						</LinkContainer>
 						<LinkContainer to='mercados'>
 							<Nav.Link>
-								<i className='fas fa-shopping-cart'></i>Mercados
+								<i className='fas fa-shopping-cart px-2'></i>Mercados
 							</Nav.Link>
 						</LinkContainer>
 						<LinkContainer to='/negocios'>
 							<Nav.Link>
-								<i className='fas fa-cash-register'></i>Negocios
+								<i className='fas fa-cash-register px-2'></i>Negocios
 							</Nav.Link>
 						</LinkContainer>
 						<LinkContainer to='recetas'>
 							<Nav.Link>
-								<i className='fas fa-cookie-bite'></i>Recetas
+								<i className='fas fa-cookie-bite px-2'></i>Recetas
+							</Nav.Link>
+						</LinkContainer>
+						<LinkContainer to='doctores'>
+							<Nav.Link>
+								<i class='fas fa-notes-medical px-2'></i>Doctores
 							</Nav.Link>
 						</LinkContainer>
 					</Nav>
