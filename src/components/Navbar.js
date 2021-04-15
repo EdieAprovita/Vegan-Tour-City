@@ -1,19 +1,31 @@
 import { Navbar, Nav, Container } from 'react-bootstrap'
+import { Route } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
+import SearchBox from './SearchBox'
+import { logoutAction } from '../redux/authDucks'
 
 const Header = () => {
+	const dispatch = useDispatch()
+
+	const userLogin = useSelector(state => state.userLogin)
+	const { userInfo } = userLogin
+
+	const logoutHandler = () => {
+		dispatch(logoutAction())
+	}
 	return (
 		<Navbar bg='dark' variant='dark' expand='lg' collapseOnSelect>
-			<Container>
+			<Container fluid>
 				<LinkContainer to='/'>
-					<Navbar.Brand>Guia Vegana CDMX</Navbar.Brand>
+					<Navbar.Brand className='mr-auto'>Guia Vegana CDMX</Navbar.Brand>
 				</LinkContainer>
 				<Navbar.Toggle aria-controls='basic-navbar-nav' />
 				<Navbar.Collapse id='basic-navbar-nav'>
+					<LinkContainer to='/'>
+						<Nav.Link>Inicio</Nav.Link>
+					</LinkContainer>
 					<Nav className='ml-auto'>
-						<LinkContainer to='/'>
-							<Nav.Link>Inicio</Nav.Link>
-						</LinkContainer>
 						<LinkContainer to='/restaurantes'>
 							<Nav.Link>
 								<i className='fas fa-utensils px-2'></i>Restaurantes
