@@ -48,7 +48,7 @@ const Header = () => {
 						</LinkContainer>
 						<LinkContainer to='doctores'>
 							<Nav.Link>
-								<i class='fas fa-notes-medical px-2'></i>Doctores
+								<i className='fas fa-notes-medical px-2'></i>Doctores
 							</Nav.Link>
 						</LinkContainer>
 					</Nav>

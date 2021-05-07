@@ -7,7 +7,7 @@ import Recipes from './pages/recipes/RecipesPage'
 import Markets from './pages/markets/MarketsPage'
 import Restaurants from './pages/restaurant/RestaurantsPage'
 import Businesses from './pages/businesses/BusinessesPage'
-import Doctor from './pages/doctors/Doctors'
+import Doctor from './pages/doctors/DoctorsPage'
 import Footer from './components/Footer'
 
 import { Provider } from 'react-redux'
