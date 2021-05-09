@@ -21,7 +21,7 @@ const MarketsPage = ({ match }) => {
 	const userLogin = useSelector(state => state.userLogin)
 	const { userInfo } = userLogin
 
-	const marketReviewCreate = useSelector(state => state.marketCreateReview)
+	const marketReviewCreate = useSelector(state => state.marketsCreateReview)
 	const {
 		success: successMarketReview,
 		loading: loadingMarketReview,

@@ -24,7 +24,7 @@ const Restaurants = ({ match }) => {
 	const userLogin = useSelector(state => state.userLogin)
 	const { userInfo } = userLogin
 
-	const restaurantReviewCreate = useSelector(state => state.restaurantReviewCreate)
+	const restaurantReviewCreate = useSelector(state => state.restaurantReview)
 	const {
 		success: successRestaurantReview,
 		loading: loadingRestaurantReview,

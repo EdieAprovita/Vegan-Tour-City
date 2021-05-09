@@ -12,13 +12,13 @@ import {
 } from '../../redux/businessesDucks'
 import { CREATE_BUSINESS_REQUEST } from '../../redux/businessesDucks'
 
-const BusinessesPage = ({  match }) => {
+const BusinessesPage = ({ match }) => {
 	const [rating, setRating] = useState(0)
 	const [comment, setComment] = useState('')
 
 	const dispatch = useDispatch()
 
-	const businessDetails = useSelector(state => state.businessDetails)
+	const businessDetails = useSelector(state => state.businessesDetails)
 	const { business, loading, error } = businessDetails
 
 	const userLogin = useSelector(state => state.userLogin)

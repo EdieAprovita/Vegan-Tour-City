@@ -18,7 +18,7 @@ const Recipes = ({ match }) => {
 
 	const dispatch = useDispatch()
 
-	const recipeDetails = useSelector(state => state.recipeDetails)
+	const recipeDetails = useSelector(state => state.recipesDetails)
 	const { recipe, loading, error } = recipeDetails
 
 	const userLogin = useSelector(state => state.userLogin)
