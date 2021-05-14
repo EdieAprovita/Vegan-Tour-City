@@ -1,4 +1,4 @@
-import backend from '../services/apiServices'
+import { api } from '../services/apiServices'
 import { logoutAction } from './authDucks'
 import { CREATE_REVIEW_MARKET_RESET } from './marketsDucks'
 
@@ -138,28 +138,30 @@ export const businessReviewCreateReducer = (state = {}, action) => {
 }
 //Actions
 
-export const listBusinessesAction = (keyword = '', pageNumber = '') => async dispatch => {
-	try {
-		dispatch({ type: GET_ALL_BUSINESSES_REQUEST })
+export const listBusinessesAction =
+	(keyword = '', pageNumber = '') =>
+	async dispatch => {
+		try {
+			dispatch({ type: GET_ALL_BUSINESSES_REQUEST })
 
-		const { data } = await backend.get(
-			`/api/businesses?keyword=${keyword}&pageNumber=${pageNumber}`
-		)
+			const { data } = await api.get(
+				`/api/businesses?keyword=${keyword}&pageNumber=${pageNumber}`
+			)
 
-		dispatch({
-			type: GET_ALL_BUSINESSES,
-			payload: data,
-		})
-	} catch (error) {
-		dispatch({
-			type: GET_ALL_BUSINESSES_ERROR,
-			payload:
-				error.response && error.response.data.message
-					? error.response.data.message
-					: error.message,
-		})
+			dispatch({
+				type: GET_ALL_BUSINESSES,
+				payload: data,
+			})
+		} catch (error) {
+			dispatch({
+				type: GET_ALL_BUSINESSES_ERROR,
+				payload:
+					error.response && error.response.data.message
+						? error.response.data.message
+						: error.message,
+			})
+		}
 	}
-}
 
 export const listBusinessesDetailsAction = id => async dispatch => {
 	try {
@@ -167,7 +169,7 @@ export const listBusinessesDetailsAction = id => async dispatch => {
 			type: GET_ALL_BUSINESSES,
 		})
 
-		const { data } = await backend.get(`/api/businesses/${id}`)
+		const { data } = await api.get(`/api/businesses/${id}`)
 
 		dispatch({
 			type: GET_BUSINESS,
@@ -200,7 +202,7 @@ export const createBusinessAction = () => async (dispatch, getState) => {
 			},
 		}
 
-		const { data } = await backend.post(`/api/businesses`, {}, config)
+		const { data } = await api.post(`/api/businesses`, {}, config)
 
 		dispatch({
 			type: CREATE_BUSINESS,
@@ -238,7 +240,7 @@ export const updateBusinessAction = business => async (dispatch, getState) => {
 			},
 		}
 
-		const { data } = await backend.put(
+		const { data } = await api.put(
 			`/api/businesses/${business._id}`,
 			business,
 			config
@@ -283,7 +285,7 @@ export const deleteBusinessAction = id => async (dispatch, getState) => {
 				Authorization: `Bearer ${userInfo.token}`,
 			},
 		}
-		await backend.delete(`/api/businesses/${id}`, config)
+		await api.delete(`/api/businesses/${id}`, config)
 
 		dispatch({
 			type: DELETE_BUSINESS,
@@ -303,45 +305,43 @@ export const deleteBusinessAction = id => async (dispatch, getState) => {
 	}
 }
 
-export const createBusinessReviewAction = (businessId, review) => async (
-	dispatch,
-	getState
-) => {
-	try {
-		dispatch({
-			type: CREATE_BUSINESS_REVIEW_REQUEST,
-		})
+export const createBusinessReviewAction =
+	(businessId, review) => async (dispatch, getState) => {
+		try {
+			dispatch({
+				type: CREATE_BUSINESS_REVIEW_REQUEST,
+			})
 
-		const {
-			userLogin: { userInfo },
-		} = getState()
+			const {
+				userLogin: { userInfo },
+			} = getState()
 
-		const config = {
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${userInfo.token}`,
-			},
+			const config = {
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${userInfo.token}`,
+				},
+			}
+
+			await api.post(`/api/businesses/${businessId}/reviews`, review, config)
+
+			dispatch({
+				type: CREATE_BUSINESS_REVIEW,
+			})
+		} catch (error) {
+			const message =
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			if (message === 'You cannot PASS!!') {
+				dispatch(logoutAction())
+			}
+			dispatch({
+				type: CREATE_BUSINESS_REVIEW_ERROR,
+				payload: message,
+			})
 		}
-
-		await backend.post(`/api/businesses/${businessId}/reviews`, review, config)
-
-		dispatch({
-			type: CREATE_BUSINESS_REVIEW,
-		})
-	} catch (error) {
-		const message =
-			error.response && error.response.data.message
-				? error.response.data.message
-				: error.message
-		if (message === 'You cannot PASS!!') {
-			dispatch(logoutAction())
-		}
-		dispatch({
-			type: CREATE_BUSINESS_REVIEW_ERROR,
-			payload: message,
-		})
 	}
-}
 
 export const listTopBusinessesAction = () => async dispatch => {
 	try {
@@ -349,7 +349,7 @@ export const listTopBusinessesAction = () => async dispatch => {
 			type: GET_TOP_BUSINESS_REQUEST,
 		})
 
-		const { data } = await backend.get('/api/businesses/top')
+		const { data } = await api.get('/api/businesses/top')
 
 		dispatch({
 			type: GET_TOP_BUSINESS,

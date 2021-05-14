@@ -1,4 +1,4 @@
-import backend from '../services/apiServices'
+import { api } from '../services/apiServices'
 
 import { logoutAction } from './authDucks'
 
@@ -138,31 +138,30 @@ export const restaurantReviewCreateReducer = (state = {}, action) => {
 }
 //Actions
 
-export const listRestaurantsAction = (
-	keyword = '',
-	pageNumber = ''
-) => async dispatch => {
-	try {
-		dispatch({ type: GET_ALL_RESTAURANTS_REQUEST })
+export const listRestaurantsAction =
+	(keyword = '', pageNumber = '') =>
+	async dispatch => {
+		try {
+			dispatch({ type: GET_ALL_RESTAURANTS_REQUEST })
 
-		const { data } = await backend.get(
-			`/api/restaurants?keyword=${keyword}&pageNumber=${pageNumber}`
-		)
+			const { data } = await api.get(
+				`/api/restaurants?keyword=${keyword}&pageNumber=${pageNumber}`
+			)
 
-		dispatch({
-			type: GET_ALL_RESTAURANTS_SUCCESS,
-			payload: data,
-		})
-	} catch (error) {
-		dispatch({
-			type: GET_ALL_RESTAURANTS_ERROR,
-			payload:
-				error.response && error.response.data.message
-					? error.response.data.message
-					: error.message,
-		})
+			dispatch({
+				type: GET_ALL_RESTAURANTS_SUCCESS,
+				payload: data,
+			})
+		} catch (error) {
+			dispatch({
+				type: GET_ALL_RESTAURANTS_ERROR,
+				payload:
+					error.response && error.response.data.message
+						? error.response.data.message
+						: error.message,
+			})
+		}
 	}
-}
 
 export const listRestaurantsDetailsAction = id => async dispatch => {
 	try {
@@ -170,7 +169,7 @@ export const listRestaurantsDetailsAction = id => async dispatch => {
 			type: GET_RESTAURANT_REQUEST,
 		})
 
-		const { data } = await backend.get(`/api/restaurants/${id}`)
+		const { data } = await api.get(`/api/restaurants/${id}`)
 
 		dispatch({
 			type: GET_RESTAURANT_SUCCESS,
@@ -203,7 +202,7 @@ export const createRestaurantAction = () => async (dispatch, getState) => {
 			},
 		}
 
-		const { data } = await backend.post(`/api/restaurants`, {}, config)
+		const { data } = await api.post(`/api/restaurants`, {}, config)
 
 		dispatch({
 			type: CREATE_RESTAURANT_SUCCESS,
@@ -241,7 +240,7 @@ export const updateRestaurantAction = restaurant => async (dispatch, getState) =
 			},
 		}
 
-		const { data } = await backend.put(
+		const { data } = await api.put(
 			`/api/restaurants/${restaurant._id}`,
 			restaurant,
 			config
@@ -286,7 +285,7 @@ export const deleteRestaurantAction = id => async (dispatch, getState) => {
 				Authorization: `Bearer ${userInfo.token}`,
 			},
 		}
-		await backend.delete(`/api/restaurants/${id}`, config)
+		await api.delete(`/api/restaurants/${id}`, config)
 
 		dispatch({
 			type: DELETE_RESTAURANT_SUCCESS,
@@ -306,45 +305,43 @@ export const deleteRestaurantAction = id => async (dispatch, getState) => {
 	}
 }
 
-export const createRestaurantReviewAction = (restaurantId, review) => async (
-	dispatch,
-	getState
-) => {
-	try {
-		dispatch({
-			type: CREATE_RESTAURANT_REVIEW_REQUEST,
-		})
+export const createRestaurantReviewAction =
+	(restaurantId, review) => async (dispatch, getState) => {
+		try {
+			dispatch({
+				type: CREATE_RESTAURANT_REVIEW_REQUEST,
+			})
 
-		const {
-			userLogin: { userInfo },
-		} = getState()
+			const {
+				userLogin: { userInfo },
+			} = getState()
 
-		const config = {
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${userInfo.token}`,
-			},
+			const config = {
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${userInfo.token}`,
+				},
+			}
+
+			await api.post(`/api/restaurants/${restaurantId}/reviews`, review, config)
+
+			dispatch({
+				type: CREATE_RESTAURANT_REVIEW_SUCCESS,
+			})
+		} catch (error) {
+			const message =
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			if (message === 'You cannot PASS!!') {
+				dispatch(logoutAction())
+			}
+			dispatch({
+				type: CREATE_RESTAURANT_REVIEW_ERROR,
+				payload: message,
+			})
 		}
-
-		await backend.post(`/api/restaurants/${restaurantId}/reviews`, review, config)
-
-		dispatch({
-			type: CREATE_RESTAURANT_REVIEW_SUCCESS,
-		})
-	} catch (error) {
-		const message =
-			error.response && error.response.data.message
-				? error.response.data.message
-				: error.message
-		if (message === 'You cannot PASS!!') {
-			dispatch(logoutAction())
-		}
-		dispatch({
-			type: CREATE_RESTAURANT_REVIEW_ERROR,
-			payload: message,
-		})
 	}
-}
 
 export const listTopRestaurantsAction = () => async dispatch => {
 	try {
@@ -352,7 +349,7 @@ export const listTopRestaurantsAction = () => async dispatch => {
 			type: GET_TOP_RESTAURANT_REQUEST,
 		})
 
-		const { data } = await backend.get('/api/restaurants/top')
+		const { data } = await api.get('/api/restaurants/top')
 
 		dispatch({
 			type: GET_TOP_RESTAURANT_SUCCESS,

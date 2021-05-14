@@ -1,4 +1,4 @@
-import backend from '../services/apiServices'
+import { api } from '../services/apiServices'
 
 import { logoutAction } from './authDucks'
 
@@ -135,28 +135,30 @@ export const doctorReviewCreateReducer = (state = {}, action) => {
 
 //Actions
 
-export const listDoctorsAction = (keyword = '', pageNumber = '') => async dispatch => {
-	try {
-		dispatch({ type: GET_ALL_DOCTORS_REQUEST })
+export const listDoctorsAction =
+	(keyword = '', pageNumber = '') =>
+	async dispatch => {
+		try {
+			dispatch({ type: GET_ALL_DOCTORS_REQUEST })
 
-		const { data } = await backend.get(
-			`/api/doctors?keyword=${keyword}&pageNumber=${pageNumber}`
-		)
+			const { data } = await api.get(
+				`/api/doctors?keyword=${keyword}&pageNumber=${pageNumber}`
+			)
 
-		dispatch({
-			type: GET_ALL_DOCTORS_SUCCESS,
-			payload: data,
-		})
-	} catch (error) {
-		dispatch({
-			type: GET_ALL_DOCTORS_ERROR,
-			payload:
-				error.response && error.response.data.message
-					? error.response.data.message
-					: error.message,
-		})
+			dispatch({
+				type: GET_ALL_DOCTORS_SUCCESS,
+				payload: data,
+			})
+		} catch (error) {
+			dispatch({
+				type: GET_ALL_DOCTORS_ERROR,
+				payload:
+					error.response && error.response.data.message
+						? error.response.data.message
+						: error.message,
+			})
+		}
 	}
-}
 
 export const listDoctorsDetailsAction = id => async dispatch => {
 	try {
@@ -164,7 +166,7 @@ export const listDoctorsDetailsAction = id => async dispatch => {
 			type: GET_ALL_DOCTORS_SUCCESS,
 		})
 
-		const { data } = await backend.get(`/api/doctors/${id}`)
+		const { data } = await api.get(`/api/doctors/${id}`)
 
 		dispatch({
 			type: GET_DOCTOR_SUCCESS,
@@ -197,7 +199,7 @@ export const createDoctorAction = () => async (dispatch, getState) => {
 			},
 		}
 
-		const { data } = await backend.post(`/api/doctors/create`, {}, config)
+		const { data } = await api.post(`/api/doctors/create`, {}, config)
 
 		dispatch({
 			type: CREATE_DOCTOR_SUCCESS,
@@ -235,7 +237,7 @@ export const updateDoctorAction = doctor => async (dispatch, getState) => {
 			},
 		}
 
-		const { data } = await backend.put(`/api/doctors/${doctor._id}`, doctor, config)
+		const { data } = await api.put(`/api/doctors/${doctor._id}`, doctor, config)
 
 		dispatch({
 			type: UPDATE_DOCTOR_SUCCESS,
@@ -272,7 +274,7 @@ export const deleteDoctorAction = id => async (dispatch, getState) => {
 			},
 		}
 
-		await backend.delete(`/api/doctors/${id}`, config)
+		await api.delete(`/api/doctors/${id}`, config)
 
 		dispatch({
 			type: DELETE_DOCTOR_SUCCESS,
@@ -292,45 +294,43 @@ export const deleteDoctorAction = id => async (dispatch, getState) => {
 	}
 }
 
-export const createDoctorReviewAction = (doctorId, review) => async (
-	dispatch,
-	getState
-) => {
-	try {
-		dispatch({
-			type: CREATE_DOCTOR_REQUEST,
-		})
+export const createDoctorReviewAction =
+	(doctorId, review) => async (dispatch, getState) => {
+		try {
+			dispatch({
+				type: CREATE_DOCTOR_REQUEST,
+			})
 
-		const {
-			userLogin: { userInfo },
-		} = getState()
+			const {
+				userLogin: { userInfo },
+			} = getState()
 
-		const config = {
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${userInfo.token}`,
-			},
+			const config = {
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${userInfo.token}`,
+				},
+			}
+
+			await api.post(`/api/doctor/${doctorId}/reviews`, review, config)
+
+			dispatch({
+				type: CREATE_DOCTOR_SUCCESS,
+			})
+		} catch (error) {
+			const message =
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			if (message === 'You cannot PASS!!') {
+				dispatch(logoutAction())
+			}
+			dispatch({
+				type: CREATE_DOCTOR_ERROR,
+				payload: message,
+			})
 		}
-
-		await backend.post(`/api/doctor/${doctorId}/reviews`, review, config)
-
-		dispatch({
-			type: CREATE_DOCTOR_SUCCESS,
-		})
-	} catch (error) {
-		const message =
-			error.response && error.response.data.message
-				? error.response.data.message
-				: error.message
-		if (message === 'You cannot PASS!!') {
-			dispatch(logoutAction())
-		}
-		dispatch({
-			type: CREATE_DOCTOR_ERROR,
-			payload: message,
-		})
 	}
-}
 
 export const listTopDoctorAction = () => async dispatch => {
 	try {
@@ -338,7 +338,7 @@ export const listTopDoctorAction = () => async dispatch => {
 			type: GET_TOP_DOCTOR_REQUEST,
 		})
 
-		const { data } = await backend.get('/api/doctors/top')
+		const { data } = await api.get('/api/doctors/top')
 
 		dispatch({
 			type: GET_TOP_DOCTOR_SUCCESS,

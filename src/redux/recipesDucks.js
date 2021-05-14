@@ -1,4 +1,4 @@
-import backend from '../services/apiServices'
+import { api } from '../services/apiServices'
 import { logoutAction } from './authDucks'
 
 //Types
@@ -134,28 +134,30 @@ export const recipeReviewCreateReducer = (state = {}, action) => {
 }
 //Actions
 
-export const listRecipesAction = (keyword = '', pageNumber = '') => async dispatch => {
-	try {
-		dispatch({ type: GET_ALL_RECIPES_REQUEST })
+export const listRecipesAction =
+	(keyword = '', pageNumber = '') =>
+	async dispatch => {
+		try {
+			dispatch({ type: GET_ALL_RECIPES_REQUEST })
 
-		const { data } = await backend.get(
-			`/api/recipes?keyword=${keyword}&pageNumber=${pageNumber}`
-		)
+			const { data } = await api.get(
+				`/api/recipes?keyword=${keyword}&pageNumber=${pageNumber}`
+			)
 
-		dispatch({
-			type: GET_ALL_RECIPES_SUCCESS,
-			payload: data,
-		})
-	} catch (error) {
-		dispatch({
-			type: GET_ALL_RECIPES_ERROR,
-			payload:
-				error.response && error.response.data.message
-					? error.response.data.message
-					: error.message,
-		})
+			dispatch({
+				type: GET_ALL_RECIPES_SUCCESS,
+				payload: data,
+			})
+		} catch (error) {
+			dispatch({
+				type: GET_ALL_RECIPES_ERROR,
+				payload:
+					error.response && error.response.data.message
+						? error.response.data.message
+						: error.message,
+			})
+		}
 	}
-}
 
 export const listRecipesDetailsAction = id => async dispatch => {
 	try {
@@ -163,7 +165,7 @@ export const listRecipesDetailsAction = id => async dispatch => {
 			type: GET_ALL_RECIPES_SUCCESS,
 		})
 
-		const { data } = await backend.get(`/api/recipes/${id}`)
+		const { data } = await api.get(`/api/recipes/${id}`)
 
 		dispatch({
 			type: GET_RECIPE_SUCCESS,
@@ -196,7 +198,7 @@ export const createRecipeAction = () => async (dispatch, getState) => {
 			},
 		}
 
-		const { data } = await backend.post(`/api/recipes`, {}, config)
+		const { data } = await api.post(`/api/recipes`, {}, config)
 
 		dispatch({
 			type: CREATE_RECIPE_SUCCESS,
@@ -234,7 +236,7 @@ export const updateRecipeAction = recipe => async (dispatch, getState) => {
 			},
 		}
 
-		const { data } = await backend.put(`/api/recipes/${recipe._id}`, recipe, config)
+		const { data } = await api.put(`/api/recipes/${recipe._id}`, recipe, config)
 
 		dispatch({
 			type: UPDATE_RECIPE_SUCCESS,
@@ -275,7 +277,7 @@ export const deleteRecipeAction = id => async (dispatch, getState) => {
 				Authorization: `Bearer ${userInfo.token}`,
 			},
 		}
-		await backend.delete(`/api/recipes/${id}`, config)
+		await api.delete(`/api/recipes/${id}`, config)
 
 		dispatch({
 			type: DELETE_RECIPE_SUCCESS,
@@ -295,45 +297,43 @@ export const deleteRecipeAction = id => async (dispatch, getState) => {
 	}
 }
 
-export const createRecipeReviewAction = (recipeId, review) => async (
-	dispatch,
-	getState
-) => {
-	try {
-		dispatch({
-			type: CREATE_RECIPE_REQUEST,
-		})
+export const createRecipeReviewAction =
+	(recipeId, review) => async (dispatch, getState) => {
+		try {
+			dispatch({
+				type: CREATE_RECIPE_REQUEST,
+			})
 
-		const {
-			userLogin: { userInfo },
-		} = getState()
+			const {
+				userLogin: { userInfo },
+			} = getState()
 
-		const config = {
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${userInfo.token}`,
-			},
+			const config = {
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${userInfo.token}`,
+				},
+			}
+
+			await api.post(`/api/recipes/${recipeId}/reviews`, review, config)
+
+			dispatch({
+				type: CREATE_RECIPE_SUCCESS,
+			})
+		} catch (error) {
+			const message =
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			if (message === 'You cannot PASS!!') {
+				dispatch(logoutAction())
+			}
+			dispatch({
+				type: CREATE_RECIPE_ERROR,
+				payload: message,
+			})
 		}
-
-		await backend.post(`/api/recipes/${recipeId}/reviews`, review, config)
-
-		dispatch({
-			type: CREATE_RECIPE_SUCCESS,
-		})
-	} catch (error) {
-		const message =
-			error.response && error.response.data.message
-				? error.response.data.message
-				: error.message
-		if (message === 'You cannot PASS!!') {
-			dispatch(logoutAction())
-		}
-		dispatch({
-			type: CREATE_RECIPE_ERROR,
-			payload: message,
-		})
 	}
-}
 
 export const listTopRecipesAction = () => async dispatch => {
 	try {
@@ -341,7 +341,7 @@ export const listTopRecipesAction = () => async dispatch => {
 			type: GET_TOP_RECIPES_REQUEST,
 		})
 
-		const { data } = await backend.get('/api/recipes/top')
+		const { data } = await api.get('/api/recipes/top')
 
 		dispatch({
 			type: GET_TOP_RECIPES_SUCCESS,

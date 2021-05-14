@@ -1,4 +1,4 @@
-import backend from '../services/apiServices'
+import { api } from '../services/apiServices'
 import { logoutAction } from './authDucks'
 
 //Types
@@ -134,28 +134,30 @@ export const marketReviewCreateReducer = (state = {}, action) => {
 }
 //Actions
 
-export const listMarketsAction = (keyword = '', pageNumber = '') => async dispatch => {
-	try {
-		dispatch({ type: GET_ALL_MARKETS_REQUEST })
+export const listMarketsAction =
+	(keyword = '', pageNumber = '') =>
+	async dispatch => {
+		try {
+			dispatch({ type: GET_ALL_MARKETS_REQUEST })
 
-		const { data } = await backend.get(
-			`/api/markets?keyword=${keyword}&pageNumber=${pageNumber}`
-		)
+			const { data } = await api.get(
+				`/api/markets?keyword=${keyword}&pageNumber=${pageNumber}`
+			)
 
-		dispatch({
-			type: GET_ALL_MARKETS_SUCCESS,
-			payload: data,
-		})
-	} catch (error) {
-		dispatch({
-			type: GET_ALL_MARKETS_ERROR,
-			payload:
-				error.response && error.response.data.message
-					? error.response.data.message
-					: error.message,
-		})
+			dispatch({
+				type: GET_ALL_MARKETS_SUCCESS,
+				payload: data,
+			})
+		} catch (error) {
+			dispatch({
+				type: GET_ALL_MARKETS_ERROR,
+				payload:
+					error.response && error.response.data.message
+						? error.response.data.message
+						: error.message,
+			})
+		}
 	}
-}
 
 export const listMarketsDetailsAction = id => async dispatch => {
 	try {
@@ -163,7 +165,7 @@ export const listMarketsDetailsAction = id => async dispatch => {
 			type: GET_ALL_MARKETS_SUCCESS,
 		})
 
-		const { data } = await backend.get(`/api/markets/${id}`)
+		const { data } = await api.get(`/api/markets/${id}`)
 
 		dispatch({
 			type: GET_MARKET_SUCCESS,
@@ -196,7 +198,7 @@ export const createMarketAction = () => async (dispatch, getState) => {
 			},
 		}
 
-		const { data } = await backend.post(`/api/markets`, {}, config)
+		const { data } = await api.post(`/api/markets`, {}, config)
 
 		dispatch({
 			type: CREATE_MARKET_SUCCESS,
@@ -234,7 +236,7 @@ export const updateMarketAction = market => async (dispatch, getState) => {
 			},
 		}
 
-		const { data } = await backend.put(`/api/markets/${market._id}`, market, config)
+		const { data } = await api.put(`/api/markets/${market._id}`, market, config)
 
 		dispatch({
 			type: UPDATE_MARKET_SUCCESS,
@@ -275,7 +277,7 @@ export const deleteMarketAction = id => async (dispatch, getState) => {
 				Authorization: `Bearer ${userInfo.token}`,
 			},
 		}
-		await backend.delete(`/api/markets/${id}`, config)
+		await api.delete(`/api/markets/${id}`, config)
 
 		dispatch({
 			type: DELETE_MARKET_SUCCESS,
@@ -295,45 +297,43 @@ export const deleteMarketAction = id => async (dispatch, getState) => {
 	}
 }
 
-export const createMarketReviewAction = (marketId, review) => async (
-	dispatch,
-	getState
-) => {
-	try {
-		dispatch({
-			type: CREATE_MARKET_REQUEST,
-		})
+export const createMarketReviewAction =
+	(marketId, review) => async (dispatch, getState) => {
+		try {
+			dispatch({
+				type: CREATE_MARKET_REQUEST,
+			})
 
-		const {
-			userLogin: { userInfo },
-		} = getState()
+			const {
+				userLogin: { userInfo },
+			} = getState()
 
-		const config = {
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${userInfo.token}`,
-			},
+			const config = {
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${userInfo.token}`,
+				},
+			}
+
+			await api.post(`/api/markets/${marketId}/reviews`, review, config)
+
+			dispatch({
+				type: CREATE_REVIEW_MARKET_SUCCESS,
+			})
+		} catch (error) {
+			const message =
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			if (message === 'You cannot PASS!!') {
+				dispatch(logoutAction())
+			}
+			dispatch({
+				type: CREATE_REVIEW_MARKET_ERROR,
+				payload: message,
+			})
 		}
-
-		await backend.post(`/api/markets/${marketId}/reviews`, review, config)
-
-		dispatch({
-			type: CREATE_REVIEW_MARKET_SUCCESS,
-		})
-	} catch (error) {
-		const message =
-			error.response && error.response.data.message
-				? error.response.data.message
-				: error.message
-		if (message === 'You cannot PASS!!') {
-			dispatch(logoutAction())
-		}
-		dispatch({
-			type: CREATE_REVIEW_MARKET_ERROR,
-			payload: message,
-		})
 	}
-}
 
 export const listTopMarketsAction = () => async dispatch => {
 	try {
@@ -341,7 +341,7 @@ export const listTopMarketsAction = () => async dispatch => {
 			type: GET_TOP_MARKET_REQUEST,
 		})
 
-		const { data } = await backend.get('/api/markets/top')
+		const { data } = await api.get('/api/markets/top')
 
 		dispatch({
 			type: GET_TOP_MARKET_SUCCESS,
