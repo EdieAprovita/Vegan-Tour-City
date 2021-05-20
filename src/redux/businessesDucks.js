@@ -5,31 +5,33 @@ import { CREATE_REVIEW_MARKET_RESET } from './marketsDucks'
 //Types
 
 export const GET_ALL_BUSINESSES_REQUEST = 'GET_ALL_BUSINESSES_REQUEST'
-export const GET_ALL_BUSINESSES = 'GET_ALL_BUSINESSES'
+export const GET_ALL_BUSINESSES_SUCCESS = 'GET_ALL_BUSINESSES'
 export const GET_ALL_BUSINESSES_ERROR = 'GET_ALL_BUSINESSES_ERROR'
 
 export const GET_BUSINESS_REQUEST = 'GET_ALL_BUSINESS_REQUEST'
-export const GET_BUSINESS = 'GET_ALL_BUSINESS'
+export const GET_BUSINESS_SUCCESS = 'GET_ALL_BUSINESS'
 export const GET_BUSINESS_ERROR = 'GET_BUSINESS_ERROR'
 
 export const CREATE_BUSINESS_REQUEST = 'CREATE_BUSINESS_REQUEST'
-export const CREATE_BUSINESS = 'CREATE_BUSINESS'
+export const CREATE_BUSINESS_SUCCESS = 'CREATE_BUSINESS_SUCCESS'
 export const CREATE_BUSINESS_ERROR = 'CREATE_BUSINESS_ERROR'
+export const CREATE_BUSINESS_RESET = 'CREATE_BUSINESS_RESET'
 
 export const UPDATE_BUSINESS_REQUEST = 'UPDATE_BUSINESS_REQUEST'
-export const UPDATE_BUSINESS = 'UPDATE_BUSINESS'
+export const UPDATE_BUSINESS_SUCCESS = 'UPDATE_BUSINESS'
 export const UPDATE_BUSINESS_ERROR = 'UPDATE_BUSINESS_ERROR'
+export const UPDATE_BUSINESS_RESET = 'UPDATE_BUSINESS_RESET'
 
 export const DELETE_BUSINESS_REQUEST = 'DELETE_BUSINESS_REQUEST'
-export const DELETE_BUSINESS = 'DELETE_BUSINESS'
+export const DELETE_BUSINESS_SUCCESS = 'DELETE_BUSINESS'
 export const DELETE_BUSINESS_ERROR = 'DELETE_BUSINESS_ERROR'
 
 export const GET_TOP_BUSINESS_REQUEST = 'GET_TOP_BUSINESS_REQUEST'
-export const GET_TOP_BUSINESS = 'GET_TOP_BUSINESS'
+export const GET_TOP_BUSINESS_SUCCESS = 'GET_TOP_BUSINESS'
 export const GET_TOP_BUSINESS_ERROR = 'GET_TOP_BUSINESS_ERROR'
 
 export const CREATE_BUSINESS_REVIEW_REQUEST = 'CREATE_BUSINESS_REVIEW_REQUEST'
-export const CREATE_BUSINESS_REVIEW = 'CREATE_BUSINESS_REVIEW'
+export const CREATE_BUSINESS_REVIEW_SUCCESS = 'CREATE_BUSINESS_REVIEW'
 export const CREATE_BUSINESS_REVIEW_ERROR = 'CREATE_BUSINESS_REVIEW_ERROR'
 export const CREATE_BUSINESS_REVIEW_RESET = 'CREATE_BUSINESS_REVIEW_RESET'
 
@@ -39,7 +41,7 @@ export const businessesListReducer = (state = { businesses: [] }, action) => {
 	switch (action.type) {
 		case GET_ALL_BUSINESSES_REQUEST:
 			return { loading: true, businesses: [] }
-		case GET_ALL_BUSINESSES:
+		case GET_ALL_BUSINESSES_SUCCESS:
 			return {
 				loading: false,
 				businesses: action.payload.businesses,
@@ -60,7 +62,7 @@ export const businessesDetailsReducer = (
 	switch (action.type) {
 		case GET_BUSINESS_REQUEST:
 			return { ...state, loading: true }
-		case GET_BUSINESS:
+		case GET_BUSINESS_SUCCESS:
 			return { loading: false, business: action.payload }
 		case GET_BUSINESS_ERROR:
 			return { loading: false, error: action.payload }
@@ -73,7 +75,7 @@ export const businessCreateReducer = (state = {}, action) => {
 	switch (action.type) {
 		case CREATE_BUSINESS_REQUEST:
 			return { loading: true }
-		case CREATE_BUSINESS:
+		case CREATE_BUSINESS_SUCCESS:
 			return { loading: false, success: true, business: action.payload }
 		case CREATE_BUSINESS_ERROR:
 			return { loading: false, error: action.payload }
@@ -86,7 +88,7 @@ export const businessUpdateReducer = (state = { business: {} }, action) => {
 	switch (action.type) {
 		case UPDATE_BUSINESS_REQUEST:
 			return { loading: true }
-		case UPDATE_BUSINESS:
+		case UPDATE_BUSINESS_SUCCESS:
 			return { loading: true, success: true, business: action.payload }
 		case UPDATE_BUSINESS_ERROR:
 			return { loading: false, error: action.payload }
@@ -99,7 +101,7 @@ export const businessDeleteReducer = (state = {}, action) => {
 	switch (action.type) {
 		case DELETE_BUSINESS_REQUEST:
 			return { loading: true }
-		case DELETE_BUSINESS:
+		case DELETE_BUSINESS_SUCCESS:
 			return { loading: false, success: true }
 		case DELETE_BUSINESS_ERROR:
 			return { loading: false, error: action.payload }
@@ -112,7 +114,7 @@ export const businessTopReviewReducer = (state = { businesses: [] }, action) => 
 	switch (action.type) {
 		case GET_TOP_BUSINESS_REQUEST:
 			return { loading: true, businesses: [] }
-		case GET_TOP_BUSINESS:
+		case GET_TOP_BUSINESS_SUCCESS:
 			return { loading: false, businesses: action.payload }
 		case GET_TOP_BUSINESS_ERROR:
 			return { loading: false, error: action.payload }
@@ -126,7 +128,7 @@ export const businessReviewCreateReducer = (state = {}, action) => {
 	switch (action.type) {
 		case CREATE_BUSINESS_REVIEW_REQUEST:
 			return { loading: true }
-		case CREATE_BUSINESS_REVIEW:
+		case CREATE_BUSINESS_REVIEW_SUCCESS:
 			return { loading: false, success: true }
 		case CREATE_BUSINESS_REVIEW_ERROR:
 			return { loading: false, error: action.payload }
@@ -149,7 +151,7 @@ export const listBusinessesAction =
 			)
 
 			dispatch({
-				type: GET_ALL_BUSINESSES,
+				type: GET_ALL_BUSINESSES_SUCCESS,
 				payload: data,
 			})
 		} catch (error) {
@@ -166,13 +168,13 @@ export const listBusinessesAction =
 export const listBusinessesDetailsAction = id => async dispatch => {
 	try {
 		dispatch({
-			type: GET_ALL_BUSINESSES,
+			type: GET_ALL_BUSINESSES_SUCCESS,
 		})
 
 		const { data } = await api.get(`/api/businesses/${id}`)
 
 		dispatch({
-			type: GET_BUSINESS,
+			type: GET_BUSINESS_SUCCESS,
 			payload: data,
 		})
 	} catch (error) {
@@ -205,7 +207,7 @@ export const createBusinessAction = () => async (dispatch, getState) => {
 		const { data } = await api.post(`/api/businesses`, {}, config)
 
 		dispatch({
-			type: CREATE_BUSINESS,
+			type: CREATE_BUSINESS_SUCCESS,
 			payload: data,
 		})
 	} catch (error) {
@@ -247,12 +249,12 @@ export const updateBusinessAction = business => async (dispatch, getState) => {
 		)
 
 		dispatch({
-			type: UPDATE_BUSINESS,
+			type: UPDATE_BUSINESS_SUCCESS,
 			payload: data,
 		})
 
 		dispatch({
-			type: GET_BUSINESS,
+			type: GET_BUSINESS_SUCCESS,
 			payload: data,
 		})
 	} catch (error) {
@@ -288,7 +290,7 @@ export const deleteBusinessAction = id => async (dispatch, getState) => {
 		await api.delete(`/api/businesses/${id}`, config)
 
 		dispatch({
-			type: DELETE_BUSINESS,
+			type: DELETE_BUSINESS_SUCCESS,
 		})
 	} catch (error) {
 		const message =
@@ -326,7 +328,7 @@ export const createBusinessReviewAction =
 			await api.post(`/api/businesses/${businessId}/reviews`, review, config)
 
 			dispatch({
-				type: CREATE_BUSINESS_REVIEW,
+				type: CREATE_BUSINESS_REVIEW_SUCCESS,
 			})
 		} catch (error) {
 			const message =
@@ -352,7 +354,7 @@ export const listTopBusinessesAction = () => async dispatch => {
 		const { data } = await api.get('/api/businesses/top')
 
 		dispatch({
-			type: GET_TOP_BUSINESS,
+			type: GET_TOP_BUSINESS_SUCCESS,
 			payload: data,
 		})
 	} catch (error) {

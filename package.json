@@ -6,10 +6,7 @@
 		"@testing-library/jest-dom": "^5.11.4",
 		"@testing-library/react": "^11.1.0",
 		"@testing-library/user-event": "^12.1.10",
-		"@wojtekmaj/enzyme-adapter-react-17": "^0.6.1",
 		"axios": "^0.21.1",
-		"enzyme": "^3.11.0",
-		"jest": "^26.6.0",
 		"react": "^17.0.1",
 		"react-bootstrap": "^1.4.3",
 		"react-dom": "^17.0.1",
@@ -17,7 +14,7 @@
 		"react-redux": "^7.2.2",
 		"react-router-bootstrap": "^0.25.0",
 		"react-router-dom": "^5.2.0",
-		"react-scripts": "^2.1.8",
+		"react-scripts": "^4.0.3",
 		"redux": "^4.0.5",
 		"redux-devtools": "^3.7.0",
 		"redux-devtools-extension": "^2.13.9",
@@ -26,8 +23,6 @@
 	},
 	"scripts": {
 		"start": "react-scripts start",
-		"build-dev": "dotenv -e .env.development react-scripts build",
-		"build-prod": "dotenv -e .env.production react-scripts build",
 		"build": "react-scripts build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject"
