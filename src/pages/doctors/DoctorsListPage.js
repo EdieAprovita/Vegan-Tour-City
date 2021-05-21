@@ -18,7 +18,7 @@ const DoctorListPage = ({ history, match }) => {
 	const dispatch = useDispatch()
 
 	const doctorList = useSelector(state => state.doctorsList)
-	const { loading, error, doctores, page, pages } = doctorList
+	const { loading, error, doctors, page, pages } = doctorList
 
 	const doctorDelete = useSelector(state => state.doctorDelete)
 	const {
@@ -66,7 +66,7 @@ const DoctorListPage = ({ history, match }) => {
 		}
 	}
 
-	const createdoctorHandler = () => {
+	const createDoctorHandler = () => {
 		dispatch(createDoctorAction())
 	}
 	return (
@@ -76,7 +76,7 @@ const DoctorListPage = ({ history, match }) => {
 					<h1>Negocios</h1>
 				</Col>
 				<Col className='text-right'>
-					<Button className='my-3' onClick={createdoctorHandler}>
+					<Button className='my-3' onClick={createDoctorHandler}>
 						<i className='fas fa-plus'></i> Crear Doctor
 					</Button>
 				</Col>
@@ -105,7 +105,7 @@ const DoctorListPage = ({ history, match }) => {
 							</tr>
 						</thead>
 						<tbody>
-							{doctores.map(doctor => (
+							{doctors.map(doctor => (
 								<tr key={doctor._id}>
 									<td>{doctor._id}</td>
 									<td>{doctor.name}</td>

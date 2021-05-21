@@ -94,7 +94,6 @@ const BusinessesListPage = ({ history, match }) => {
 					<Table striped bordered hover responsive className='table-sm'>
 						<thead>
 							<tr>
-								<th>ID</th>
 								<th>NOMBRE</th>
 								<th>DIRECCIÓN</th>
 								<th>CONTACTO</th>
@@ -107,7 +106,6 @@ const BusinessesListPage = ({ history, match }) => {
 						<tbody>
 							{businesses.map(business => (
 								<tr key={business._id}>
-									<td>{business._id}</td>
 									<td>{business.name}</td>
 									<td>{business.address}</td>
 									<td>{business.contact}</td>
