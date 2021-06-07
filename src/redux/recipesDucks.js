@@ -134,28 +134,30 @@ export const recipeReviewCreateReducer = (state = {}, action) => {
 }
 //Actions
 
-export const listRecipesAction = (keyword = '', pageNumber = '') => async dispatch => {
-	try {
-		dispatch({ type: GET_ALL_RECIPES_REQUEST })
+export const listRecipesAction =
+	(keyword = '', pageNumber = '') =>
+	async dispatch => {
+		try {
+			dispatch({ type: GET_ALL_RECIPES_REQUEST })
 
-		const { data } = await backend.get(
-			`/api/recipes?keyword=${keyword}&pageNumber=${pageNumber}`
-		)
+			const { data } = await backend.get(
+				`/api/recipes?keyword=${keyword}&pageNumber=${pageNumber}`
+			)
 
-		dispatch({
-			type: GET_ALL_RECIPES_SUCCESS,
-			payload: data,
-		})
-	} catch (error) {
-		dispatch({
-			type: GET_ALL_RECIPES_ERROR,
-			payload:
-				error.response && error.response.data.message
-					? error.response.data.message
-					: error.message,
-		})
+			dispatch({
+				type: GET_ALL_RECIPES_SUCCESS,
+				payload: data,
+			})
+		} catch (error) {
+			dispatch({
+				type: GET_ALL_RECIPES_ERROR,
+				payload:
+					error.response && error.response.data.message
+						? error.response.data.message
+						: error.message,
+			})
+		}
 	}
-}
 
 export const listRecipesDetailsAction = id => async dispatch => {
 	try {
@@ -295,45 +297,43 @@ export const deleteRecipeAction = id => async (dispatch, getState) => {
 	}
 }
 
-export const createRecipeReviewAction = (recipeId, review) => async (
-	dispatch,
-	getState
-) => {
-	try {
-		dispatch({
-			type: CREATE_RECIPE_REQUEST,
-		})
+export const createRecipeReviewAction =
+	(recipeId, review) => async (dispatch, getState) => {
+		try {
+			dispatch({
+				type: CREATE_RECIPE_REQUEST,
+			})
 
-		const {
-			userLogin: { userInfo },
-		} = getState()
+			const {
+				userLogin: { userInfo },
+			} = getState()
 
-		const config = {
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${userInfo.token}`,
-			},
+			const config = {
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${userInfo.token}`,
+				},
+			}
+
+			await backend.post(`/api/recipes/${recipeId}/reviews`, review, config)
+
+			dispatch({
+				type: CREATE_RECIPE_SUCCESS,
+			})
+		} catch (error) {
+			const message =
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			if (message === 'You cannot PASS!!') {
+				dispatch(logoutAction())
+			}
+			dispatch({
+				type: CREATE_RECIPE_ERROR,
+				payload: message,
+			})
 		}
-
-		await backend.post(`/api/recipes/${recipeId}/reviews`, review, config)
-
-		dispatch({
-			type: CREATE_RECIPE_SUCCESS,
-		})
-	} catch (error) {
-		const message =
-			error.response && error.response.data.message
-				? error.response.data.message
-				: error.message
-		if (message === 'You cannot PASS!!') {
-			dispatch(logoutAction())
-		}
-		dispatch({
-			type: CREATE_RECIPE_ERROR,
-			payload: message,
-		})
 	}
-}
 
 export const listTopRecipesAction = () => async dispatch => {
 	try {
